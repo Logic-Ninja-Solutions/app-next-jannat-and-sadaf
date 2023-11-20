@@ -18,7 +18,7 @@ export default function Login() {
         />
         <PasswordInput placeholder="Your password" />
 
-        <Button color="gray" variant="filled" fullWidth>
+        <Button variant="filled" fullWidth>
           Login
         </Button>
       </Stack>

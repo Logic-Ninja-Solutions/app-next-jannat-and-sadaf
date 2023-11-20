@@ -1,34 +1,22 @@
-import { Box, Switch, useMantineColorScheme } from '@mantine/core';
-import { IconMoonStars, IconSun } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { IconMoon, IconSun } from '@tabler/icons-react';
+import cx from 'clsx';
+
 import classes from './ThemeSwitch.module.scss';
 
 export function ThemeSwitch() {
-  const { toggleColorScheme, colorScheme } = useMantineColorScheme();
-
-  const [domLoaded, setDomLoaded] = useState(false);
-  const isDark = colorScheme === 'dark';
-
-  useEffect(() => {
-    setDomLoaded(true);
-  }, []);
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
-    <>
-      {domLoaded ? (
-        <Switch
-          size="md"
-          color={isDark ? 'blue' : 'teal'}
-          checked={isDark}
-          onLabel={<IconSun size="1rem" stroke={2.5} className={classes.on} />}
-          offLabel={<IconMoonStars size="1rem" stroke={2.5} className={classes.off} />}
-          onClick={() => {
-            toggleColorScheme();
-          }}
-        />
-      ) : (
-        <Box />
-      )}
-    </>
+    <ActionIcon
+      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
+      variant="default"
+      size="xl"
+      aria-label="Toggle color scheme"
+    >
+      <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
+      <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
+    </ActionIcon>
   );
 }

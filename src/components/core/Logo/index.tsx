@@ -1,10 +1,16 @@
-import { Title } from '@mantine/core';
+import { Image } from '@mantine/core';
+import cx from 'clsx';
 import classes from './Logo.module.scss';
 
 export function Logo() {
   return (
-    <Title className={classes.title} ta="end">
-      Jannat &nbsp; &&nbsp;&nbsp; Sadaf
-    </Title>
+    <>
+      <Image className={cx(classes.logo, classes.dark)} h={80} src="logo-cropped-no-bg.png" />
+      <Image
+        className={cx(classes.logo, classes.light)}
+        h={80}
+        src="logo-cropped-white-no-bg.png"
+      />
+    </>
   );
 }

@@ -5,7 +5,7 @@ import DefaultLayout from '@components/layouts/DefaultLayout';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
 
-import { theme } from '@/src/styles/theme';
+import { resolver, theme } from '@/src/styles/theme';
 import { fontClass } from '../styles/font';
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorSchemeScript />
       </head>
       <body className={fontClass}>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} cssVariablesResolver={resolver}>
           <DefaultLayout>{children}</DefaultLayout>
         </MantineProvider>
       </body>

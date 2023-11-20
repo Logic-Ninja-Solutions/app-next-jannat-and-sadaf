@@ -50,7 +50,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
 
   return (
     <AppShell header={{ height: 90 }}>
-      <AppShell.Header>
+      <AppShell.Header className={classes.header}>
         <Group justify="space-between">
           {isMobile ? (
             <Burger pl="xl" opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
