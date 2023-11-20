@@ -1,0 +1,8 @@
+.title {
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin-top: var(--mantine-spacing-xs);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-white));
+}

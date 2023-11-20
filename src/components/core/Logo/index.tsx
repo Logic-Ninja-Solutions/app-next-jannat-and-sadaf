@@ -3,7 +3,7 @@ import classes from './Logo.module.scss';
 
 export function Logo() {
   return (
-    <Title className={classes.title} ta="center">
+    <Title className={classes.title} ta="end">
       Jannat &nbsp; &&nbsp;&nbsp; Sadaf
     </Title>
   );

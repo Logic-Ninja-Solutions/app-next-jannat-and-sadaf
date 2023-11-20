@@ -1,15 +1,18 @@
 'use client';
 
-import { ActionIcon, AppShell, Burger, Flex, Group } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { ActionIcon, AppShell, Box, Burger, Flex, Group, em, rem } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { IconSearch, IconShoppingBag, IconUser } from '@tabler/icons-react';
+import { Logo } from '@components/core/Logo';
+import { ThemeSwitch } from '@components/core/ThemeSwitch';
+import Link from 'next/link';
 import classes from './Layout.module.scss';
-import { Logo } from '../../core/Logo';
 
 const actionIcons = [
   {
     icon: IconUser,
     label: 'profile',
+    link: '/login',
   },
   {
     icon: IconSearch,
@@ -24,8 +27,10 @@ const actionIcons = [
 function AllIcons() {
   return (
     <Flex align="center" justify="flex-end">
-      {actionIcons.map(({ icon: Icon, label }) => (
+      {actionIcons.map(({ icon: Icon, label, link }) => (
         <ActionIcon
+          component={Link}
+          href={link ?? '#'}
           key={label}
           size="xl"
           className={classes.actionIcon}
@@ -41,18 +46,27 @@ function AllIcons() {
 
 export default function DefaultLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   return (
-    <AppShell>
+    <AppShell header={{ height: 90 }}>
       <AppShell.Header>
-        <Burger pl="xl" opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         <Group justify="space-between">
+          {isMobile ? (
+            <Burger pl="xl" opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          ) : (
+            <Box p="xl">
+              <ThemeSwitch />
+            </Box>
+          )}
           <Logo />
           <AllIcons />
         </Group>
       </AppShell.Header>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Box h={`calc(100vh - ${rem(90)})`}>{children}</Box>
+      </AppShell.Main>
     </AppShell>
   );
 }
