@@ -1,0 +1,12 @@
+.title {
+  margin-top: var(--mantine-spacing-xs);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-white));
+  font-size: rem(50px);
+  font-weight: 900;
+  letter-spacing: rem(-2px);
+  font-family: 'Allegro';
+
+  @media (max-width: $mantine-breakpoint-md) {
+    font-size: rem(30px);
+  }
+}
