@@ -12,13 +12,12 @@ export default function Login() {
         <Text className={classes.subtitle}>Enter your email and password to login:</Text>
 
         <TextInput
-          leftSectionPointerEvents="none"
           leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
           placeholder="Your email"
         />
         <PasswordInput placeholder="Your password" />
 
-        <Button variant="filled" fullWidth>
+        <Button className={classes.loginButton} color="skin" variant="outline" fullWidth>
           Login
         </Button>
       </Stack>

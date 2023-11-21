@@ -6,3 +6,8 @@
   margin-top: var(--mantine-spacing-xs);
   color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-white));
 }
+
+.loginButton {
+  outline: 1px solid light-dark(var(--mantine-color-dark-filled), var(--mantine-color-skin));
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-white));
+}

@@ -1,10 +1,18 @@
 'use client';
 
-import { CSSVariablesResolver, createTheme } from '@mantine/core';
+import { CSSVariablesResolver, Input, createTheme } from '@mantine/core';
 import { fontStyle } from './font';
+import classes from './Theme.module.scss';
 
 export const theme = createTheme({
   fontFamily: fontStyle,
+  components: {
+    Input: Input.extend({
+      classNames: {
+        input: classes.input,
+      },
+    }),
+  },
   colors: {
     skin: [
       '#514C43',
