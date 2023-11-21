@@ -1,32 +1,35 @@
-import { Button, Center, PasswordInput, Stack, Text, TextInput, Title, rem } from '@mantine/core';
+import { Text, Button, Center, PasswordInput, Stack, TextInput, Title, rem } from '@mantine/core';
 import { IconAt } from '@tabler/icons-react';
 import Link from 'next/link';
-import classes from './Login.module.scss';
+import classes from './Signup.module.scss';
 
-export default function Login() {
+export default function Signup() {
   return (
     <Center h="100%">
       <Stack w={450}>
         <Title ta="center" className={classes.title}>
-          Login
+          Signup
         </Title>
         <Text className={classes.subtitle}>Enter your email and password to login:</Text>
 
+        <TextInput placeholder="First Name" />
+        <TextInput placeholder="Last Name" />
         <TextInput
           leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
           placeholder="Your email"
         />
         <PasswordInput placeholder="Your password" />
+        <PasswordInput placeholder="Confirm password" />
 
         <Button className={classes.loginButton} color="skin" variant="outline" fullWidth>
-          Login
+          Create an Account
         </Button>
 
         <Text className={classes.signupText} ta="center">
-          Don&apos;t have an account?
-          <Text className={classes.signupLink} component={Link} href="signup">
+          Already have an account?
+          <Text className={classes.signupLink} component={Link} href="login">
             {' '}
-            Sign up
+            Login
           </Text>
         </Text>
       </Stack>
