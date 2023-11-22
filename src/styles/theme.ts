@@ -9,8 +9,17 @@ export const theme = createTheme({
 
   components: {
     Input: Input.extend({
+      defaultProps: {
+        radius: 'md',
+      },
       classNames: {
         input: classes.input,
+      },
+    }),
+
+    TextInput: Input.extend({
+      defaultProps: {
+        radius: 'md',
       },
     }),
     Button: Button.extend({

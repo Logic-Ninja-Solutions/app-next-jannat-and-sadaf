@@ -1,6 +1,5 @@
 .input {
-  transition: none;
-
-  border: rem(1px) solid
-    light-dark(var(--mantine-color-dark-filled), var(--mantine-color-skin-filled));
+  &:focus-within {
+    border: 1px solid light-dark(var(--mantine-color-dark-filled), var(--mantine-color-skin-filled));
+  }
 }

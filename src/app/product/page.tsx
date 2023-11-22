@@ -28,7 +28,7 @@ function ProductDetails() {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   return (
-    <Stack align={isMobile ? 'center' : 'flex-start'} pl="xs" pr="xs">
+    <Stack align={isMobile ? 'center' : undefined} pl="xs" pr="xs">
       <CustomSizeModal opened={opened} close={close} />
       <Title fw={500} order={3}>
         NIMR KURTI W/ DUPATTA & IZAAR
