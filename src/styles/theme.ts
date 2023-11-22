@@ -1,11 +1,12 @@
 'use client';
 
-import { CSSVariablesResolver, Input, createTheme } from '@mantine/core';
+import { CSSVariablesResolver, Input, MantineTheme, createTheme } from '@mantine/core';
 import { fontStyle } from './font';
 import classes from './Theme.module.scss';
 
 export const theme = createTheme({
   fontFamily: fontStyle,
+
   components: {
     Input: Input.extend({
       classNames: {
@@ -29,10 +30,14 @@ export const theme = createTheme({
   },
 });
 
-export const resolver: CSSVariablesResolver = (mantineTheme) => ({
+export const resolver: CSSVariablesResolver = (t: MantineTheme) => ({
   variables: {
-    '--mantine-custom-bg': mantineTheme.other.bgColor,
+    '--mantine-hero-height': t.other.heroHeight,
   },
-  light: {},
-  dark: {},
+  light: {
+    '--mantine-button-color': t.colors.skin[0],
+  },
+  dark: {
+    '--mantine-button-color': t.colors.dark[0],
+  },
 });
