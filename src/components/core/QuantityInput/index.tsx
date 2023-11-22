@@ -9,7 +9,7 @@ export default function QuantityInput() {
   return (
     <Flex className={classes.container} w="fit-content" align="center" gap="lg">
       <ActionIcon
-        color="var(--mantine-button-color)"
+        color="var(--mantine-outline-color)"
         pl="xs"
         variant="transparent"
         onClick={() => handlersRef.current?.decrement()}
@@ -29,7 +29,7 @@ export default function QuantityInput() {
         classNames={classes}
       />
       <ActionIcon
-        color="var(--mantine-button-color)"
+        color="var(--mantine-outline-color)"
         pr="xs"
         variant="transparent"
         onClick={() => handlersRef.current?.increment()}

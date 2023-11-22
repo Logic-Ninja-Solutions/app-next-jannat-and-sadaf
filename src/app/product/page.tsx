@@ -3,6 +3,9 @@
 import '@mantine/carousel/styles.css';
 
 import { Box, Button, Grid, Group, Radio, Stack, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
+import CustomSizeModal from '@/src/components/CustomSizeModal';
 import ImagesCarousel from '@/src/components/ImagesCarousel';
 import QuantityInput from '@/src/components/core/QuantityInput';
 import classes from './Product.module.scss';
@@ -18,9 +21,13 @@ const img4 =
 
 function ProductDetails() {
   const sizes = ['XS', 'S', 'M', 'L', 'Custom'];
+  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [isEnterSizeManually, setIsEnterSizeManually] = useState<boolean | null>(false);
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <Stack>
+      <CustomSizeModal opened={opened} close={close} />
       <Title fw={500} order={3}>
         NIMR KURTI W/ DUPATTA & IZAAR
       </Title>
@@ -28,28 +35,53 @@ function ProductDetails() {
       <QuantityInput />
       <Box>
         <Title order={4}>Size</Title>
-        <Radio.Group color="lime.4" defaultValue="S" mt="xs">
+        <Radio.Group onChange={setSelectedSize} color="lime.4" defaultValue="S" mt="xs">
           <Group>
             {sizes.map((size, index) => (
-              <Radio
-                key={index}
-                iconColor="skin.4"
-                color="skin.4"
-                label={size}
-                value={size}
-                defaultChecked
-              />
+              <Radio key={index} iconColor="skin.4" color="skin.4" label={size} value={size} />
             ))}
           </Group>
         </Radio.Group>
       </Box>
+      <Box>
+        {selectedSize === 'Custom' && (
+          <Box>
+            <Button
+              onClick={() => setIsEnterSizeManually(false)}
+              c={isEnterSizeManually ? 'var(--mantine-outline-c)' : 'var(--mantine-filled-c)'}
+              color={
+                isEnterSizeManually ? 'var(--mantine-outline-c)' : 'var(--mantine-filled-color)'
+              }
+              variant={isEnterSizeManually ? 'outline' : 'filled'}
+              fullWidth
+            >
+              Request Callback
+            </Button>
+            <Text ta="center">or</Text>
+            <Button
+              onClick={() => {
+                setIsEnterSizeManually(true);
+                open();
+              }}
+              c={isEnterSizeManually ? 'var(--mantine-filled-c)' : 'var(--mantine-outline-c)'}
+              color={
+                isEnterSizeManually ? 'var(--mantine-filled-color)' : 'var(--mantine-outline-c)'
+              }
+              variant={isEnterSizeManually ? 'filled' : 'outline'}
+              fullWidth
+            >
+              Enter Size Manually
+            </Button>
+          </Box>
+        )}
+      </Box>
       <Button
-        color="var(--mantine-button-color)"
+        variant="outline"
+        color="var(--mantine-outline-color)"
         className={classes.myButton}
         mt="xs"
         size="lg"
         fullWidth
-        variant="outline"
       >
         Add to cart
       </Button>
