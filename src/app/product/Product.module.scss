@@ -1,7 +1,12 @@
-.carouselSlide {
-  cursor: pointer;
-}
+.input {
+  border: none;
+  outline: none;
 
-.carouselSlideSelected {
-  outline: 1px solid light-dark(var(--mantine-color-dark-filled), var(--mantine-color-skin-filled));
+  &:focus-within {
+    outline: none;
+    border: none;
+  }
+  &:disabled {
+    cursor: default;
+  }
 }
