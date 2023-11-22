@@ -1,7 +1,7 @@
 import { Carousel, Embla } from '@mantine/carousel';
 import { Flex, Image, Stack, em, rem } from '@mantine/core';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cx from 'clsx';
 
 import { useMediaQuery } from '@mantine/hooks';
@@ -15,6 +15,14 @@ export default function ImagesCarousel({ imageList }: ImagesCarouselProps) {
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [selectedSlide, setSelectedSlide] = useState<number>(0);
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+
+  useEffect(() => {
+    if (embla) {
+      embla.on('select', () => {
+        setSelectedSlide(embla.selectedScrollSnap());
+      });
+    }
+  }, [embla]);
 
   return (
     <Stack
