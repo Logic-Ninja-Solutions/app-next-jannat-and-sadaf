@@ -38,7 +38,9 @@ export default function ImagesCarousel({ imageList }: ImagesCarouselProps) {
         previousControlIcon={<IconArrowLeft style={{ width: rem(16), height: rem(16) }} />}
       >
         {imageList.map((image, index) => (
-          <Image key={index} src={image} />
+          <Carousel.Slide key={index}>
+            <Image src={image} />
+          </Carousel.Slide>
         ))}
       </Carousel>
       <Flex className={classes.carouselSlides} justify="center" wrap="wrap">
