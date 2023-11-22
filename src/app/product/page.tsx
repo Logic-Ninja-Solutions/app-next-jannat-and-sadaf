@@ -2,8 +2,8 @@
 
 import '@mantine/carousel/styles.css';
 
-import { Box, Button, Grid, Group, Radio, Stack, Text, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Box, Button, Grid, Group, Radio, Stack, Text, Title, em } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { useState } from 'react';
 import CustomSizeModal from '@/src/components/CustomSizeModal';
 import ImagesCarousel from '@/src/components/ImagesCarousel';
@@ -25,8 +25,10 @@ function ProductDetails() {
   const [isEnterSizeManually, setIsEnterSizeManually] = useState<boolean | null>(false);
   const [opened, { open, close }] = useDisclosure(false);
 
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+
   return (
-    <Stack>
+    <Stack align={isMobile ? 'center' : 'flex-start'} pl="xs" pr="xs">
       <CustomSizeModal opened={opened} close={close} />
       <Title fw={500} order={3}>
         NIMR KURTI W/ DUPATTA & IZAAR
@@ -120,7 +122,13 @@ export default function Product() {
           <ImagesCarousel imageList={imageList} />
         </Grid.Col>
 
-        <Grid.Col span={4}>
+        <Grid.Col
+          span={{
+            md: 4,
+            sm: 12,
+          }}
+          p="xs"
+        >
           <ProductDetails />
         </Grid.Col>
       </Grid>
