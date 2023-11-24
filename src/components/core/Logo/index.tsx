@@ -1,17 +1,28 @@
-import { Image } from '@mantine/core';
-import Link from 'next/link';
-import classes from './Logo.module.scss';
+'use client'
+
+import { Image } from '@nextui-org/react'
+import { useTheme } from 'next-themes'
+import * as React from 'react'
 
 export function Logo() {
-  return (
-    <>
-      <Link href="/" className={classes.dark}>
-        <Image className={classes.logo} h={80} src="logo-cropped-no-bg.png" />
-      </Link>
+    const [mounted, setMounted] = React.useState(false)
 
-      <Link href="/" className={classes.light}>
-        <Image className={classes.logo} h={80} src="logo-cropped-white-no-bg.png" />
-      </Link>
-    </>
-  );
+    const { theme } = useTheme()
+    React.useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) return null
+    return (
+        <Image
+            isBlurred
+            width={140}
+            src={
+                theme === 'light'
+                    ? 'logo-cropped-no-bg.png'
+                    : 'logo-cropped-white-no-bg.png'
+            }
+            alt="NextUI Album Cover"
+        />
+    )
 }
