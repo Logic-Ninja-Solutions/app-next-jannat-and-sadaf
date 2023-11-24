@@ -18,9 +18,7 @@ export default function Login() {
         />
         <PasswordInput placeholder="Your password" />
 
-        <Button className={classes.loginButton} color="skin" variant="outline" fullWidth>
-          Login
-        </Button>
+        <Button fullWidth>Login</Button>
 
         <Text className={classes.signupText} ta="center">
           Don&apos;t have an account?

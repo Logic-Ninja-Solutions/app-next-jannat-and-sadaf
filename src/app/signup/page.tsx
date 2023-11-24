@@ -21,14 +21,11 @@ export default function Signup() {
         <PasswordInput placeholder="Your password" />
         <PasswordInput placeholder="Confirm password" />
 
-        <Button className={classes.loginButton} color="skin" variant="outline" fullWidth>
-          Create an Account
-        </Button>
+        <Button fullWidth>Create an Account</Button>
 
         <Text className={classes.signupText} ta="center">
-          Already have an account?
+          Already have an account?{' '}
           <Text className={classes.signupLink} component={Link} href="login">
-            {' '}
             Login
           </Text>
         </Text>

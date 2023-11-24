@@ -8,12 +8,7 @@ export default function QuantityInput() {
 
   return (
     <Flex className={classes.container} w="fit-content" align="center" gap="lg">
-      <ActionIcon
-        color="var(--mantine-outline-color)"
-        pl="xs"
-        variant="transparent"
-        onClick={() => handlersRef.current?.decrement()}
-      >
+      <ActionIcon pl="xs" variant="transparent" onClick={() => handlersRef.current?.decrement()}>
         <IconMinus size={20} />
       </ActionIcon>
 
@@ -28,12 +23,7 @@ export default function QuantityInput() {
         max={10}
         classNames={classes}
       />
-      <ActionIcon
-        color="var(--mantine-outline-color)"
-        pr="xs"
-        variant="transparent"
-        onClick={() => handlersRef.current?.increment()}
-      >
+      <ActionIcon pr="xs" variant="transparent" onClick={() => handlersRef.current?.increment()}>
         <IconPlus size={20} />
       </ActionIcon>
     </Flex>

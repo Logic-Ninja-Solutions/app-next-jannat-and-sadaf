@@ -8,7 +8,7 @@ import { useState } from 'react';
 import CustomSizeModal from '@/src/components/CustomSizeModal';
 import ImagesCarousel from '@/src/components/ImagesCarousel';
 import QuantityInput from '@/src/components/core/QuantityInput';
-import classes from './Product.module.scss';
+// import classes from './Product.module.scss';
 
 const img1 =
   'https://www.mishalakhani.com/cdn/shop/files/10-B_21824d2f-46e5-48ee-934a-c9c261517e0f.jpg?v=1683652977&width=1400';
@@ -37,10 +37,10 @@ function ProductDetails() {
       <QuantityInput />
       <Box>
         <Title order={4}>Size</Title>
-        <Radio.Group onChange={setSelectedSize} color="lime.4" defaultValue="S" mt="xs">
+        <Radio.Group onChange={setSelectedSize} defaultValue="S" mt="xs">
           <Group>
             {sizes.map((size, index) => (
-              <Radio key={index} iconColor="skin.4" color="skin.4" label={size} value={size} />
+              <Radio key={index} iconColor="skin.4" label={size} value={size} />
             ))}
           </Group>
         </Radio.Group>
@@ -50,10 +50,6 @@ function ProductDetails() {
           <Box>
             <Button
               onClick={() => setIsEnterSizeManually(false)}
-              c={isEnterSizeManually ? 'var(--mantine-outline-c)' : 'var(--mantine-filled-c)'}
-              color={
-                isEnterSizeManually ? 'var(--mantine-outline-c)' : 'var(--mantine-filled-color)'
-              }
               variant={isEnterSizeManually ? 'outline' : 'filled'}
               fullWidth
             >
@@ -65,10 +61,6 @@ function ProductDetails() {
                 setIsEnterSizeManually(true);
                 open();
               }}
-              c={isEnterSizeManually ? 'var(--mantine-filled-c)' : 'var(--mantine-outline-c)'}
-              color={
-                isEnterSizeManually ? 'var(--mantine-filled-color)' : 'var(--mantine-outline-c)'
-              }
               variant={isEnterSizeManually ? 'filled' : 'outline'}
               fullWidth
             >
@@ -77,14 +69,7 @@ function ProductDetails() {
           </Box>
         )}
       </Box>
-      <Button
-        variant="outline"
-        color="var(--mantine-outline-color)"
-        className={classes.myButton}
-        mt="xs"
-        size="lg"
-        fullWidth
-      >
+      <Button mt="xs" size="lg" fullWidth>
         Add to cart
       </Button>
       <Box>

@@ -1,64 +1,23 @@
 'use client';
 
-import { Button, CSSVariablesResolver, Input, MantineTheme, createTheme } from '@mantine/core';
-import { fontStyle } from './font';
-import classes from './Theme.module.scss';
+import { Button, CSSVariablesResolver, createTheme } from '@mantine/core';
 
 export const theme = createTheme({
-  fontFamily: fontStyle,
-
+  primaryColor: 'dark',
+  primaryShade: 5,
+  defaultRadius: 'md',
+  focusRing: 'never',
   components: {
-    Input: Input.extend({
-      defaultProps: {
-        radius: 'md',
-      },
-      classNames: {
-        input: classes.input,
-      },
-    }),
-
-    TextInput: Input.extend({
-      defaultProps: {
-        radius: 'md',
-      },
-    }),
     Button: Button.extend({
       defaultProps: {
-        variant: 'outline',
-        radius: 'md',
+        variant: 'filled',
       },
     }),
-  },
-  colors: {
-    skin: [
-      '#514C43',
-      '#6E675E',
-      '#8B8479',
-      '#A99F94',
-      '#C7BBB0',
-      '#E4D6CB',
-      '#F3ECE2',
-      '#F7F3EA',
-      '#FBF8F1',
-      '#FFFFFF',
-    ],
   },
 });
 
-export const resolver: CSSVariablesResolver = (t: MantineTheme) => ({
+export const resolver: CSSVariablesResolver = () => ({
   variables: {},
-  light: {
-    '--mantine-outline-color': t.colors.dark[5],
-    '--mantine-outline-c': t.colors.dark[5],
-
-    '--mantine-filled-color': t.colors.dark[5],
-    '--mantine-filled-c': t.colors.skin[5],
-  },
-  dark: {
-    '--mantine-outline-color': t.colors.skin[5],
-    '--mantine-outline-c': t.colors.gray[5],
-
-    '--mantine-filled-color': t.colors.skin[5],
-    '--mantine-filled-c': t.colors.dark[5],
-  },
+  light: {},
+  dark: {},
 });

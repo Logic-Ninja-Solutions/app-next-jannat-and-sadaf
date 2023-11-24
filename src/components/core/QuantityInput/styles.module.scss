@@ -1,22 +1,22 @@
-.input {
-  border: none;
-  outline: none;
-  text-align: center;
-  width: rem(40);
-  cursor: default;
+// .input {
+//   border: none;
+//   outline: none;
+//   text-align: center;
+//   width: rem(40);
+//   cursor: default;
 
-  &:focus-within {
-    outline: none;
-    border: none;
-  }
+//   &:focus-within {
+//     outline: none;
+//     border: none;
+//   }
 
-  &:disabled {
-    all: unset;
-    width: rem(20);
-    text-align: center;
-  }
-}
+//   &:disabled {
+//     all: unset;
+//     width: rem(20);
+//     text-align: center;
+//   }
+// }
 
-.container {
-  border: 1px solid light-dark(var(--mantine-color-dark-0), var(--mantine-color-skin-0));
-}
+// .container {
+//   // border: 1px solid light-dark(var(--mantine-color-dark-0), var(--mantine-color-skin-0));
+// }

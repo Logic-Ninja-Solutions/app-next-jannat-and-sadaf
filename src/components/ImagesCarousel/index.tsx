@@ -39,7 +39,7 @@ export default function ImagesCarousel({ imageList }: ImagesCarouselProps) {
       >
         {imageList.map((image, index) => (
           <Carousel.Slide key={index}>
-            <Image src={image} />
+            <Image radius="md" src={image} />
           </Carousel.Slide>
         ))}
       </Carousel>
@@ -50,6 +50,7 @@ export default function ImagesCarousel({ imageList }: ImagesCarouselProps) {
               setSelectedSlide(index);
               embla?.scrollTo(index);
             }}
+            radius="md"
             w={isMobile ? '15%' : '20%'}
             m="md"
             className={cx(

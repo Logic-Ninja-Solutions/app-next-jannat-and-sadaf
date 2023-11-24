@@ -65,7 +65,6 @@ export default function CustomSizeModal({ opened, close }: CustomSizeModalProps)
                   onClick={() => {
                     setActiveTab('back');
                   }}
-                  color="var(--mantine-outline-color)"
                 >
                   Next
                 </Button>
@@ -94,9 +93,7 @@ export default function CustomSizeModal({ opened, close }: CustomSizeModalProps)
                 {backSizes.map((size, index) => (
                   <TextInput key={index} label={size} placeholder="Enter size" />
                 ))}
-                <Button onClick={close} color="var(--mantine-outline-color)">
-                  Close
-                </Button>
+                <Button onClick={close}>Close</Button>
               </Stack>
             </Grid.Col>
           </Grid>
