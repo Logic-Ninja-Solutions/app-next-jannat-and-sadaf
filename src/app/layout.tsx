@@ -1,29 +1,35 @@
-import '@mantine/core/styles.css';
-import '@src/styles/globals.scss';
-
-import DefaultLayout from '@components/layouts/DefaultLayout';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import type { Metadata } from 'next';
-
-import { resolver, theme } from '@/src/styles/theme';
-import { fontClass } from '../styles/font';
+import '@styles/globals.css'
+import DefaultLayout from '@components/layouts/DefaultLayout'
+import type { Metadata } from 'next'
+import { font } from '@styles/font'
+import { Providers } from '../providers'
+import clsx from 'clsx'
 
 export const metadata: Metadata = {
-  title: 'Jannat & Sadaf',
-  description: 'Jannat & Sadaf',
-};
+    title: 'Jannat & Sadaf',
+    description: 'Jannat & Sadaf',
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <ColorSchemeScript />
-      </head>
-      <body className={fontClass}>
-        <MantineProvider theme={theme} cssVariablesResolver={resolver}>
-          <DefaultLayout>{children}</DefaultLayout>
-        </MantineProvider>
-      </body>
-    </html>
-  );
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    return (
+        <html lang="en">
+            <head />
+            <body
+                className={clsx(
+                    'min-h-screen bg-background font-sans antialiased',
+                    font.className
+                )}
+            >
+                <Providers
+                    themeProps={{ attribute: 'class', defaultTheme: 'dark' }}
+                >
+                    <DefaultLayout>{children}</DefaultLayout>
+                </Providers>
+            </body>
+        </html>
+    )
 }

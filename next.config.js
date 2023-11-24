@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  sassOptions: {
-    prependData: `@import "./_mantine.scss";`,
-  },
-};
+const nextConfig = {};
 
 module.exports = nextConfig;

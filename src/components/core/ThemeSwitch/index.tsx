@@ -1,22 +1,83 @@
-import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
-import { IconMoon, IconSun } from '@tabler/icons-react';
-import cx from 'clsx';
+'use client'
 
-import classes from './ThemeSwitch.module.scss';
+import { FC } from 'react'
+import { VisuallyHidden } from '@react-aria/visually-hidden'
+import { SwitchProps, useSwitch } from '@nextui-org/switch'
+import { useTheme } from 'next-themes'
+import { useIsSSR } from '@react-aria/ssr'
+import clsx from 'clsx'
 
-export function ThemeSwitch() {
-  const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
+import { SunFilledIcon, MoonFilledIcon } from '@components/icons'
 
-  return (
-    <ActionIcon
-      onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
-      variant="default"
-      size="xl"
-      aria-label="Toggle color scheme"
-    >
-      <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
-      <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
-    </ActionIcon>
-  );
+export interface ThemeSwitchProps {
+    className?: string
+    classNames?: SwitchProps['classNames']
+}
+
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({
+    className,
+    classNames,
+}) => {
+    const { theme, setTheme } = useTheme()
+    const isSSR = useIsSSR()
+
+    const onChange = () => {
+        theme === 'light' ? setTheme('dark') : setTheme('light')
+    }
+
+    const {
+        Component,
+        slots,
+        isSelected,
+        getBaseProps,
+        getInputProps,
+        getWrapperProps,
+    } = useSwitch({
+        isSelected: theme === 'light' || isSSR,
+        'aria-label': `Switch to ${
+            theme === 'light' || isSSR ? 'dark' : 'light'
+        } mode`,
+        onChange,
+    })
+
+    return (
+        <Component
+            {...getBaseProps({
+                className: clsx(
+                    'px-px transition-opacity hover:opacity-80 cursor-pointer',
+                    className,
+                    classNames?.base
+                ),
+            })}
+        >
+            <VisuallyHidden>
+                <input {...getInputProps()} />
+            </VisuallyHidden>
+            <div
+                {...getWrapperProps()}
+                className={slots.wrapper({
+                    class: clsx(
+                        [
+                            'w-auto h-auto',
+                            'bg-transparent',
+                            'rounded-lg',
+                            'flex items-center justify-center',
+                            'group-data-[selected=true]:bg-transparent',
+                            '!text-default-500',
+                            'pt-px',
+                            'px-0',
+                            'mx-0',
+                        ],
+                        classNames?.wrapper
+                    ),
+                })}
+            >
+                {!isSelected || isSSR ? (
+                    <SunFilledIcon size={22} />
+                ) : (
+                    <MoonFilledIcon size={22} />
+                )}
+            </div>
+        </Component>
+    )
 }

@@ -1,5 +1,6 @@
 module.exports = {
-  plugins: {
-    'postcss-preset-mantine': {},
-  },
-};
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
