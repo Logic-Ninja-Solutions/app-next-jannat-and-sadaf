@@ -8,9 +8,9 @@ export default function DefaultLayout({
     children: React.ReactNode
 }) {
     return (
-        <>
+        <div className="relative flex flex-col h-screen">
             <Navbar />
             {children}
-        </>
+        </div>
     )
 }

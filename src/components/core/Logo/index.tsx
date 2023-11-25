@@ -1,28 +1,29 @@
 'use client'
 
 import { Image } from '@nextui-org/react'
-import { useTheme } from 'next-themes'
+import Link from 'next/link'
 import * as React from 'react'
 
+const logoWhite = 'logo-cropped-white-no-bg.png'
+const logoBlack = 'logo-cropped-no-bg.png'
+
 export function Logo() {
-    const [mounted, setMounted] = React.useState(false)
-
-    const { theme } = useTheme()
-    React.useEffect(() => {
-        setMounted(true)
-    }, [])
-
-    if (!mounted) return null
     return (
-        <Image
-            isBlurred
-            width={140}
-            src={
-                theme === 'light'
-                    ? 'logo-cropped-no-bg.png'
-                    : 'logo-cropped-white-no-bg.png'
-            }
-            alt="NextUI Album Cover"
-        />
+        <Link href={'/'}>
+            <Image
+                className="hidden dark:block"
+                isBlurred
+                width={140}
+                src={logoWhite}
+                alt="Jannat & Sadaf"
+            />
+            <Image
+                className={'dark:hidden'}
+                isBlurred
+                width={140}
+                src={logoBlack}
+                alt="Jannat & Sadaf"
+            />
+        </Link>
     )
 }
