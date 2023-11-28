@@ -1,7 +1,7 @@
 import { tv } from 'tailwind-variants'
 
 export const title = tv({
-    base: 'tracking-tight inline font-light ',
+    base: 'tracking-tight inline font-bold text-lg',
     variants: {
         color: {
             violet: 'from-[#FF1CF7] to-[#b249f8]',
@@ -22,9 +22,7 @@ export const title = tv({
             true: 'w-full block',
         },
     },
-    defaultVariants: {
-        size: 'md',
-    },
+
     compoundVariants: [
         {
             color: [
