@@ -27,18 +27,6 @@ export default function QuantityInput({
     return (
         <div className="flex gap-3">
             <Button
-                className="self-center"
-                isIconOnly
-                color="secondary"
-                aria-label="add"
-                onClick={handleIncrement}
-            >
-                <FaPlus />
-            </Button>
-
-            <span className="my-auto">{quantity}</span>
-
-            <Button
                 onClick={handleDecrement}
                 className="self-center"
                 isIconOnly
@@ -46,6 +34,18 @@ export default function QuantityInput({
                 aria-label="minus"
             >
                 <FaMinus />
+            </Button>
+
+            <span className="my-auto">{quantity}</span>
+
+            <Button
+                className="self-center"
+                isIconOnly
+                color="secondary"
+                aria-label="add"
+                onClick={handleIncrement}
+            >
+                <FaPlus />
             </Button>
         </div>
     )
