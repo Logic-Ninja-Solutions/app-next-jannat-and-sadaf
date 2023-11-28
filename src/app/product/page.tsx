@@ -1,5 +1,7 @@
 'use client'
 
+import CartDrawer from '@/src/components/cart/drawer'
+import { CartDrawerContext } from '@/src/components/layouts/DefaultLayout'
 import { subtitle, title } from '@/src/components/primitives'
 import ImagesCarousel from '@/src/components/product/Carousel'
 import { Button, Input, Spacer, useDisclosure } from '@nextui-org/react'
@@ -29,7 +31,7 @@ const images = [
 ]
 
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { FaMinus, FaPlus, FaShoppingBag } from 'react-icons/fa'
 
 const sizes = ['XS', 'S', 'M', 'L', 'Custom']
@@ -39,6 +41,8 @@ export default function Home() {
     const [selectedSize, setSelectedSize] = useState(sizes[0])
     const [isEnterSizeManually, setIsEnterSizeManually] = useState(false)
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
+
+    const { openCart } = useContext(CartDrawerContext)
 
     return (
         <>
@@ -145,6 +149,7 @@ export default function Home() {
                         )}
 
                         <Button
+                            onClick={openCart}
                             className="mt-5"
                             startContent={<FaShoppingBag />}
                         >

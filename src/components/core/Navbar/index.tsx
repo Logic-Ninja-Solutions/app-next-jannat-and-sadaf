@@ -9,6 +9,8 @@ import {
 import { FaSearch, FaShoppingBag, FaUser } from 'react-icons/fa'
 import { ThemeSwitch } from '@components/core/ThemeSwitch'
 import { Logo } from '@components/core/Logo'
+import { useContext } from 'react'
+import { CartDrawerContext } from '../../layouts/DefaultLayout'
 
 export const Navbar = () => (
     <NextUINavbar className="h-20" maxWidth="xl" position="sticky">
@@ -26,7 +28,7 @@ export const Navbar = () => (
                 <Link href="#">
                     <FaSearch className="text-default-500" />
                 </Link>
-                <Link href="#">
+                <Link href="#" onClick={useContext(CartDrawerContext).openCart}>
                     <FaShoppingBag className="text-default-500" />
                 </Link>
                 <ThemeSwitch />
