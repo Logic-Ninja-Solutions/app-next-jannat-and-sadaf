@@ -13,14 +13,14 @@ export function Logo() {
             <Image
                 className="hidden dark:block"
                 isBlurred
-                width={140}
+                width={100}
                 src={logoWhite}
                 alt="Jannat & Sadaf"
             />
             <Image
                 className={'dark:hidden'}
                 isBlurred
-                width={140}
+                width={100}
                 src={logoBlack}
                 alt="Jannat & Sadaf"
             />

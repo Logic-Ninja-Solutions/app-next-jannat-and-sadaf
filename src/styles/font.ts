@@ -1,7 +1,5 @@
-import { Montserrat } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-export const font = Montserrat({
+export const font = Inter({
     subsets: ['latin'],
-    weight: '400',
-    variable: '--font-montserrat',
 })

@@ -11,8 +11,8 @@ import { ThemeSwitch } from '@components/core/ThemeSwitch'
 import { Logo } from '@components/core/Logo'
 
 export const Navbar = () => (
-    <NextUINavbar maxWidth="xl" position="sticky">
-        <NavbarContent className="pt-3" justify="center">
+    <NextUINavbar className="h-20" maxWidth="xl" position="sticky">
+        <NavbarContent justify="center">
             <NavbarBrand>
                 <Logo />
             </NavbarBrand>

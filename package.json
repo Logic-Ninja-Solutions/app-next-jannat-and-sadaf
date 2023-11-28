@@ -1,5 +1,5 @@
 {
-  "name": "app-next-jist",
+  "name": "app-next-jannat-and-sadaf",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,11 +20,13 @@
     "@nextui-org/system": "2.0.15",
     "@nextui-org/theme": "2.1.17",
     "@react-aria/ssr": "^3.8.0",
+    "keen-slider": "^6.8.6",
     "next": "14.0.3",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.12.0"
+    "react-icons": "^4.12.0",
+    "swiper": "^11.0.5"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.3",

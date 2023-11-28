@@ -17,7 +17,9 @@ export default function Login() {
                         label="password"
                         placeholder="Enter your password"
                     />
-                    <Button color="secondary">Signin</Button>
+                    <Button as={Link} href="/" color="secondary">
+                        Signin
+                    </Button>
 
                     <p className="text-center">
                         Don&apos;t have an account?{' '}

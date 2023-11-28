@@ -1,4 +1,5 @@
 import '@styles/globals.css'
+
 import DefaultLayout from '@components/layouts/DefaultLayout'
 import type { Metadata } from 'next'
 import { font } from '@styles/font'
