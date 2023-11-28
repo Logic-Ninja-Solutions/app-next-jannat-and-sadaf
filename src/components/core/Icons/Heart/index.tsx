@@ -1,3 +1,5 @@
+import './styles.css'
+
 export default function HeartIcon() {
     return (
         <svg
@@ -7,7 +9,7 @@ export default function HeartIcon() {
             role="presentation"
             viewBox="0 0 24 24"
             width="24"
-            className="text-danger group-data-[hover=true]:animate-heartbeat"
+            className="text-danger heart-icon"
             tabIndex={-1}
         >
             <path

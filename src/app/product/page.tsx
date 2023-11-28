@@ -13,6 +13,7 @@ import {
     Button,
     useDisclosure,
 } from '@nextui-org/react'
+import { IoLogoWhatsapp } from 'react-icons/io'
 
 const img1 =
     'https://www.mishalakhani.com/cdn/shop/files/10-B_21824d2f-46e5-48ee-934a-c9c261517e0f.jpg?v=1683652977&width=1400'
@@ -40,7 +41,7 @@ const images = [
 
 import clsx from 'clsx'
 import { useContext, useState } from 'react'
-import { FaAnchor, FaInfo, FaWhatsapp } from 'react-icons/fa'
+import { FaInfo } from 'react-icons/fa'
 
 const sizes = ['XS', 'S', 'M', 'L', 'Custom']
 
@@ -179,7 +180,9 @@ function ProductDetails() {
                         className="uppercase mt-4"
                         color="success"
                         variant="bordered"
-                        startContent={<FaWhatsapp />}
+                        startContent={
+                            <IoLogoWhatsapp color="success" size={20} />
+                        }
                         fullWidth
                     >
                         Whatsapp
@@ -188,7 +191,7 @@ function ProductDetails() {
 
                 <div className="px-4 sm:px-0">
                     <Button
-                        className="uppercase px-4"
+                        className="uppercase px-4 heart-icon-parent"
                         color="danger"
                         variant="bordered"
                         startContent={<HeartIcon />}
