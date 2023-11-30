@@ -1,4 +1,4 @@
-import { IconSvgProps } from '@/src/types'
+import { IconSvgProps } from '@/src/types/svg'
 
 export const SunFilledIcon = ({
     size = 24,

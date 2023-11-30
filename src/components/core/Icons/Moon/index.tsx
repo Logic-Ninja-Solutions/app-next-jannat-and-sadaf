@@ -1,4 +1,4 @@
-import { IconSvgProps } from '@/src/types'
+import { IconSvgProps } from '@/src/types/svg'
 
 const MoonFilledIcon = ({
     size = 24,

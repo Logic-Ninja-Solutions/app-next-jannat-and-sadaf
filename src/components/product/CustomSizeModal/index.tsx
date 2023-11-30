@@ -1,7 +1,7 @@
+import { BackSizes, CustomSizes, FrontSizes } from '@/src/models/custom.sizes'
 import {
     Button,
     Card,
-    CardBody,
     Image,
     Input,
     Modal,
@@ -13,11 +13,16 @@ import {
     Tabs,
 } from '@nextui-org/react'
 
-import clsx from 'clsx'
-import React, { useState } from 'react'
 import { Key } from '@react-types/shared'
+import clsx from 'clsx'
+import { useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
 
-interface CustomSizeModalProps {
+interface CustomSizeFormProps {
+    control: Control<CustomSizes>
+}
+
+interface CustomSizeModalProps extends CustomSizeFormProps {
     opened: boolean
     close: () => void
     onOpenChange?: (opened: boolean) => void
@@ -26,7 +31,7 @@ interface CustomSizeModalProps {
 const frontImage = 'size_chart_front.png'
 const backImage = 'size_chart_back.png'
 
-const frontSizes = [
+const frontSizes: (keyof FrontSizes)[] = [
     'Neck Path',
     'Sleeve Length',
     'Shirt Length',
@@ -39,7 +44,7 @@ const frontSizes = [
     'Ankle',
 ]
 
-const backSizes = [
+const backSizes: (keyof BackSizes)[] = [
     'Back Next Depth',
     'Cross Shoulder',
     'Trouser Length',
@@ -47,7 +52,7 @@ const backSizes = [
     'Bicep',
 ]
 
-function FrontSizes() {
+function FrontSizesForm({ control }: CustomSizeFormProps) {
     return (
         <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
@@ -64,11 +69,18 @@ function FrontSizes() {
                 )}
             >
                 {frontSizes.map((size, index) => (
-                    <Input
-                        fullWidth
+                    <Controller
                         key={index}
-                        label={size}
-                        placeholder="Enter size"
+                        name={size}
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                fullWidth
+                                {...field}
+                                label={size}
+                                placeholder="Enter size"
+                            />
+                        )}
                     />
                 ))}
             </div>
@@ -76,7 +88,7 @@ function FrontSizes() {
     )
 }
 
-function BackSizes() {
+function BackSizesForm({ control }: CustomSizeFormProps) {
     return (
         <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
@@ -93,11 +105,18 @@ function BackSizes() {
                 )}
             >
                 {backSizes.map((size, index) => (
-                    <Input
-                        fullWidth
+                    <Controller
                         key={index}
-                        label={size}
-                        placeholder="Enter size"
+                        name={size}
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                fullWidth
+                                {...field}
+                                label={size}
+                                placeholder="Enter size"
+                            />
+                        )}
                     />
                 ))}
             </div>
@@ -109,6 +128,7 @@ export default function CustomSizeModal({
     opened,
     close,
     onOpenChange,
+    control,
 }: CustomSizeModalProps) {
     const [selected, setSelected] = useState<Key | null>('Front')
 
@@ -132,12 +152,12 @@ export default function CustomSizeModal({
                         >
                             <Tab title={'Front'}>
                                 <Card className="p-5">
-                                    <FrontSizes />
+                                    <FrontSizesForm control={control} />
                                 </Card>
                             </Tab>
                             <Tab title={'Back'}>
                                 <Card className="p-5">
-                                    <BackSizes />
+                                    <BackSizesForm control={control} />
                                 </Card>
                             </Tab>
                         </Tabs>
