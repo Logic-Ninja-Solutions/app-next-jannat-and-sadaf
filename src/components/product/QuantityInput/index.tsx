@@ -2,16 +2,19 @@ import { Button } from '@nextui-org/button'
 import { FaPlus, FaMinus } from 'react-icons/fa'
 
 type QuantityInputProps = {
+    isDisabled?: boolean
     quantity: number
     setQuantity: (quantity: number) => void
+    min: number
+    max: number
 }
 
-const minQuantity = 1
-const maxQuantity = 10
-
 export default function QuantityInput({
+    isDisabled = false,
     quantity,
     setQuantity,
+    min: minQuantity,
+    max: maxQuantity,
 }: QuantityInputProps) {
     function handleIncrement() {
         if (quantity < maxQuantity) {
@@ -27,6 +30,7 @@ export default function QuantityInput({
     return (
         <div className="flex gap-3">
             <Button
+                disabled={isDisabled}
                 onClick={handleDecrement}
                 className="self-center"
                 isIconOnly
@@ -39,6 +43,7 @@ export default function QuantityInput({
             <span className="my-auto">{quantity}</span>
 
             <Button
+                disabled={isDisabled}
                 className="self-center"
                 isIconOnly
                 color="secondary"

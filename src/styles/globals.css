@@ -8,6 +8,17 @@
         -webkit-appearance: none;
         margin: 0;
     }
+
+    ul {
+        list-style-type: disc;
+        padding-left: 2.5rem;
+    }
+
+    br {
+        display: block;
+        content: '';
+        margin-top: 1.2rem;
+    }
 }
 
 .debug {

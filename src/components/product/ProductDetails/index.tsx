@@ -2,7 +2,7 @@
 
 import { Button } from '@nextui-org/button'
 import { useDisclosure, Accordion, AccordionItem } from '@nextui-org/react'
-import { useState, useContext } from 'react'
+import { useState, useContext, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaInfo } from 'react-icons/fa'
 import { IoLogoWhatsapp } from 'react-icons/io'
@@ -13,40 +13,28 @@ import CustomSizeModal from '../CustomSizeModal'
 import QuantityInput from '../QuantityInput'
 import clsx from 'clsx'
 import { CustomSizes } from '@/src/models/custom.sizes'
+import Size from '@/src/models/product.size'
+import SizesList from '../SizeList'
+import Product, { formatPrice } from '@/src/models/product'
 
-const sizes = ['XS', 'S', 'M', 'L', 'Custom']
+const disclaimer =
+    'Actual colours of the outfit may vary. We do our best to ensure that our photos are as true to colour as possible. However, due to photography lighting sources and colour settings of different monitors, there may be slight variations.'
 
-function SizesList({
-    selectedSize,
-    setSelectedSize,
-}: {
-    selectedSize: string | null
-    setSelectedSize: (size: string) => void
-}) {
-    return (
-        <>
-            <div className="flex gap-4">
-                {sizes.map((size, index) => (
-                    <Button
-                        onClick={() => setSelectedSize(size)}
-                        isIconOnly={size != 'Custom'}
-                        key={index}
-                        className={clsx(
-                            selectedSize === size &&
-                                'bg-secondary text-foreground-50'
-                        )}
-                    >
-                        {size}
-                    </Button>
-                ))}
-            </div>
-        </>
-    )
+interface ProductDetailsProps {
+    product: Product
 }
 
-export default function ProductDetails() {
-    const [quantity, setQuantity] = useState(1)
-    const [selectedSize, setSelectedSize] = useState<string | null>(sizes[0])
+export default function ProductDetails({ product }: ProductDetailsProps) {
+    const defaultSize = useMemo(() => {
+        return product.sizes.find(
+            (size) => size?.quantity && size?.quantity > 0
+        )
+    }, [product])
+
+    const [quantity, setQuantity] = useState(defaultSize ? 1 : 0)
+    const [selectedSize, setSelectedSize] = useState<Size | undefined>(
+        defaultSize
+    )
     const [isEnterSizeManually, setIsEnterSizeManually] = useState(false)
     const {
         isOpen: isCustomSizesModalOpened,
@@ -57,6 +45,19 @@ export default function ProductDetails() {
 
     const { openCart } = useContext(CartDrawerContext)
     const { control } = useForm<CustomSizes>()
+
+    function isOutOfStock() {
+        if (selectedSize?.name === 'Custom') {
+            return false
+        }
+        return selectedSize?.quantity === 0
+    }
+
+    function getLabel() {
+        if (isOutOfStock()) return 'Out of Stock'
+        if (!product.isAvailable) return 'Not Available'
+        return 'Add to Cart'
+    }
 
     return (
         <>
@@ -76,18 +77,24 @@ export default function ProductDetails() {
                             })
                         )}
                     >
-                        NIMR KURTI W/ DUPATTA
+                        {product.title}
                     </h1>
-                    <p className={subtitle({})}>RS. 333,000</p>
+                    <p className={subtitle({})}>{formatPrice(product.price)}</p>
                 </div>
 
                 <div className="mx-auto sm:mx-0">
                     <SizesList
+                        sizes={[
+                            ...product.sizes,
+                            ...(product.allowCustomSize
+                                ? [{ name: 'Custom', quantity: undefined }]
+                                : []),
+                        ]}
                         selectedSize={selectedSize}
                         setSelectedSize={setSelectedSize}
                     />
                 </div>
-                {selectedSize === 'Custom' && (
+                {selectedSize?.name === 'Custom' && product.allowCustomSize && (
                     <div className="w-full px-10 sm:px-0">
                         <Button
                             onClick={() => setIsEnterSizeManually(false)}
@@ -114,37 +121,31 @@ export default function ProductDetails() {
                     </div>
                 )}
 
-                <div className="flex flex-col gap-5 text-md p-5 sm:p-0">
-                    <p>
-                        This Nimr is crafted from jamawar and embroidered using
-                        age-old craftsmanship, combining resham, and zardozi
-                        work. Paired with a crafted izaar, and a contrasting
-                        gossamer organza dupatta, as shown here.
-                    </p>
-                    <ul className="list-disc pl-10">
-                        <li>Crimson jamawar</li>
-                        <li>Rose bud organza</li>
-                        <li>Dry clean only</li>
-                    </ul>
-                    <p>
-                        Lead time: 10 to 12 weeks from the time of purchase. A
-                        measurement form will be sent upon order.
-                    </p>
-                    <p>Product code: BD-785</p>
+                <div className="flex flex-col gap-5 text-md p-5 sm:p-0   list-disc">
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: product.description,
+                        }}
+                    />
+                    <p>Product code: {product.code}</p>
                 </div>
 
                 <div className="flex gap-5 mt-5 px-10 sm:px-0">
                     <QuantityInput
+                        isDisabled={isOutOfStock() || !product.isAvailable}
+                        min={1}
+                        max={selectedSize?.quantity ?? 1}
                         quantity={quantity}
                         setQuantity={setQuantity}
                     />
                     <Button
                         color="secondary"
                         onClick={openCart}
-                        className="uppercase "
+                        disabled={isOutOfStock() || !product.isAvailable}
+                        className={clsx('uppercase')}
                         fullWidth
                     >
-                        Add to Cart
+                        {getLabel()}
                     </Button>
                 </div>
 
@@ -183,11 +184,7 @@ export default function ProductDetails() {
                             aria-label="Disclaimer"
                             title="Disclaimer"
                         >
-                            Actual colours of the outfit may vary. We do our
-                            best to ensure that our photos are as true to colour
-                            as possible. However, due to photography lighting
-                            sources and colour settings of different monitors,
-                            there may be slight variations.
+                            {disclaimer}
                         </AccordionItem>
                     </Accordion>
                 </div>
