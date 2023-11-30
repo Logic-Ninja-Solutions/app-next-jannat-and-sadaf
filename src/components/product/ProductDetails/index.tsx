@@ -47,9 +47,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     const { control } = useForm<CustomSizes>()
 
     function isOutOfStock() {
-        if (selectedSize?.name === 'Custom') {
-            return false
-        }
         return selectedSize?.quantity === 0
     }
 
@@ -84,42 +81,40 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
                 <div className="mx-auto sm:mx-0">
                     <SizesList
-                        sizes={[
-                            ...product.sizes,
-                            ...(product.allowCustomSize
-                                ? [{ name: 'Custom', quantity: undefined }]
-                                : []),
-                        ]}
+                        sizes={product.sizes}
                         selectedSize={selectedSize}
                         setSelectedSize={setSelectedSize}
                     />
                 </div>
-                {selectedSize?.name === 'Custom' && product.allowCustomSize && (
-                    <div className="w-full px-10 sm:px-0">
-                        <Button
-                            onClick={() => setIsEnterSizeManually(false)}
-                            color="secondary"
-                            variant={isEnterSizeManually ? 'bordered' : 'solid'}
-                            fullWidth
-                        >
-                            Request Callback
-                        </Button>
-                        <div className="text-center">or</div>
-                        <Button
-                            onClick={() => {
-                                setIsEnterSizeManually(true)
-                                openCustomSizesModal()
-                            }}
-                            color="secondary"
-                            variant={
-                                !isEnterSizeManually ? 'bordered' : 'solid'
-                            }
-                            fullWidth
-                        >
-                            Enter Size Manually
-                        </Button>
-                    </div>
-                )}
+                {selectedSize?.name === 'Custom' &&
+                    selectedSize.quantity !== 0 && (
+                        <div className="w-full px-10 sm:px-0">
+                            <Button
+                                onClick={() => setIsEnterSizeManually(false)}
+                                color="secondary"
+                                variant={
+                                    isEnterSizeManually ? 'bordered' : 'solid'
+                                }
+                                fullWidth
+                            >
+                                Request Callback
+                            </Button>
+                            <div className="text-center">or</div>
+                            <Button
+                                onClick={() => {
+                                    setIsEnterSizeManually(true)
+                                    openCustomSizesModal()
+                                }}
+                                color="secondary"
+                                variant={
+                                    !isEnterSizeManually ? 'bordered' : 'solid'
+                                }
+                                fullWidth
+                            >
+                                Enter Size Manually
+                            </Button>
+                        </div>
+                    )}
 
                 <div className="flex flex-col gap-5 text-md p-5 sm:p-0   list-disc">
                     <div
@@ -129,6 +124,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     />
                     <p>Product code: {product.code}</p>
                 </div>
+
+                <p className="text-danger">
+                    {selectedSize?.quantity ?? 0} in stock
+                </p>
 
                 <div className="flex gap-5 mt-5 px-10 sm:px-0">
                     <QuantityInput

@@ -17,7 +17,6 @@ export default interface Product {
     description: string
     slug: string
     code: string
-    allowCustomSize: boolean
     isAvailable: boolean
     images: string[]
     sizes: Size[]
@@ -32,7 +31,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-1',
         code: 'BD-7833',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/10-B_21824d2f-46e5-48ee-934a-c9c261517e0f.jpg?v=1683652977&width=1400',
@@ -57,6 +55,10 @@ export const hardCodedProducts: Product[] = [
                 name: 'L',
                 quantity: 4,
             },
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -67,7 +69,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-2',
         code: 'BD-7133',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://pk.saniamaskatiya.com/cdn/shop/files/051A4824_6d1e4621-958b-47b9-a5a2-b15f8b8b5eb0.jpg?v=1696848913',
@@ -83,6 +84,11 @@ export const hardCodedProducts: Product[] = [
                 name: 'S',
                 quantity: 1,
             },
+
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -93,7 +99,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-3',
         code: 'BD-7123',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/4-A_536b64c8-a984-42f0-80d3-3d109563f18d.jpg?v=1701156656&width=1400',
@@ -122,7 +127,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-4',
         code: 'BD-7833',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/10-B_21824d2f-46e5-48ee-934a-c9c261517e0f.jpg?v=1683652977&width=1400',
@@ -147,6 +151,10 @@ export const hardCodedProducts: Product[] = [
                 name: 'L',
                 quantity: 4,
             },
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -157,7 +165,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-5',
         code: 'BD-7133',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://pk.saniamaskatiya.com/cdn/shop/files/051A4824_6d1e4621-958b-47b9-a5a2-b15f8b8b5eb0.jpg?v=1696848913',
@@ -173,6 +180,10 @@ export const hardCodedProducts: Product[] = [
                 name: 'S',
                 quantity: 1,
             },
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -183,7 +194,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-6',
         code: 'BD-7123',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/4-A_536b64c8-a984-42f0-80d3-3d109563f18d.jpg?v=1701156656&width=1400',
@@ -199,6 +209,10 @@ export const hardCodedProducts: Product[] = [
             {
                 name: 'L',
                 quantity: 4,
+            },
+            {
+                name: 'Custom',
+                quantity: 5,
             },
         ],
     },
@@ -211,7 +225,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-7',
         code: 'BD-7833',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/10-B_21824d2f-46e5-48ee-934a-c9c261517e0f.jpg?v=1683652977&width=1400',
@@ -236,6 +249,10 @@ export const hardCodedProducts: Product[] = [
                 name: 'L',
                 quantity: 4,
             },
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -246,7 +263,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-8',
         code: 'BD-7133',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://pk.saniamaskatiya.com/cdn/shop/files/051A4824_6d1e4621-958b-47b9-a5a2-b15f8b8b5eb0.jpg?v=1696848913',
@@ -262,6 +278,10 @@ export const hardCodedProducts: Product[] = [
                 name: 'S',
                 quantity: 1,
             },
+            {
+                name: 'Custom',
+                quantity: 5,
+            },
         ],
     },
     {
@@ -272,7 +292,6 @@ export const hardCodedProducts: Product[] = [
             '<p>This Nimr is crafted from jamawar and embroidered using age-old craftsmanship, combining resham, and zardozi work. Paired with a crafted izaar, and a contrasting gossamer organza dupatta, as shown here: </br></br> </p><ul><li>Crimson jamawar</li><li>Rose bud organza</li><li>Dry clean only</li></ul></br> <p>Lead time: 10 to 12 weeks from the time of purchase. A measurement form will be sent upon order.</p>',
         slug: 'cloth-9',
         code: 'BD-7123',
-        allowCustomSize: true,
         isAvailable: true,
         images: [
             'https://www.mishalakhani.com/cdn/shop/files/4-A_536b64c8-a984-42f0-80d3-3d109563f18d.jpg?v=1701156656&width=1400',
@@ -288,6 +307,10 @@ export const hardCodedProducts: Product[] = [
             {
                 name: 'L',
                 quantity: 4,
+            },
+            {
+                name: 'Custom',
+                quantity: 5,
             },
         ],
     },
