@@ -13,9 +13,8 @@ import CustomSizeModal from '../CustomSizeModal'
 import QuantityInput from '../QuantityInput'
 import clsx from 'clsx'
 import { CustomSizes } from '@/src/models/custom.sizes'
-import Size from '@/src/models/product.size'
 import SizesList from '../SizeList'
-import Product, { formatPrice } from '@/src/models/product'
+import Product, { ProductVariant, formatPrice } from '@/src/models/product'
 
 const disclaimer =
     'Actual colours of the outfit may vary. We do our best to ensure that our photos are as true to colour as possible. However, due to photography lighting sources and colour settings of different monitors, there may be slight variations.'
@@ -25,16 +24,19 @@ interface ProductDetailsProps {
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-    const defaultSize = useMemo(() => {
-        return product.sizes.find(
-            (size) => size?.quantity && size?.quantity > 0
+    const defaultVariant = useMemo(() => {
+        return product.variants.find(
+            (variant) =>
+                variant?.quantity &&
+                variant?.quantity > 0 &&
+                variant?.isAvailable
         )
     }, [product])
 
-    const [quantity, setQuantity] = useState(defaultSize ? 1 : 0)
-    const [selectedSize, setSelectedSize] = useState<Size | undefined>(
-        defaultSize
-    )
+    const [quantity, setQuantity] = useState(defaultVariant ? 1 : 0)
+    const [selectedVariant, setSelectedVariant] = useState<
+        ProductVariant | undefined
+    >(defaultVariant)
     const [isEnterSizeManually, setIsEnterSizeManually] = useState(false)
     const {
         isOpen: isCustomSizesModalOpened,
@@ -46,13 +48,25 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     const { openCart } = useContext(CartDrawerContext)
     const { control } = useForm<CustomSizes>()
 
-    function isOutOfStock() {
-        return selectedSize?.quantity === 0
-    }
+    const isCustomSize = useMemo(() => {
+        return selectedVariant?.size === 'Custom'
+    }, [selectedVariant])
+
+    const isOutOfStock = useMemo(() => {
+        return !!selectedVariant && selectedVariant?.quantity === 0
+    }, [selectedVariant])
+
+    const isProductAvailable = useMemo(() => {
+        return (
+            selectedVariant &&
+            product.isAvailable &&
+            selectedVariant?.isAvailable
+        )
+    }, [product, selectedVariant])
 
     function getLabel() {
-        if (isOutOfStock()) return 'Out of Stock'
-        if (!product.isAvailable) return 'Not Available'
+        if (!isProductAvailable) return 'Unavailable'
+        if (isOutOfStock) return 'Out of Stock'
         return 'Add to Cart'
     }
 
@@ -76,45 +90,46 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     >
                         {product.title}
                     </h1>
-                    <p className={subtitle({})}>{formatPrice(product.price)}</p>
+                    <p className={subtitle({})}>
+                        {selectedVariant?.price
+                            ? formatPrice(selectedVariant?.price)
+                            : ''}
+                    </p>
                 </div>
 
                 <div className="mx-auto sm:mx-0">
                     <SizesList
-                        sizes={product.sizes}
-                        selectedSize={selectedSize}
-                        setSelectedSize={setSelectedSize}
+                        variants={product.variants}
+                        selectedVariant={selectedVariant}
+                        setSelectedVariant={setSelectedVariant}
                     />
                 </div>
-                {selectedSize?.name === 'Custom' &&
-                    selectedSize.quantity !== 0 && (
-                        <div className="w-full px-10 sm:px-0">
-                            <Button
-                                onClick={() => setIsEnterSizeManually(false)}
-                                color="secondary"
-                                variant={
-                                    isEnterSizeManually ? 'bordered' : 'solid'
-                                }
-                                fullWidth
-                            >
-                                Request Callback
-                            </Button>
-                            <div className="text-center">or</div>
-                            <Button
-                                onClick={() => {
-                                    setIsEnterSizeManually(true)
-                                    openCustomSizesModal()
-                                }}
-                                color="secondary"
-                                variant={
-                                    !isEnterSizeManually ? 'bordered' : 'solid'
-                                }
-                                fullWidth
-                            >
-                                Enter Size Manually
-                            </Button>
-                        </div>
-                    )}
+                {isCustomSize && !isOutOfStock && isProductAvailable && (
+                    <div className="w-full px-10 sm:px-0">
+                        <Button
+                            onClick={() => setIsEnterSizeManually(false)}
+                            color="secondary"
+                            variant={isEnterSizeManually ? 'bordered' : 'solid'}
+                            fullWidth
+                        >
+                            Request Callback
+                        </Button>
+                        <div className="text-center">or</div>
+                        <Button
+                            onClick={() => {
+                                setIsEnterSizeManually(true)
+                                openCustomSizesModal()
+                            }}
+                            color="secondary"
+                            variant={
+                                !isEnterSizeManually ? 'bordered' : 'solid'
+                            }
+                            fullWidth
+                        >
+                            Enter Size Manually
+                        </Button>
+                    </div>
+                )}
 
                 <div className="flex flex-col gap-5 text-md p-5 sm:p-0   list-disc">
                     <div
@@ -124,23 +139,24 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     />
                     <p>Product code: {product.code}</p>
                 </div>
-
-                <p className="text-danger">
-                    {selectedSize?.quantity ?? 0} in stock
-                </p>
+                {selectedVariant?.isAvailable && (
+                    <p className="text-danger">
+                        {selectedVariant?.quantity ?? 0} in stock
+                    </p>
+                )}
 
                 <div className="flex gap-5 mt-5 px-10 sm:px-0">
                     <QuantityInput
-                        isDisabled={isOutOfStock() || !product.isAvailable}
+                        isDisabled={!isProductAvailable || isOutOfStock}
                         min={1}
-                        max={selectedSize?.quantity ?? 1}
+                        max={selectedVariant?.quantity ?? 1}
                         quantity={quantity}
                         setQuantity={setQuantity}
                     />
                     <Button
                         color="secondary"
                         onClick={openCart}
-                        disabled={isOutOfStock() || !product.isAvailable}
+                        disabled={!isProductAvailable || isOutOfStock}
                         className={clsx('uppercase')}
                         fullWidth
                     >

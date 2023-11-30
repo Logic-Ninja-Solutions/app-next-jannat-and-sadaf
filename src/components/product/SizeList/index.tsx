@@ -1,31 +1,34 @@
-import Size from '@/src/models/product.size'
+import { ProductVariant } from '@/src/models/product'
 import { Button } from '@nextui-org/react'
 import clsx from 'clsx'
 
+interface SizesListProps {
+    variants: ProductVariant[]
+    selectedVariant: ProductVariant | undefined
+    setSelectedVariant: (size: ProductVariant) => void
+}
+
 export default function SizesList({
-    sizes,
-    selectedSize,
-    setSelectedSize,
-}: {
-    sizes: Size[]
-    selectedSize: Size | undefined
-    setSelectedSize: (size: Size) => void
-}) {
+    variants,
+    selectedVariant,
+    setSelectedVariant,
+}: SizesListProps) {
     return (
         <>
             <div className="flex gap-4">
-                {sizes.map((size, index) => (
+                {variants.map((variant, index) => (
                     <Button
-                        onClick={() => setSelectedSize(size)}
-                        isIconOnly={size.name != 'Custom'}
+                        onClick={() => setSelectedVariant(variant)}
+                        isIconOnly={variant.size != 'Custom'}
                         key={index}
                         className={clsx(
-                            selectedSize?.name === size.name &&
+                            selectedVariant?.size === variant.size &&
                                 'bg-secondary text-foreground-50',
-                            size.quantity === 0 && 'line-through'
+                            (variant.quantity === 0 || !variant.isAvailable) &&
+                                'line-through'
                         )}
                     >
-                        {size.name}
+                        {variant.size}
                     </Button>
                 ))}
             </div>

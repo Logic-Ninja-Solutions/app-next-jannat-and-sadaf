@@ -31,7 +31,7 @@ export default function Home() {
                                         {product.title}
                                     </p>
                                     <p className="text-black text-tiny">
-                                        {formatPrice(product.price)}
+                                        {formatPrice(product.variants[0].price)}
                                     </p>
                                 </div>
                                 <Button
