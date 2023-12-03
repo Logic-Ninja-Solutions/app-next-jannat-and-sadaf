@@ -32,6 +32,8 @@ export function Navbar() {
         },
     })
 
+    const { openCart } = useContext(CartDrawerContext)
+
     return (
         <NextUINavbar className="h-20" maxWidth="xl" position="sticky">
             <NavbarContent justify="center">
@@ -48,10 +50,7 @@ export function Navbar() {
                     <Link href="#">
                         <FaSearch className="text-default-500" />
                     </Link>
-                    <Link
-                        href="#"
-                        onClick={useContext(CartDrawerContext).openCart}
-                    >
+                    <Link href="#" onClick={openCart}>
                         <FaShoppingBag className="text-default-500" />
                     </Link>
 

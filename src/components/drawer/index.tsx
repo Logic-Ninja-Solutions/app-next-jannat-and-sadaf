@@ -9,7 +9,7 @@ import {
     useModal,
 } from '@nextui-org/react'
 
-import './styles.css'
+import clsx from 'clsx'
 
 type Props = Omit<
     ModalProps,
@@ -22,16 +22,14 @@ const Drawer: React.FC<Props> = ({ children, ...props }) => {
     return (
         <Modal
             {...props}
-            classNames={{
-                wrapper: 'w-full',
-            }}
-            className={`drawer drawer-animated ${
-                isOpen
-                    ? 'drawer-animated-slide-in'
-                    : 'drawer-animated-slide-out'
-            }`}
+            className={clsx(
+                'fixed top-0 right-0 bottom-0',
+                'max-w-screen-sm h-full',
+                'border-0 max-h-full',
+                'transition-transform ease-in-out duration-300', // Add transition classes
+                isOpen ? 'animate-slide-in' : 'animate-slide-out'
+            )}
             placement="top"
-            hideCloseButton
             size="full"
         >
             <ModalContent>{children}</ModalContent>
