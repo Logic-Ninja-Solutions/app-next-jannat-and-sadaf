@@ -1,7 +1,7 @@
 'use client'
 
 import { authenticate } from '@/src/actions/auth'
-import { Button, Card, CardBody, Input } from '@nextui-org/react'
+import { Button, Card, CardBody, Checkbox, Input } from '@nextui-org/react'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import Link from 'next/link'
@@ -33,20 +33,31 @@ export default function Login() {
                 <Card className="p-6 sm:min-w-[400px]">
                     <CardBody className="gap-3">
                         <Input
-                            radius={'md'}
+                            autoFocus
                             name="email"
-                            type="email"
                             label="Email"
                             placeholder="Enter your email"
+                            variant="bordered"
                         />
-
                         <Input
-                            radius={'md'}
                             name="password"
-                            type="password"
-                            label="password"
+                            label="Password"
                             placeholder="Enter your password"
+                            type="password"
+                            variant="bordered"
                         />
+                        <div className="flex py-2 px-1 justify-between">
+                            <Checkbox
+                                classNames={{
+                                    label: 'text-small',
+                                }}
+                            >
+                                Remember me
+                            </Checkbox>
+                            <Link color="primary" href="#">
+                                Forgot password?
+                            </Link>
+                        </div>
 
                         {errorMessage && (
                             <p className="text-danger">{errorMessage}</p>
