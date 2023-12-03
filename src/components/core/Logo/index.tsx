@@ -4,8 +4,8 @@ import { Image } from '@nextui-org/react'
 import Link from 'next/link'
 import * as React from 'react'
 
-const logoWhite = 'logo-cropped-white-no-bg.png'
-const logoBlack = 'logo-cropped-no-bg.png'
+const logoWhite = '/logo-cropped-white-no-bg.png'
+const logoBlack = '/logo-cropped-no-bg.png'
 
 export function Logo() {
     return (
