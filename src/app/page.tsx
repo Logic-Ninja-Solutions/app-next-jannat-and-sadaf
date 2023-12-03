@@ -87,7 +87,7 @@ export default function Home() {
                                             </p>
                                             <p className="text-black text-tiny">
                                                 {formatPrice(
-                                                    product.variants[0].price
+                                                    product.variants[0]?.price
                                                 )}
                                             </p>
                                         </div>

@@ -213,8 +213,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     </div>
                 )}
 
-                <div className="flex flex-col gap-5 text-md p-5 sm:p-0 list-disc">
+                <div className="flex flex-col gap-5 text-md p-5 sm:p-0">
                     <div
+                        className=""
                         dangerouslySetInnerHTML={{
                             __html: product.description,
                         }}
