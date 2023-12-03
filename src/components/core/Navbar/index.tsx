@@ -9,19 +9,28 @@ import {
 import { isAuthenticated, unauthenticate } from '@/src/actions/auth'
 import { Logo } from '@components/core/Logo'
 import { ThemeSwitch } from '@components/core/ThemeSwitch'
-import { useContext, useEffect, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
 import { FaSearch, FaShoppingBag, FaUser } from 'react-icons/fa'
 import { IoLogOut } from 'react-icons/io5'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
+import { AuthAction } from '@/src/actions/auth/enum'
 
 export function Navbar() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const { data, isSuccess } = useQuery({
+        queryKey: [AuthAction.auth],
+        queryFn: () => isAuthenticated(),
+    })
 
-    useEffect(() => {
-        isAuthenticated().then((user) => {
-            setIsLoggedIn(!!user)
-        })
-    }, [])
+    const queryClient = useQueryClient()
+
+    const logoutMutation = useMutation({
+        mutationKey: [AuthAction.logout],
+        mutationFn: unauthenticate,
+        onSuccess: () => {
+            queryClient.invalidateQueries()
+        },
+    })
 
     return (
         <NextUINavbar className="h-20" maxWidth="xl" position="sticky">
@@ -46,12 +55,11 @@ export function Navbar() {
                         <FaShoppingBag className="text-default-500" />
                     </Link>
 
-                    {isLoggedIn && (
+                    {isSuccess && !!data && (
                         <Link
                             href="#"
                             onClick={async () => {
-                                await unauthenticate()
-                                setIsLoggedIn(false)
+                                await logoutMutation.mutateAsync()
                             }}
                         >
                             <IoLogOut size={20} className="text-default-500" />
