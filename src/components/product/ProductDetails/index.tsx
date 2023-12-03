@@ -15,12 +15,13 @@ import clsx from 'clsx'
 import { CustomSizes } from '@/src/models/custom.sizes'
 import SizesList from '../SizeList'
 import Product, { ProductVariant, formatPrice } from '@/src/models/product'
+import Types from '@/src/types/prisma'
 
 const disclaimer =
     'Actual colours of the outfit may vary. We do our best to ensure that our photos are as true to colour as possible. However, due to photography lighting sources and colour settings of different monitors, there may be slight variations.'
 
 interface ProductDetailsProps {
-    product: Product
+    product: Types.Product
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
