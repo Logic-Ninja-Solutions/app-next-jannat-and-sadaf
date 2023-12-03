@@ -24,9 +24,9 @@ const Drawer: React.FC<Props> = ({ children, ...props }) => {
             {...props}
             className={clsx(
                 'fixed top-0 right-0 bottom-0',
-                'max-w-screen-sm h-full',
+                'w-96 h-full',
                 'border-0 max-h-full',
-                'transition-transform ease-in-out duration-300', // Add transition classes
+                'transition-transform ease-in-out duration-300',
                 isOpen ? 'animate-slide-in' : 'animate-slide-out'
             )}
             placement="top"

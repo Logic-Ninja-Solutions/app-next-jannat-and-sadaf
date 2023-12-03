@@ -8,18 +8,21 @@ interface SizesListProps {
     variants: ProductVariant[]
     selectedVariant: ProductVariant | undefined
     setSelectedVariant: (size: ProductVariant) => void
+    disabled?: boolean
 }
 
 export default function SizesList({
     variants,
     selectedVariant,
     setSelectedVariant,
+    disabled = false,
 }: SizesListProps) {
     return (
         <>
             <div className="flex gap-4">
                 {variants.map((variant, index) => (
                     <Button
+                        disabled={disabled}
                         onClick={() => setSelectedVariant(variant)}
                         isIconOnly={variant.size != 'Custom'}
                         key={index}

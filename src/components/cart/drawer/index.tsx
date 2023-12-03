@@ -1,5 +1,16 @@
+import { getCart, removeFromCart } from '@/src/actions/cart'
 import { Button } from '@nextui-org/button'
-import Drawer, { DrawerHeader, DrawerBody, DrawerFooter } from '../../drawer'
+import { Image, Spinner } from '@nextui-org/react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
+import { CartItem } from '@/src/types/cart'
+import { CartActionType } from '@/src/actions/cart/enums'
+import { formatPrice } from '@/src/models/product'
+import QuantityInput from '../../product/QuantityInput'
+import { FaEye, FaTrash } from 'react-icons/fa'
+import Link from 'next/link'
+import { useContext } from 'react'
+import { CartDrawerContext } from '../../layouts/DefaultLayout'
 
 type Props = {
     isOpen: boolean
@@ -7,7 +18,97 @@ type Props = {
     onClose: () => void
 }
 
+interface CartBodyProps {
+    cart?: CartItem[]
+}
+
+function CartBody({ cart }: CartBodyProps) {
+    const queryClient = useQueryClient()
+
+    const removeMutation = useMutation({
+        mutationKey: [CartActionType.removeFromCart],
+        mutationFn: removeFromCart,
+        onSuccess: () => {
+            queryClient.setQueryData(
+                [CartActionType.getCart],
+                (oldData: CartItem[]) => {
+                    return oldData.filter(
+                        (item) => item.itemID !== cart?.[0].itemID
+                    )
+                }
+            )
+        },
+    })
+
+    async function handleRemoveFromCart(productID: string) {
+        await removeMutation.mutateAsync(productID)
+    }
+
+    const { closeCart } = useContext(CartDrawerContext)
+
+    return (
+        <>
+            {cart?.map((item, index) => (
+                <div
+                    key={index}
+                    className="flex items-center justify-between border-b py-2"
+                >
+                    <div className="flex gap-4 align-middle items-center">
+                        <Image
+                            src={item.image}
+                            alt="Product Image"
+                            className="w-32 h-36 object-cover"
+                        />
+                        <div className="flex flex-col gap-2">
+                            <p>{item.title}</p>
+                            <p>{item.variant.size}</p>
+                            <p>Quantity: {item.quantity}</p>
+                            <p>{formatPrice(item.variant.price)}</p>
+                            <div className="flex gap-3">
+                                <Button
+                                    onClick={closeCart}
+                                    as={Link}
+                                    href={`/product/${item.slug}`}
+                                    isIconOnly
+                                >
+                                    <FaEye
+                                        color="secondary"
+                                        className="text-secondary cursor-pointer"
+                                    />
+                                </Button>
+
+                                <Button isIconOnly>
+                                    <FaTrash
+                                        onClick={() => {
+                                            handleRemoveFromCart(item.itemID)
+                                        }}
+                                        color="danger"
+                                        className="text-danger cursor-pointer"
+                                    />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </>
+    )
+}
+
 export default function CartDrawer({ isOpen, onOpenChange, onClose }: Props) {
+    const { data: cart, isLoading } = useQuery({
+        queryKey: [CartActionType.getCart],
+        queryFn: getCart,
+    })
+
+    function handleCartButton() {
+        if (cart?.length === 0) {
+            onClose()
+        } else {
+            onClose()
+        }
+    }
+
     return (
         <>
             <Drawer
@@ -16,39 +117,31 @@ export default function CartDrawer({ isOpen, onOpenChange, onClose }: Props) {
                 onClose={onClose}
             >
                 <DrawerHeader className="flex flex-col gap-1">
-                    Hello
+                    My Bag
                 </DrawerHeader>
-
-                <DrawerBody>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nullam pulvinar risus non risus hendrerit venenatis.
-                        Pellentesque sit amet hendrerit risus, sed porttitor
-                        quam.
-                    </p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nullam pulvinar risus non risus hendrerit venenatis.
-                        Pellentesque sit amet hendrerit risus, sed porttitor
-                        quam.
-                    </p>
-                    <p>
-                        Magna exercitation reprehenderit magna aute tempor
-                        cupidatat consequat elit dolor adipisicing. Mollit dolor
-                        eiusmod sunt ex incididunt cillum quis. Velit duis sit
-                        officia eiusmod Lorem aliqua enim laboris do dolor
-                        eiusmod. Et mollit incididunt nisi consectetur esse
-                        laborum eiusmod pariatur proident Lorem eiusmod et.
-                        Culpa deserunt nostrud ad veniam.
-                    </p>
+                <DrawerBody className="overflow-auto">
+                    {isLoading ? (
+                        <Spinner />
+                    ) : (
+                        <>
+                            {cart?.length === 0 ? (
+                                <div className="m-auto">
+                                    <p>Your cart is empty</p>
+                                </div>
+                            ) : (
+                                <CartBody cart={cart} />
+                            )}
+                        </>
+                    )}
                 </DrawerBody>
 
                 <DrawerFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                        Action
+                    <Button
+                        onClick={handleCartButton}
+                        fullWidth
+                        color="secondary"
+                    >
+                        {cart?.length === 0 ? 'Continue Shopping' : 'Checkout'}
                     </Button>
                 </DrawerFooter>
             </Drawer>

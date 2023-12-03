@@ -4,32 +4,35 @@ import { FaPlus, FaMinus } from 'react-icons/fa'
 type QuantityInputProps = {
     isDisabled?: boolean
     quantity: number
-    setQuantity: (quantity: number) => void
+    handleQuantity: (quantity: number) => void
     min: number
     max: number
+    isSmall?: boolean
 }
 
 export default function QuantityInput({
     isDisabled = false,
     quantity,
-    setQuantity,
+    handleQuantity,
     min: minQuantity,
     max: maxQuantity,
+    isSmall = false,
 }: QuantityInputProps) {
     function handleIncrement() {
         if (quantity < maxQuantity) {
-            setQuantity(quantity + 1)
+            handleQuantity(1)
         }
     }
     function handleDecrement() {
         if (quantity > minQuantity) {
-            setQuantity(quantity - 1)
+            handleQuantity(-1)
         }
     }
 
     return (
         <div className="flex gap-3">
             <Button
+                size={isSmall ? 'sm' : 'md'}
                 disabled={isDisabled}
                 onClick={handleDecrement}
                 className="self-center"
@@ -43,6 +46,7 @@ export default function QuantityInput({
             <span className="my-auto">{quantity}</span>
 
             <Button
+                size={isSmall ? 'sm' : 'md'}
                 disabled={isDisabled}
                 className="self-center"
                 isIconOnly

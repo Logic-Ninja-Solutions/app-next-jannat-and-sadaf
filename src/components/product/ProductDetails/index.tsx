@@ -1,10 +1,14 @@
 'use client'
 
+import { addToCart } from '@/src/actions/cart'
+import { CartActionType } from '@/src/actions/cart/enums'
 import { CustomSizes } from '@/src/models/custom.sizes'
 import { formatPrice } from '@/src/models/product'
+import { CartItem } from '@/src/types/cart'
 import Types from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useContext, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -34,7 +38,47 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         )
     }, [product])
 
-    const [quantity, setQuantity] = useState(defaultVariant ? 1 : 0)
+    const variantStocks = product.variants.reduce(
+        (acc, variant) => ({
+            ...acc,
+            [variant.size]: variant.quantity,
+        }),
+        {}
+    )
+
+    const [quantity, setQuantity] = useState(1)
+    const [quantityState, setQuantityState] = useState(
+        defaultVariant
+            ? {
+                  [defaultVariant.size]: quantity,
+              }
+            : {}
+    )
+
+    function updateVariantQuantity(x: number) {
+        if (selectedVariant) {
+            setQuantityState({
+                ...quantityState,
+                [selectedVariant?.size]: x,
+            })
+        }
+    }
+
+    function handleVariantChange(variant: Types.ProductVariant) {
+        setSelectedVariant(variant)
+        updateVariantQuantity(quantity)
+        setQuantity(
+            quantityState[variant.size] ?? (variant.quantity > 0 ? 1 : 0)
+        )
+    }
+
+    function handleQuantityChange(x: number) {
+        const updated = quantity + x
+
+        setQuantity(updated)
+        updateVariantQuantity(updated)
+    }
+
     const [selectedVariant, setSelectedVariant] = useState<
         Types.ProductVariant | undefined
     >(defaultVariant)
@@ -71,6 +115,40 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         return 'Add to Cart'
     }
 
+    const queryClient = useQueryClient()
+
+    const cartMutation = useMutation({
+        mutationKey: [CartActionType.addToCart],
+        mutationFn: addToCart,
+        onSuccess: (updatedCart: CartItem[]) => {
+            if (selectedVariant) {
+                setQuantity(1)
+                setQuantityState({
+                    ...quantityState,
+                    [selectedVariant?.size]: 1,
+                })
+            }
+            queryClient.setQueryData([CartActionType.getCart], () => {
+                return updatedCart
+            })
+        },
+    })
+
+    async function handleCartButton() {
+        if (!isProductAvailable || isOutOfStock) return
+        if (!selectedVariant) return
+
+        await cartMutation.mutateAsync({
+            itemID: `${product.id}-${selectedVariant.size}`,
+            slug: product.slug,
+            title: product.title,
+            image: product.images[0],
+            variant: selectedVariant,
+            quantity,
+        })
+        openCart()
+    }
+
     return (
         <>
             <CustomSizeModal
@@ -100,9 +178,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
                 <div className="mx-auto sm:mx-0">
                     <SizesList
+                        disabled={cartMutation.isPending}
                         variants={product.variants}
                         selectedVariant={selectedVariant}
-                        setSelectedVariant={setSelectedVariant}
+                        setSelectedVariant={(variant) => {
+                            handleVariantChange(variant)
+                        }}
                     />
                 </div>
                 {isCustomSize && !isOutOfStock && isProductAvailable && (
@@ -152,11 +233,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                         min={1}
                         max={selectedVariant?.quantity ?? 1}
                         quantity={quantity}
-                        setQuantity={setQuantity}
+                        handleQuantity={handleQuantityChange}
                     />
                     <Button
                         color="secondary"
-                        onClick={openCart}
+                        onClick={handleCartButton}
                         disabled={!isProductAvailable || isOutOfStock}
                         className={clsx('uppercase')}
                         fullWidth
