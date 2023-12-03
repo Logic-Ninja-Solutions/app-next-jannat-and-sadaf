@@ -13,7 +13,7 @@ export default function AddressDetails({
     onDelete,
 }: AddressProps) {
     return (
-        <Card shadow="sm">
+        <Card shadow="lg">
             <CardBody className="pl-unit-xl">
                 <p>{address.firstName + ' ' + address.lastName}</p>
                 <p>{address.addressLine1}</p>

@@ -19,6 +19,21 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
+function OrderInfo() {
+    return (
+        <Card>
+            <CardBody>
+                <div className="flex flex-col justify-center items-center">
+                    <p>You haven&apos;t placed any orders yet.</p>
+                    <Button className="w-48 mt-5" as={Link} href="/">
+                        Continue Shopping
+                    </Button>
+                </div>
+            </CardBody>
+        </Card>
+    )
+}
+
 export default function Profile() {
     const { data: auth, isSuccess: isAuthSuccess } = useQuery({
         queryKey: [AuthAction.auth],
@@ -42,31 +57,15 @@ export default function Profile() {
                 <div className="flex w-full flex-col">
                     <Tabs aria-label="Options" defaultSelectedKey={'profile'}>
                         <Tab key="orders" title="Orders">
-                            <Card>
-                                <CardBody>
-                                    <div className="flex flex-col justify-center items-center">
-                                        <p>
-                                            You haven&apos;t placed any orders
-                                            yet.
-                                        </p>
-                                        <Button
-                                            className="w-48 mt-5"
-                                            as={Link}
-                                            href="/"
-                                        >
-                                            Continue Shopping
-                                        </Button>
-                                    </div>
-                                </CardBody>
-                            </Card>
+                            <OrderInfo />
                         </Tab>
                         <Tab key="profile" title="Profile">
                             <Card>
-                                <CardBody className="min-h-[400px]">
+                                <CardBody className="min-h-[800px]">
                                     {isUserLoading ? (
                                         <Spinner color="secondary" />
                                     ) : (
-                                        <div className="p-unit-lg">
+                                        <div className="p-0 sm:p-unit-lg">
                                             <ManageUserInfo
                                                 userData={userData}
                                             />

@@ -16,7 +16,7 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
     const [isProfileFormEnabled, setIsProfileFormEnabled] = useState(false)
 
     return (
-        <Card shadow="sm">
+        <Card shadow="sm" className="">
             <CardBody>
                 <div className="flex gap-unit-md">
                     <p>Your Info</p>
@@ -29,7 +29,7 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
                         endContent={<FaLock />}
                     ></Switch>{' '}
                 </div>
-                <div className="flex gap-5 mt-3">
+                <div className="flex-col flex sm:flex-row gap-5 mt-3">
                     <Input
                         disabled={!isProfileFormEnabled}
                         label="First Name"
@@ -42,9 +42,9 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
                     />
                 </div>
 
-                <Spacer y={5} />
+                <Spacer y={3} />
 
-                <div className="flex gap-5">
+                <div className="flex-col flex sm:flex-row gap-5 mt-3">
                     <Input
                         disabled={!isProfileFormEnabled}
                         label="Email Address"

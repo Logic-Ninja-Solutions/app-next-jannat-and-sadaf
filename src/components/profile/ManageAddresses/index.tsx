@@ -170,13 +170,13 @@ export default function ManageAddresses({ userData }: ManageAddressesProps) {
                     <CardHeader className="flex justify-between">
                         <p>Addresses</p>
                         <Button
+                            isIconOnly
                             onClick={() => {
                                 setSelectedAddress(undefined)
                                 openAddressModal()
                             }}
-                            startContent={<FaPlus />}
                         >
-                            Add address
+                            <FaPlus />
                         </Button>
                     </CardHeader>
 
