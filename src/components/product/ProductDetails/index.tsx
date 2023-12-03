@@ -131,19 +131,19 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     </div>
                 )}
 
-                <div className="flex flex-col gap-5 text-md p-5 sm:p-0   list-disc">
+                <div className="flex flex-col gap-5 text-md p-5 sm:p-0 list-disc">
                     <div
                         dangerouslySetInnerHTML={{
                             __html: product.description,
                         }}
                     />
                     <p>Product code: {product.code}</p>
+                    {selectedVariant?.isAvailable && (
+                        <p className="text-danger">
+                            {selectedVariant?.quantity ?? 0} in stock
+                        </p>
+                    )}
                 </div>
-                {selectedVariant?.isAvailable && (
-                    <p className="text-danger">
-                        {selectedVariant?.quantity ?? 0} in stock
-                    </p>
-                )}
 
                 <div className="flex gap-5 mt-5 px-10 sm:px-0">
                     <QuantityInput

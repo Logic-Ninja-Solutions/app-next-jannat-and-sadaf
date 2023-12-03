@@ -1,0 +1,59 @@
+datasource db {
+    provider = "mongodb"
+    url      = env("MONGO_URI")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+type ProductVariant {
+    size        String
+    quantity    Int
+    price       Int
+    isAvailable Boolean
+}
+
+model Product {
+    id          String           @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    description String
+    slug        String           @unique
+    code        String
+    isAvailable Boolean
+    images      String[]
+    variants    ProductVariant[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User?    @relation(fields: [userId], references: [id])
+    userId    String?  @db.ObjectId
+}
+
+type Address {
+    addressLine1  String
+    addressLine2  String
+    area          String
+    city          String
+    firstName     String
+    lastName      String
+    contactNumber String
+    zipCode       String
+    landmark      String
+}
+
+model User {
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    email         String    @unique
+    password      String
+    firstName     String
+    lastName      String
+    phone         String
+    addresses     Address[]
+    wishlist      Product[]
+    emailVerified Boolean
+    isStaff       Boolean
+    isActive      Boolean
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}

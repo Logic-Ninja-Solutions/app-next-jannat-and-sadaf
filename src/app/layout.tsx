@@ -3,8 +3,10 @@ import '@styles/globals.css'
 import DefaultLayout from '@components/layouts/DefaultLayout'
 import type { Metadata } from 'next'
 import { font } from '@styles/font'
-import { Providers } from '../providers'
+import { NextUIKitProvider } from '../providers/Ui'
 import clsx from 'clsx'
+import ClientProvider from '../providers/Client'
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
     title: 'Jannat & Sadaf',
@@ -25,11 +27,16 @@ export default function RootLayout({
                     font.className
                 )}
             >
-                <Providers
-                    themeProps={{ attribute: 'class', defaultTheme: 'dark' }}
+                <NextUIKitProvider
+                    themeProps={{
+                        attribute: 'class',
+                        defaultTheme: 'dark',
+                    }}
                 >
-                    <DefaultLayout>{children}</DefaultLayout>
-                </Providers>
+                    <ClientProvider>
+                        <DefaultLayout>{children}</DefaultLayout>
+                    </ClientProvider>
+                </NextUIKitProvider>
             </body>
         </html>
     )
