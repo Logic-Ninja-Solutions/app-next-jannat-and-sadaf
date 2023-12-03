@@ -1,15 +1,14 @@
 import { getCart, removeFromCart } from '@/src/actions/cart'
+import { CartActionType } from '@/src/actions/cart/enums'
+import { formatPrice } from '@/src/models/product'
+import { CartItem } from '@/src/types/cart'
 import { Button } from '@nextui-org/button'
 import { Image, Spinner } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
-import { CartItem } from '@/src/types/cart'
-import { CartActionType } from '@/src/actions/cart/enums'
-import { formatPrice } from '@/src/models/product'
-import QuantityInput from '../../product/QuantityInput'
-import { FaEye, FaTrash } from 'react-icons/fa'
 import Link from 'next/link'
 import { useContext } from 'react'
+import { FaEye, FaTrash } from 'react-icons/fa'
+import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
 
 type Props = {
@@ -28,21 +27,18 @@ function CartBody({ cart }: CartBodyProps) {
     const removeMutation = useMutation({
         mutationKey: [CartActionType.removeFromCart],
         mutationFn: removeFromCart,
-        onSuccess: () => {
+        onSuccess: (removedItemID: string | null) => {
+            if (!removedItemID) return
             queryClient.setQueryData(
                 [CartActionType.getCart],
                 (oldData: CartItem[]) => {
                     return oldData.filter(
-                        (item) => item.itemID !== cart?.[0].itemID
+                        (item) => item.itemID !== removedItemID
                     )
                 }
             )
         },
     })
-
-    async function handleRemoveFromCart(productID: string) {
-        await removeMutation.mutateAsync(productID)
-    }
 
     const { closeCart } = useContext(CartDrawerContext)
 
@@ -77,14 +73,20 @@ function CartBody({ cart }: CartBodyProps) {
                                     />
                                 </Button>
 
-                                <Button isIconOnly>
-                                    <FaTrash
-                                        onClick={() => {
-                                            handleRemoveFromCart(item.itemID)
-                                        }}
-                                        color="danger"
-                                        className="text-danger cursor-pointer"
-                                    />
+                                <Button
+                                    isIconOnly
+                                    onClick={() => {
+                                        removeMutation.mutate(item.itemID)
+                                    }}
+                                >
+                                    {removeMutation.isPending ? (
+                                        <Spinner size="sm" />
+                                    ) : (
+                                        <FaTrash
+                                            color="danger"
+                                            className="text-danger cursor-pointer"
+                                        />
+                                    )}
                                 </Button>
                             </div>
                         </div>

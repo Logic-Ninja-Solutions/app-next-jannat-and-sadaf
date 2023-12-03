@@ -20,14 +20,12 @@ export async function changeCartProductQuantity(cartItem: {
 
 export async function addToCart(cartItem: CartItem) {
     const cart: CartItem[] = await getCookie<CartItem[]>('cart', [])
-    const productIndex = cart.findIndex(
-        (item) => item.itemID === cartItem.itemID
-    )
+    const itemIndex = cart.findIndex((item) => item.itemID === cartItem.itemID)
 
-    if (productIndex === -1) {
+    if (itemIndex === -1) {
         cart.push(cartItem)
     } else {
-        cart[productIndex].quantity += cartItem.quantity
+        cart[itemIndex].quantity += cartItem.quantity
     }
 
     setCookie('cart', cart)
@@ -35,15 +33,15 @@ export async function addToCart(cartItem: CartItem) {
     return cart
 }
 
-export async function removeFromCart(productID: string) {
+export async function removeFromCart(itemID: string): Promise<string | null> {
     const cart: CartItem[] = await getCookie<CartItem[]>('cart', [])
-    const productIndex = cart.findIndex((item) => item.itemID === productID)
-
-    if (productIndex === -1) return
-
-    cart.splice(productIndex, 1)
+    const itemIndex = cart.findIndex((item) => item.itemID === itemID)
+    if (itemIndex === -1) return null
+    cart.splice(itemIndex, 1)
 
     setCookie('cart', cart)
+
+    return itemID
 }
 
 export async function getCart(): Promise<CartItem[]> {
