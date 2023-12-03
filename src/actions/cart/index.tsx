@@ -1,4 +1,4 @@
-import { CartItem } from '@/src/types/cart'
+import { CartItem } from '@/src/types/prisma'
 import { getCookie, setCookie } from '@/src/utils/cookie'
 
 export async function changeCartProductQuantity(cartItem: {

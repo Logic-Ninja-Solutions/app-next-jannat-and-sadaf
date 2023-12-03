@@ -7,4 +7,6 @@ export type UserWithAddresses = Prisma.UserGetPayload<{
     }
 }>
 
+export type CartItem = Types.CartItem
+
 export default Types

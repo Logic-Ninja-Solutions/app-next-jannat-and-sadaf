@@ -4,7 +4,7 @@ import { addToCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
 import { CustomSizes } from '@/src/models/custom.sizes'
 import { formatPrice } from '@/src/models/product'
-import { CartItem } from '@/src/types/cart'
+import { CartItem } from '@/src/types/prisma'
 import Types from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
@@ -37,14 +37,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 variant?.isAvailable
         )
     }, [product])
-
-    const variantStocks = product.variants.reduce(
-        (acc, variant) => ({
-            ...acc,
-            [variant.size]: variant.quantity,
-        }),
-        {}
-    )
 
     const [quantity, setQuantity] = useState(1)
     const [quantityState, setQuantityState] = useState(

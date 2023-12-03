@@ -1,7 +1,7 @@
 import { getCart, removeFromCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
 import { formatPrice } from '@/src/models/product'
-import { CartItem } from '@/src/types/cart'
+import { CartItem } from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import { Image, Spinner } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -10,6 +10,7 @@ import { useContext } from 'react'
 import { FaEye, FaTrash } from 'react-icons/fa'
 import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
+import { redirect } from 'next/navigation'
 
 type Props = {
     isOpen: boolean
@@ -103,14 +104,6 @@ export default function CartDrawer({ isOpen, onOpenChange, onClose }: Props) {
         queryFn: getCart,
     })
 
-    function handleCartButton() {
-        if (cart?.length === 0) {
-            onClose()
-        } else {
-            onClose()
-        }
-    }
-
     return (
         <>
             <Drawer
@@ -139,7 +132,9 @@ export default function CartDrawer({ isOpen, onOpenChange, onClose }: Props) {
 
                 <DrawerFooter>
                     <Button
-                        onClick={handleCartButton}
+                        onClick={onClose}
+                        as={Link}
+                        href={cart?.length === 0 ? '/' : '/checkout'}
                         fullWidth
                         color="secondary"
                     >
