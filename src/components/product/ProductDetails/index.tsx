@@ -1,21 +1,21 @@
 'use client'
 
+import { CustomSizes } from '@/src/models/custom.sizes'
+import { formatPrice } from '@/src/models/product'
+import Types from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
-import { useDisclosure, Accordion, AccordionItem } from '@nextui-org/react'
-import { useState, useContext, useMemo } from 'react'
+import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
+import clsx from 'clsx'
+import { useContext, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaInfo } from 'react-icons/fa'
 import { IoLogoWhatsapp } from 'react-icons/io'
-import { HeartIcon, AnchorIcon } from '../../core/Icons'
+import { AnchorIcon, HeartIcon } from '../../core/Icons'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
-import { title, subtitle } from '../../primitives'
+import { subtitle, title } from '../../primitives'
 import CustomSizeModal from '../CustomSizeModal'
 import QuantityInput from '../QuantityInput'
-import clsx from 'clsx'
-import { CustomSizes } from '@/src/models/custom.sizes'
 import SizesList from '../SizeList'
-import Product, { ProductVariant, formatPrice } from '@/src/models/product'
-import Types from '@/src/types/prisma'
 
 const disclaimer =
     'Actual colours of the outfit may vary. We do our best to ensure that our photos are as true to colour as possible. However, due to photography lighting sources and colour settings of different monitors, there may be slight variations.'
@@ -36,7 +36,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
     const [quantity, setQuantity] = useState(defaultVariant ? 1 : 0)
     const [selectedVariant, setSelectedVariant] = useState<
-        ProductVariant | undefined
+        Types.ProductVariant | undefined
     >(defaultVariant)
     const [isEnterSizeManually, setIsEnterSizeManually] = useState(false)
     const {
