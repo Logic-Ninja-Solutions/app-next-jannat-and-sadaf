@@ -2,17 +2,8 @@
 
 import { authenticate } from '@/src/actions/auth'
 import { Button, Card, CardBody, Checkbox, Input } from '@nextui-org/react'
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
 import Link from 'next/link'
-import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
 import { useFormState, useFormStatus } from 'react-dom'
-
-interface LoginFormValues {
-    email: string
-    password: string
-}
 
 function LoginButton() {
     const { pending } = useFormStatus()

@@ -10,9 +10,10 @@ import { ProfileAction } from '@/src/actions/profile/enum'
 import { UseCreateOrderMutation } from '@/src/api/order/mutations'
 import CartInfo from '@/src/components/checkout/CartInfo'
 import UserInfo from '@/src/components/checkout/UserInfo'
-import { Spinner } from '@nextui-org/react'
+import { Spinner, Button } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function Checkout() {
     const { data: cart, isLoading: isCartLoading } = useQuery({
@@ -76,6 +77,21 @@ export default function Checkout() {
         return (
             <div className="m-auto">
                 <p>Your cart is empty</p>
+            </div>
+        )
+
+    if (!userData?.id)
+        return (
+            <div className="m-auto">
+                <div classname='flex flex-col gap-5 items-center justify-center debug'>
+                    <p>You need to be signed in to continue</p>
+                    <div className='flex justify-center mt-5'>
+                    <Button 
+                    as={Link}
+                href="/login"
+                >Login</Button>
+                </div>
+                </div>
             </div>
         )
 
