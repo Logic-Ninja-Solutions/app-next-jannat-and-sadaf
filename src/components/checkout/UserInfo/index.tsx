@@ -5,6 +5,7 @@ import {
     AccordionItem,
     Card,
     CardBody,
+    Chip,
     Radio,
     RadioGroup,
     useDisclosure,
@@ -19,8 +20,13 @@ interface AddressCardProps {
 
 function AddressCard({ address }: AddressCardProps) {
     return (
-        <Card shadow="sm" className="w-64 sm:w-96">
+        <Card shadow="sm" className="w-64 sm:w-96 relative">
             <CardBody>
+                {address.isDefault && (
+                    <Chip className="absolute top-0 right-0 m-unit-xs">
+                        default
+                    </Chip>
+                )}
                 <p>{address.addressLine1}</p>
                 <p>{address.addressLine2}</p>
                 <p>
@@ -36,10 +42,19 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ userData }: UserInfoProps) {
-    const [selectedAddress, setSelectedAddress] = useState<Types.Address>()
+    const [selectedEditAddress, setSelectedEditAddress] =
+        useState<Types.Address>()
+
+    const defaultAddress = userData?.addresses.find(
+        (address) => address.isDefault
+    )
+
+    const [selectedAddress, setSelectedAddress] = useState<
+        Types.Address | undefined
+    >(defaultAddress)
 
     function handleAddressEdit(address: Types.Address) {
-        setSelectedAddress(address)
+        setSelectedEditAddress(address)
         openAddressModal()
     }
 
@@ -54,17 +69,16 @@ export default function UserInfo({ userData }: UserInfoProps) {
         <>
             <AddressForm
                 userData={userData}
-                selectedAddress={selectedAddress}
+                selectedAddress={selectedEditAddress}
                 isOpen={isAddressModalOpened}
                 onOpenChange={onAddressModalOpenChange}
                 onClose={() => {
-                    setSelectedAddress(undefined)
                     closeAddressModal()
                 }}
             />
             <Card>
                 <CardBody className="p-unit-md">
-                    <Accordion defaultSelectedKeys={['1', '2']}>
+                    <Accordion defaultSelectedKeys={['2', '3', '4']}>
                         <AccordionItem
                             key="1"
                             aria-label="Account"
@@ -83,6 +97,7 @@ export default function UserInfo({ userData }: UserInfoProps) {
                             title="Address"
                         >
                             <RadioGroup
+                                defaultValue={defaultAddress?.id}
                                 color="secondary"
                                 label="Select your address"
                                 className="w-ful"
@@ -117,10 +132,38 @@ export default function UserInfo({ userData }: UserInfoProps) {
 
                         <AccordionItem
                             key="3"
+                            aria-label="Shipping Info"
+                            title="Shipping Info"
+                        >
+                            <RadioGroup
+                                defaultValue={'standard'}
+                                color="secondary"
+                                label="Shipping Method"
+                                className="w-ful"
+                            >
+                                <Radio value={'standard'}>
+                                    Standard Shipping - Free
+                                </Radio>
+                            </RadioGroup>
+                        </AccordionItem>
+
+                        <AccordionItem
+                            key="4"
                             aria-label="Payment"
                             title="Payment"
-                        ></AccordionItem>
+                        >
+                            <RadioGroup
+                                defaultValue={'cod'}
+                                color="secondary"
+                                label="Payment Method"
+                                className="w-ful"
+                            >
+                                <Radio value={'cod'}>Cash on Delivery</Radio>
+                            </RadioGroup>
+                        </AccordionItem>
                     </Accordion>
+
+                    <Button className="mt-unit-md">Complete Order</Button>
                 </CardBody>
             </Card>
         </>

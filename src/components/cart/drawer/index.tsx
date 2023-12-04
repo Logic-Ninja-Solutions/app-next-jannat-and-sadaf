@@ -3,7 +3,7 @@ import { CartActionType } from '@/src/actions/cart/enums'
 import { formatPrice } from '@/src/models/product'
 import { CartItem } from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
-import { Image, Spinner } from '@nextui-org/react'
+import { Chip, Image, Spinner } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useContext } from 'react'
@@ -50,15 +50,20 @@ function CartBody({ cart }: CartBodyProps) {
                     className="flex items-center justify-between border-b py-2"
                 >
                     <div className="flex gap-4 align-middle items-center">
-                        <Image
-                            src={item.image}
-                            alt="Product Image"
-                            className="w-32 h-36 object-cover"
-                        />
+                        <div className="relative">
+                            <Image
+                                src={item.image}
+                                alt="Product Image"
+                                className="w-32 h-36 object-cover"
+                            />
+                            <Chip className="absolute top-0 left-0 p-1 text-sm font-semibold  z-10 -ml-2 -mt-2">
+                                {item.quantity}
+                            </Chip>
+                        </div>
+
                         <div className="flex flex-col gap-2">
                             <p>{item.title}</p>
                             <p>{item.variant.size}</p>
-                            <p>Quantity: {item.quantity}</p>
                             <p>{formatPrice(item.variant.price)}</p>
                             <div className="flex gap-3">
                                 <Button

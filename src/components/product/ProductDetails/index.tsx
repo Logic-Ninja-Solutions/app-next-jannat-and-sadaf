@@ -151,14 +151,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             />
             <div className="w-full flex flex-col gap-4 sm:pr-36">
                 <div className="text-center mt-5 sm:text-left sm:mt-0">
-                    <h1
-                        className={clsx(
-                            'uppercase',
-                            title({
-                                size: 'sm',
-                            })
-                        )}
-                    >
+                    <h1 className={clsx('uppercase', title())}>
                         {product.title}
                     </h1>
                     <p className={subtitle({})}>
