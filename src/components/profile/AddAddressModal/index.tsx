@@ -43,6 +43,7 @@ export default function AddressModal({
                                 <Controller
                                     name={'addressLine1'}
                                     control={control}
+                                    rules={{ required: true }}
                                     render={({ field }) => (
                                         <Input
                                             fullWidth
@@ -56,6 +57,7 @@ export default function AddressModal({
                                 <Controller
                                     name="addressLine2"
                                     control={control}
+                                    rules={{ required: true }}
                                     render={({ field }) => (
                                         <Input
                                             {...field}
@@ -70,6 +72,7 @@ export default function AddressModal({
                                 <Controller
                                     name="contactNumber"
                                     control={control}
+                                    rules={{ required: true }}
                                     render={({ field }) => (
                                         <Input
                                             {...field}
@@ -114,6 +117,7 @@ export default function AddressModal({
                                 <div className="flex gap-5">
                                     <Controller
                                         name="city"
+                                        rules={{ required: true }}
                                         control={control}
                                         render={({ field }) => (
                                             <Input
