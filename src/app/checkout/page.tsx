@@ -4,11 +4,15 @@ import { isAuthenticated } from '@/src/actions/auth'
 import { AuthAction } from '@/src/actions/auth/enum'
 import { getCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
-import { getUserData } from '@/src/actions/profile'
+import { getUserData, updateAddress } from '@/src/actions/profile'
 import { ProfileAction } from '@/src/actions/profile/enum'
+import { UseUpdateAddressMutation } from '@/src/api/address/mutations'
+import UserInfo from '@/src/components/checkout/UserInfo'
 import { subtitle, title } from '@/src/components/primitives'
+import AddressModal from '@/src/components/profile/AddAddressModal'
+import AddressForm from '@/src/components/profile/AddressForm'
 import { formatPrice } from '@/src/models/product'
-import { CartItem, UserWithAddresses } from '@/src/types/prisma'
+import Types, { CartItem, UserWithAddresses } from '@/src/types/prisma'
 import {
     Accordion,
     AccordionItem,
@@ -19,8 +23,12 @@ import {
     Radio,
     RadioGroup,
     Spinner,
+    useDisclosure,
 } from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { FaEdit } from 'react-icons/fa'
 
 interface CartInfoProps {
     cart?: CartItem[]
@@ -55,70 +63,17 @@ function CartInfo({ cart }: CartInfoProps) {
     )
 }
 
-interface UserInfoProps {
-    userData: UserWithAddresses
-}
-
-function UserInfo({ userData }: UserInfoProps) {
-    return (
-        <Card>
-            <CardBody className="p-unit-md">
-                <Accordion>
-                    <AccordionItem key="1" aria-label="Account" title="Account">
-                        <div className="flex justify-between align-middle items-center ">
-                            <p>
-                                Email: <span>{userData.email}</span>
-                            </p>
-                            <Button>Logout</Button>
-                        </div>
-                    </AccordionItem>
-                    <AccordionItem key="2" aria-label="Address" title="Address">
-                        <RadioGroup
-                            color="secondary"
-                            label="Select your address"
-                            className="w-ful"
-                        >
-                            {userData.addresses.map((address, index) => {
-                                return (
-                                    <>
-                                        <Radio
-                                            key={index}
-                                            value={address.id}
-                                            className="mb-5"
-                                        >
-                                            <Card shadow="lg" className="w-96">
-                                                <CardBody>
-                                                    <p>
-                                                        {address.addressLine1}
-                                                    </p>
-                                                    <p>
-                                                        {address.addressLine2}
-                                                    </p>
-                                                    <p>
-                                                        {address.city},{' '}
-                                                        {address.zipCode}
-                                                    </p>
-                                                </CardBody>
-                                            </Card>
-                                        </Radio>
-                                    </>
-                                )
-                            })}
-                        </RadioGroup>
-                    </AccordionItem>
-                </Accordion>
-            </CardBody>
-        </Card>
-    )
-}
-
 export default function Checkout() {
-    const { data: cart } = useQuery({
+    const { data: cart, isLoading: isCartLoading } = useQuery({
         queryKey: [CartActionType.getCart],
         queryFn: getCart,
     })
 
-    const { data: auth, isSuccess: isAuthSuccess } = useQuery({
+    const {
+        data: auth,
+        isSuccess: isAuthSuccess,
+        isLoading: isAuthLoading,
+    } = useQuery({
         queryKey: [AuthAction.auth],
         queryFn: isAuthenticated,
     })
@@ -129,7 +84,8 @@ export default function Checkout() {
         enabled: isAuthSuccess && !!auth,
     })
 
-    if (!cart || !userData) return <Spinner />
+    if (isCartLoading || isAuthLoading || isUserLoading)
+        return <Spinner color="secondary" />
 
     return (
         <>
