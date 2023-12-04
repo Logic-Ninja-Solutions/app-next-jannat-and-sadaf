@@ -48,7 +48,10 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
     }, [userData, setValue])
 
     async function onSubmit(values: UserUpdateInput) {
-        await updateProfileMutation.mutateAsync(values)
+        await updateProfileMutation.mutateAsync({
+            ...values,
+            email: undefined,
+        })
     }
 
     return (
@@ -100,11 +103,12 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
                         <Controller
                             name="email"
                             control={control}
+                            disabled
                             defaultValue={userData?.email}
                             render={({ field }) => (
                                 <Input
                                     {...field}
-                                    disabled={!isProfileFormEnabled}
+                                    disabled
                                     label="Email Address"
                                 />
                             )}
