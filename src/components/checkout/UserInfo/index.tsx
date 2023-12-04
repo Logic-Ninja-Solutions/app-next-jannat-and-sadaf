@@ -11,7 +11,7 @@ import {
     useDisclosure,
 } from '@nextui-org/react'
 import { useState } from 'react'
-import { FaEdit } from 'react-icons/fa'
+import { FaEdit, FaPlus } from 'react-icons/fa'
 import AddressForm from '../../profile/AddressForm'
 import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
 
@@ -146,6 +146,14 @@ export default function UserInfo({
                                     )
                                 })}
                             </RadioGroup>
+                            <Button
+                                onClick={() => {
+                                    openAddressModal()
+                                    setSelectedAddressID(undefined)
+                                }}
+                            >
+                                Add Address <FaPlus />
+                            </Button>
                         </AccordionItem>
 
                         <AccordionItem

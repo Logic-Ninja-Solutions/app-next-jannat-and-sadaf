@@ -1,4 +1,7 @@
-import { UseUpdateAddressMutation } from '@/src/api/address/mutations'
+import {
+    UseUpdateAddressMutation,
+    UseCreateAddressMutation,
+} from '@/src/api/address/mutations'
 import Types, { UserWithAddresses } from '@/src/types/prisma'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -52,13 +55,13 @@ export default function AddressForm({
         closeAddressModal: onClose,
     })
 
-    const addAddressMutation = UseUpdateAddressMutation({
+    const addAddressMutation = UseCreateAddressMutation({
         userData,
         closeAddressModal: onClose,
     })
 
     async function onSubmit(data: Types.Address) {
-        if (selectedAddress) {
+        if (!!selectedAddress?.id) {
             await updateAddressMutation.mutateAsync({
                 ...data,
                 id: selectedAddress.id,
@@ -72,7 +75,10 @@ export default function AddressForm({
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <AddressModal
-                    isLoading={updateAddressMutation.isPending}
+                    isLoading={
+                        updateAddressMutation.isPending ||
+                        addAddressMutation.isPending
+                    }
                     buttonText={selectedAddress ? 'Update' : 'Add'}
                     isOpen={isOpen}
                     onOpenChange={onOpenChange}
