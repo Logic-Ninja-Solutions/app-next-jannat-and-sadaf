@@ -44,6 +44,10 @@ export async function removeFromCart(itemID: string): Promise<string | null> {
     return itemID
 }
 
+export async function makeCartEmpty() {
+    await setCookie('cart', [])
+}
+
 export async function getCart(): Promise<CartItem[]> {
     const data = await getCookie<CartItem[]>('cart', [])
     return data

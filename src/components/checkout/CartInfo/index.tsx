@@ -15,12 +15,10 @@ import clsx from 'clsx'
 
 interface CartInfoProps {
     cart?: CartItem[]
+    totalPrice: number
 }
 
-export default function CartInfo({ cart }: CartInfoProps) {
-    const total =
-        cart?.reduce((a, b) => a + b.variant.price * b.quantity, 0) ?? 0
-
+export default function CartInfo({ cart, totalPrice }: CartInfoProps) {
     return (
         <div>
             <Card isFooterBlurred className="mb-3">
@@ -34,7 +32,7 @@ export default function CartInfo({ cart }: CartInfoProps) {
                     <div className="flex flex-col gap-2">
                         <div className="flex justify-between">
                             <p>Subtotal</p>
-                            <p>{formatPrice(total)}</p>
+                            <p>{formatPrice(totalPrice)}</p>
                         </div>
                         <div className="flex justify-between">
                             <p>Shipping</p>
@@ -45,7 +43,7 @@ export default function CartInfo({ cart }: CartInfoProps) {
                 <Divider />
                 <CardFooter className="flex justify-between text-xs">
                     <p>Total</p>
-                    <p>{formatPrice(total)}</p>
+                    <p>{formatPrice(totalPrice)}</p>
                 </CardFooter>
             </Card>
 

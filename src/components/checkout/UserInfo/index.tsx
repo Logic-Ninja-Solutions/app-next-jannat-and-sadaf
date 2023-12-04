@@ -13,6 +13,10 @@ import {
 import { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import AddressForm from '../../profile/AddressForm'
+import {
+    paymentMethods,
+    shippingMethods,
+} from '@/src/actions/checkout/constants'
 
 interface AddressCardProps {
     address: Types.Address
@@ -39,19 +43,35 @@ function AddressCard({ address }: AddressCardProps) {
 
 interface UserInfoProps {
     userData?: UserWithAddresses | null
+    selectedAddressID: string | undefined
+    setSelectedAddressID: (id: string) => void
+
+    selectedShippingMethod?: string
+    setSelectedShippingMethod?: (method: string) => void
+
+    selectedPaymentMethod?: string
+    setSelectedPaymentMethod?: (method: string) => void
+
+    isLoading?: boolean
+    onCreateOrder?: () => void
 }
 
-export default function UserInfo({ userData }: UserInfoProps) {
+export default function UserInfo({
+    userData,
+    selectedAddressID,
+    setSelectedAddressID,
+
+    selectedShippingMethod,
+    setSelectedShippingMethod,
+
+    selectedPaymentMethod,
+    setSelectedPaymentMethod,
+
+    isLoading,
+    onCreateOrder,
+}: UserInfoProps) {
     const [selectedEditAddress, setSelectedEditAddress] =
         useState<Types.Address>()
-
-    const defaultAddress = userData?.addresses.find(
-        (address) => address.isDefault
-    )
-
-    const [selectedAddress, setSelectedAddress] = useState<
-        Types.Address | undefined
-    >(defaultAddress)
 
     function handleAddressEdit(address: Types.Address) {
         setSelectedEditAddress(address)
@@ -97,7 +117,8 @@ export default function UserInfo({ userData }: UserInfoProps) {
                             title="Address"
                         >
                             <RadioGroup
-                                defaultValue={defaultAddress?.id}
+                                value={selectedAddressID}
+                                onValueChange={setSelectedAddressID}
                                 color="secondary"
                                 label="Select your address"
                                 className="w-ful"
@@ -136,14 +157,23 @@ export default function UserInfo({ userData }: UserInfoProps) {
                             title="Shipping Info"
                         >
                             <RadioGroup
-                                defaultValue={'standard'}
+                                value={selectedShippingMethod}
+                                onValueChange={setSelectedShippingMethod}
                                 color="secondary"
                                 label="Shipping Method"
                                 className="w-ful"
                             >
-                                <Radio value={'standard'}>
-                                    Standard Shipping - Free
-                                </Radio>
+                                {shippingMethods.map((method, index) => {
+                                    return (
+                                        <Radio
+                                            key={index}
+                                            value={method.label}
+                                            className="mb-5"
+                                        >
+                                            {`${method.label} - ${method.price}`}
+                                        </Radio>
+                                    )
+                                })}
                             </RadioGroup>
                         </AccordionItem>
 
@@ -153,17 +183,39 @@ export default function UserInfo({ userData }: UserInfoProps) {
                             title="Payment"
                         >
                             <RadioGroup
-                                defaultValue={'cod'}
+                                value={selectedPaymentMethod}
+                                onValueChange={setSelectedPaymentMethod}
                                 color="secondary"
                                 label="Payment Method"
                                 className="w-ful"
                             >
-                                <Radio value={'cod'}>Cash on Delivery</Radio>
+                                {paymentMethods.map((method, index) => {
+                                    return (
+                                        <Radio
+                                            key={index}
+                                            value={method.label}
+                                            className="mb-5"
+                                        >
+                                            {method.label}
+                                        </Radio>
+                                    )
+                                })}
                             </RadioGroup>
                         </AccordionItem>
                     </Accordion>
 
-                    <Button className="mt-unit-md">Complete Order</Button>
+                    <Button
+                        isDisabled={
+                            !selectedAddressID ||
+                            !selectedShippingMethod ||
+                            !selectedPaymentMethod
+                        }
+                        isLoading={isLoading}
+                        onClick={onCreateOrder}
+                        className="mt-unit-md"
+                    >
+                        Complete Order
+                    </Button>
                 </CardBody>
             </Card>
         </>
