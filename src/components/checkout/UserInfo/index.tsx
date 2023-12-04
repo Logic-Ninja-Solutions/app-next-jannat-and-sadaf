@@ -1,13 +1,13 @@
 import Types, { UserWithAddresses } from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import {
-    useDisclosure,
-    Card,
-    CardBody,
     Accordion,
     AccordionItem,
-    RadioGroup,
+    Card,
+    CardBody,
     Radio,
+    RadioGroup,
+    useDisclosure,
 } from '@nextui-org/react'
 import { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
