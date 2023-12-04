@@ -35,7 +35,11 @@ function OrderInfo() {
 }
 
 export default function Profile() {
-    const { data: auth, isSuccess: isAuthSuccess } = useQuery({
+    const {
+        data: auth,
+        isSuccess: isAuthSuccess,
+        isLoading: isAuthLoading,
+    } = useQuery({
         queryKey: [AuthAction.auth],
         queryFn: isAuthenticated,
     })
@@ -62,7 +66,7 @@ export default function Profile() {
                         <Tab key="profile" title="Profile">
                             <Card>
                                 <CardBody className="min-h-[800px]">
-                                    {isUserLoading ? (
+                                    {isUserLoading || isAuthLoading ? (
                                         <Spinner color="secondary" />
                                     ) : (
                                         <div className="p-0 sm:p-unit-lg">
