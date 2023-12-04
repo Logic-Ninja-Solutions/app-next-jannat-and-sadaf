@@ -18,9 +18,10 @@ type CartItem {
 
 model Order {
     id            String     @id @default(auto()) @map("_id") @db.ObjectId
-    orderID       String
+    orderNumber   String
     items         CartItem[]
     shippingPrice Int
+    paymentMethod String
     totalPrice    Int
     address       Address    @relation(fields: [addressId], references: [id])
     status        String

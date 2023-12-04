@@ -4,13 +4,10 @@ import { isAuthenticated } from '@/src/actions/auth'
 import { AuthAction } from '@/src/actions/auth/enum'
 import { getCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
-import {
-    paymentMethods,
-    shippingMethods,
-} from '@/src/actions/checkout/constants'
+import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
 import { getUserData } from '@/src/actions/profile'
 import { ProfileAction } from '@/src/actions/profile/enum'
-import { UseCreateOrderMutation } from '@/src/api/checkout'
+import { UseCreateOrderMutation } from '@/src/api/order/mutations'
 import CartInfo from '@/src/components/checkout/CartInfo'
 import UserInfo from '@/src/components/checkout/UserInfo'
 import { Spinner } from '@nextui-org/react'
@@ -60,7 +57,7 @@ export default function Checkout() {
 
     const price = cart?.reduce((acc, curr) => acc + curr.variant.price, 0) || 0
     const orderMutation = UseCreateOrderMutation({
-        userID: auth?.user?.id!,
+        userID: userData?.id!,
         addressID: selectedAddressID!,
         paymentMethod: 'Cash on Delivery',
         cart: cart!,
@@ -68,6 +65,7 @@ export default function Checkout() {
     })
 
     async function onCreateOrder() {
+        if (!userData?.id) return null
         await orderMutation.mutateAsync()
     }
 

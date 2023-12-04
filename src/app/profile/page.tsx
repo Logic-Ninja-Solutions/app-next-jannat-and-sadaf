@@ -7,32 +7,11 @@ import { ProfileAction } from '@/src/actions/profile/enum'
 import { subtitle, title } from '@/src/components/primitives'
 import ManageAddresses from '@/src/components/profile/ManageAddresses'
 import ManageUserInfo from '@/src/components/profile/ManageUserInfo'
-import {
-    Button,
-    Card,
-    CardBody,
-    Spacer,
-    Spinner,
-    Tab,
-    Tabs,
-} from '@nextui-org/react'
+import ListOrders from '@/src/components/profile/OrderInfo'
+import { Card, CardBody, Spacer, Spinner, Tab, Tabs } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
-
-function OrderInfo() {
-    return (
-        <Card>
-            <CardBody>
-                <div className="flex flex-col justify-center items-center">
-                    <p>You haven&apos;t placed any orders yet.</p>
-                    <Button className="w-48 mt-5" as={Link} href="/">
-                        Continue Shopping
-                    </Button>
-                </div>
-            </CardBody>
-        </Card>
-    )
-}
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function Profile() {
     const {
@@ -50,6 +29,15 @@ export default function Profile() {
         enabled: isAuthSuccess && !!auth,
     })
 
+    const searchParams = useSearchParams()
+    const [activeTab, setActiveTab] = useState('profile')
+
+    useEffect(() => {
+        if (searchParams.get('orders') !== null) {
+            setActiveTab('orders')
+        }
+    }, [searchParams])
+
     return (
         <div className="mb-unit-xl">
             <Card className="p-unit-lg m-unit-xl">
@@ -59,9 +47,13 @@ export default function Profile() {
                 </p>
 
                 <div className="flex w-full flex-col">
-                    <Tabs aria-label="Options" defaultSelectedKey={'profile'}>
+                    <Tabs
+                        selectedKey={activeTab}
+                        onSelectionChange={setActiveTab as any}
+                        aria-label="Profile Options"
+                    >
                         <Tab key="orders" title="Orders">
-                            <OrderInfo />
+                            <ListOrders userID={userData?.id} />
                         </Tab>
                         <Tab key="profile" title="Profile">
                             <Card>

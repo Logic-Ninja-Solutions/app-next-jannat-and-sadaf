@@ -13,10 +13,7 @@ import {
 import { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import AddressForm from '../../profile/AddressForm'
-import {
-    paymentMethods,
-    shippingMethods,
-} from '@/src/actions/checkout/constants'
+import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
 
 interface AddressCardProps {
     address: Types.Address

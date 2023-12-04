@@ -5,6 +5,7 @@ export enum OrderStatus {
     CANCELLED = 'CANCELLED',
 }
 
-export enum CheckoutActionType {
+export enum OrderActionType {
     createOrder = 'createOrder',
+    listOrders = 'listOrders',
 }

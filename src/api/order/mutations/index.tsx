@@ -1,6 +1,6 @@
 import { makeCartEmpty } from '@/src/actions/cart'
-import { createOrder } from '@/src/actions/checkout'
-import { CheckoutActionType } from '@/src/actions/checkout/enum'
+import { createOrder } from '@/src/actions/order'
+import { OrderActionType } from '@/src/actions/order/enum'
 import { CartItem } from '@/src/types/prisma'
 import { useMutation } from '@tanstack/react-query'
 
@@ -23,7 +23,7 @@ export function UseCreateOrderMutation({
 }: UseCreateOrderMutationProps) {
     const router = useRouter()
     const mutation = useMutation({
-        mutationKey: [CheckoutActionType.createOrder],
+        mutationKey: [OrderActionType.createOrder],
         mutationFn: () =>
             createOrder({
                 cart,
@@ -34,7 +34,7 @@ export function UseCreateOrderMutation({
             }),
         onSuccess: () => {
             makeCartEmpty()
-            router.replace('/profile')
+            router.replace('/profile?orders')
         },
     })
 
