@@ -52,12 +52,18 @@ export default function AddressForm({
 
     const updateAddressMutation = UseUpdateAddressMutation({
         userData,
-        closeAddressModal: onClose,
+        onSuccessfulMutation: () => {
+            onClose()
+            reset()
+        },
     })
 
     const addAddressMutation = UseCreateAddressMutation({
         userData,
-        closeAddressModal: onClose,
+        onSuccessfulMutation: () => {
+            onClose()
+            reset()
+        },
     })
 
     async function onSubmit(data: Types.Address) {
@@ -68,6 +74,7 @@ export default function AddressForm({
             })
         } else {
             await addAddressMutation.mutateAsync(data)
+            reset()
         }
     }
 

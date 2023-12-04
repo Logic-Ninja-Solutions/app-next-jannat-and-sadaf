@@ -6,12 +6,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface AddressMutationProps {
     userData?: UserWithAddresses | null
-    closeAddressModal: () => void
+    onSuccessfulMutation?: () => void
 }
 
 export function UseUpdateAddressMutation({
     userData,
-    closeAddressModal,
+    onSuccessfulMutation,
 }: AddressMutationProps) {
     const queryClient = useQueryClient()
 
@@ -22,6 +22,7 @@ export function UseUpdateAddressMutation({
         },
 
         onSuccess: (updatedAddress: Types.Address) => {
+            onSuccessfulMutation?.()
             queryClient.setQueryData(
                 [ProfileAction.getUser],
                 (user: UserWithAddresses) => {
@@ -44,7 +45,6 @@ export function UseUpdateAddressMutation({
                     }
                 }
             )
-            closeAddressModal()
         },
     })
 
@@ -53,7 +53,7 @@ export function UseUpdateAddressMutation({
 
 export function UseCreateAddressMutation({
     userData,
-    closeAddressModal,
+    onSuccessfulMutation,
 }: AddressMutationProps) {
     const queryClient = useQueryClient()
     const mutation = useMutation({
@@ -62,10 +62,10 @@ export function UseCreateAddressMutation({
             return addAddress(userData!, data)
         },
         onSuccess: (data: User) => {
+            onSuccessfulMutation?.()
             queryClient.setQueryData([ProfileAction.getUser], () => {
                 return data
             })
-            closeAddressModal()
         },
     })
 
@@ -74,7 +74,7 @@ export function UseCreateAddressMutation({
 
 export function UseDeleteAddressMutation({
     userData,
-    closeAddressModal,
+    onSuccessfulMutation,
 }: AddressMutationProps) {
     const queryClient = useQueryClient()
     const mutation = useMutation({
@@ -83,6 +83,7 @@ export function UseDeleteAddressMutation({
             return deleteAddress(userData!, data)
         },
         onSuccess: ({ deletedAddress, newDefaultAddress }) => {
+            onSuccessfulMutation?.()
             queryClient.setQueryData(
                 [ProfileAction.getUser],
                 (oldData: UserWithAddresses) => {
@@ -104,7 +105,6 @@ export function UseDeleteAddressMutation({
                     }
                 }
             )
-            closeAddressModal()
         },
     })
     return mutation

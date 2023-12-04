@@ -1,18 +1,10 @@
-import { deleteAddress, addAddress, updateAddress } from '@/src/actions/profile'
-import { ProfileAction } from '@/src/actions/profile/enum'
+import { UseDeleteAddressMutation } from '@/src/api/address/mutations'
 import Types, { UserWithAddresses } from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
-import { useDisclosure, Card, CardBody, CardHeader } from '@nextui-org/react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { Card, CardBody, CardHeader, useDisclosure } from '@nextui-org/react'
+import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
-import AddressModal from '../AddAddressModal'
 import AddressDetails from '../AddressDetail'
-import {
-    UseDeleteAddressMutation,
-    UseUpdateAddressMutation,
-} from '@/src/api/address/mutations'
 import AddressForm from '../AddressForm'
 
 type User = UserWithAddresses
@@ -38,7 +30,9 @@ export default function ManageAddresses({ userData }: ManageAddressesProps) {
 
     const deleteAddressMutation = UseDeleteAddressMutation({
         userData,
-        closeAddressModal,
+        onSuccessfulMutation: () => {
+            closeAddressModal()
+        },
     })
 
     function handleAddressDelete(address: Types.Address) {
