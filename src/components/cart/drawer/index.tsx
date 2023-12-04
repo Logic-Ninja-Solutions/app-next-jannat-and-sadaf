@@ -10,7 +10,6 @@ import { useContext } from 'react'
 import { FaEye, FaTrash } from 'react-icons/fa'
 import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
-import { redirect } from 'next/navigation'
 
 type Props = {
     isOpen: boolean
