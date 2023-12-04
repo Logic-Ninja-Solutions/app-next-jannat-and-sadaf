@@ -41,7 +41,7 @@ function AddressCard({ address }: AddressCardProps) {
 interface UserInfoProps {
     userData?: UserWithAddresses | null
     selectedAddressID: string | undefined
-    setSelectedAddressID: (id: string) => void
+    setSelectedAddressID: (id: string | undefined) => void
 
     selectedShippingMethod?: string
     setSelectedShippingMethod?: (method: string) => void

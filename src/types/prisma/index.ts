@@ -7,10 +7,8 @@ export type UserWithAddresses = Prisma.UserGetPayload<{
     }
 }>
 
-export type UserUpdateInput = Prisma.UserUpdateInput
-
-export type CreateUserInput = Prisma.UserCreateInput
-
+export type UserUpdateInput = any
+export type CreateUserInput = any
 export type CartItem = Types.CartItem
 export type Address = Types.Address
 

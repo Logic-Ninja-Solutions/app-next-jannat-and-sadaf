@@ -49,7 +49,7 @@ export default function Signup() {
                         />
                         {errors.firstName && (
                             <p className="text-danger text-sm">
-                                {errors.firstName.message}
+                                {errors.firstName.message as string}
                             </p>
                         )}
                         <Input
@@ -63,7 +63,7 @@ export default function Signup() {
                         />
                         {errors.lastName && (
                             <p className="text-danger text-sm">
-                                {errors.lastName.message}
+                                {errors.lastName.message as string}
                             </p>
                         )}
 
@@ -78,7 +78,7 @@ export default function Signup() {
                         />
                         {errors.email && (
                             <p className="text-danger text-sm">
-                                {errors.email.message}
+                                {errors.email.message as string}
                             </p>
                         )}
 
@@ -93,7 +93,7 @@ export default function Signup() {
                         />
                         {errors.phone && (
                             <p className="text-danger text-sm">
-                                {errors.phone.message}
+                                {errors.phone.message as string}
                             </p>
                         )}
 
@@ -108,7 +108,7 @@ export default function Signup() {
                         />
                         {errors.password && (
                             <p className="text-danger text-sm">
-                                {errors.password.message}
+                                {errors.password.message as string}
                             </p>
                         )}
 
@@ -126,7 +126,7 @@ export default function Signup() {
                         />
                         {errors.confirmPassword && (
                             <p className="text-danger text-sm">
-                                {errors.confirmPassword.message}
+                                {errors.confirmPassword.message as string}
                             </p>
                         )}
 

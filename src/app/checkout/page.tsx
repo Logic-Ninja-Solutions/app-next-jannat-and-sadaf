@@ -83,14 +83,13 @@ export default function Checkout() {
     if (!userData?.id)
         return (
             <div className="m-auto">
-                <div classname='flex flex-col gap-5 items-center justify-center debug'>
+                <div className="flex flex-col gap-5 items-center justify-center debug">
                     <p>You need to be signed in to continue</p>
-                    <div className='flex justify-center mt-5'>
-                    <Button 
-                    as={Link}
-                href="/login"
-                >Login</Button>
-                </div>
+                    <div className="flex justify-center mt-5">
+                        <Button as={Link} href="/login">
+                            Login
+                        </Button>
+                    </div>
                 </div>
             </div>
         )
