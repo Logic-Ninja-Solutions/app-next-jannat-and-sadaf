@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/server'
-import Types, { UserWithAddresses } from '@/src/types/prisma'
+import Types, { UserUpdateInput, UserWithAddresses } from '@/src/types/prisma'
 
 export async function getUserData(email?: string | null) {
     if (!email) return null
@@ -82,4 +82,12 @@ export async function deleteAddress(
         }
     }
     return { deletedAddress: data }
+}
+
+export async function updateProfile(id: string, data: UserUpdateInput) {
+    const updatedUser = await prisma.user.update({
+        where: { id },
+        data: data,
+    })
+    return updatedUser
 }

@@ -3,4 +3,5 @@ export enum ProfileAction {
     addAddress = 'addAddress',
     updateAddress = 'updateAddress',
     deleteAddress = 'deleteAddress',
+    updateProfile = 'updateProfile',
 }
