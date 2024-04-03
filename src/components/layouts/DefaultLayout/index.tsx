@@ -29,7 +29,7 @@ export default function DefaultLayout({
     } = useDisclosure()
 
     return (
-        <div className="relative flex flex-col h-screen">
+        <div className="relative">
             <CartDrawerContext.Provider
                 value={{
                     isCartOpen: isCartOpen,

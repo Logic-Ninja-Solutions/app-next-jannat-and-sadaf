@@ -37,6 +37,13 @@ module.exports = {
     darkMode: 'class',
     plugins: [
         nextui({
+            layout: {
+                radius: {
+                    small: '0',
+                    medium: '0',
+                    large: '0',
+                },
+            },
             themes: {
                 light: {
                     colors: {
