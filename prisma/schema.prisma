@@ -57,6 +57,9 @@ model Collection {
     description String
     products    Product[]
     image       String
+    active      Boolean
+    startDate   DateTime
+    endDate     DateTime
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
 }
