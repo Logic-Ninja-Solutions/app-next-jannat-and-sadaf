@@ -1,11 +1,10 @@
 'use server'
 
 import { CreateUserInput } from '@/src/types/common'
-import * as bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
-import serverInstance from '../api'
 import { User } from '../../types/user'
+import serverInstance from '../api'
 
 type Credentials = {
     email: string
@@ -74,7 +73,6 @@ export async function signUp(formData: CreateUserInput) {
         emailVerified: false,
         isStaff: false,
         isActive: true,
-        password: await bcrypt.hash(formData.password, 10),
     })
 
     await signIn({

@@ -1,10 +1,7 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { isAuthenticated } from '../../actions/auth'
-import { AuthAction } from '../../actions/auth/enum'
 import { GetAuth } from '../../api/user'
 
 type sessionProps = {
