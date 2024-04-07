@@ -1,37 +1,41 @@
-import type { NextAuthConfig } from 'next-auth'
-import { NextURL } from 'next/dist/server/web/next-url'
+// import type { NextAuthConfig } from 'next-auth'
+// import { NextURL } from 'next/dist/server/web/next-url'
 
-const authenticatedRoutes = ['/profile']
-const userRoutes = ['/login', '/signup']
+// const authenticatedRoutes = ['/profile']
+// const userRoutes = ['/login', '/signup']
 
-function isInRoutes(url: NextURL, routes: string[]) {
-    return routes.some((route) => url.pathname.startsWith(route))
-}
+// function isInRoutes(url: NextURL, routes: string[]) {
+//     return routes.some((route) => url.pathname.startsWith(route))
+// }
 
-export const authConfig = {
-    pages: {
-        signIn: '/login',
-    },
-    callbacks: {
-        authorized({ auth, request: { nextUrl } }) {
-            const isLoggedIn = !!auth?.user
+// export const authConfig = {
+//     pages: {
+//         signIn: '/login',
+//     },
+//     callbacks: {
+//         session: ({user, session})=> {
+//             console.log("hereeee", session)
+//             return session;
+//         },
+//         authorized({ auth, request: { nextUrl } }) {
+//             const isLoggedIn = !!auth?.user
 
-            if (isInRoutes(nextUrl, authenticatedRoutes)) {
-                if (isLoggedIn) return true
-                return false
-            }
+//             if (isInRoutes(nextUrl, authenticatedRoutes)) {
+//                 if (isLoggedIn) return true
+//                 return false
+//             }
 
-            const url = new URL(nextUrl)
-            const callbackURL = url.searchParams.get('callbackUrl')
-            if (callbackURL && isLoggedIn)
-                return Response.redirect(new URL(callbackURL))
+//             const url = new URL(nextUrl)
+//             const callbackURL = url.searchParams.get('callbackUrl')
+//             if (callbackURL && isLoggedIn)
+//                 return Response.redirect(new URL(callbackURL))
 
-            if (isInRoutes(nextUrl, userRoutes)) {
-                if (isLoggedIn) return Response.redirect(url.origin)
-            }
+//             if (isInRoutes(nextUrl, userRoutes)) {
+//                 if (isLoggedIn) return Response.redirect(url.origin)
+//             }
 
-            return true
-        },
-    },
-    providers: [],
-} satisfies NextAuthConfig
+//             return true
+//         },
+//     },
+//     providers: [],
+// } satisfies NextAuthConfig

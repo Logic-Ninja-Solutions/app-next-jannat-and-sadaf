@@ -22,11 +22,10 @@ export default function ProductGrid() {
         pageParam: string | null
     }) {
         const response = await listPaginatedProducts('20', pageParam)
-        const { lastCursor, hasNextPage } = response
 
         return {
             items: response.data,
-            nextToken: hasNextPage ? lastCursor : null,
+            nextToken: null
         }
     }
 

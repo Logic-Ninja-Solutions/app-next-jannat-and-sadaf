@@ -1,93 +1,51 @@
 'use server'
 
-import { prisma } from '@/server'
-import Types, { UserUpdateInput, UserWithAddresses } from '@/src/types/prisma'
+import { UserUpdateInput } from '@/src/types/common'
+import { Address } from '../../types/address'
+import { User } from '../../types/user'
+import serverInstance from '../api'
 
 export async function getUserData(email?: string | null) {
     if (!email) return null
-    const user = await prisma.user.findUnique({
-        where: { email },
-        include: { addresses: true },
-    })
+    const response = await serverInstance.get<{ user: User }>(
+        `/user/email/${email}`
+    )
+
+    const user = response.data
     return user
 }
 
-async function updateDefaultAddress(
-    addresses: Types.Address[],
-    address: Types.Address
-) {
-    const defaultAddress = addresses.find((address) => address.isDefault)
-    if (address.isDefault && defaultAddress) {
-        await prisma.address.update({
-            where: { id: defaultAddress.id },
-            data: { isDefault: false },
-        })
-    }
+export async function updateAddress(user: User, address: Address) {
+    const response = await serverInstance.patch<{ user: User }>(
+        `user/address/${user.id}`,
+        address
+    )
+    return response.data
 }
 
-export async function updateAddress(
-    user: UserWithAddresses,
-    address: Types.Address
-) {
-    await updateDefaultAddress(user.addresses, address)
-    const updatedData = {
-        ...address,
-        id: undefined,
-    }
-    const data = await prisma.address.update({
-        where: { id: address.id },
-        data: updatedData,
-    })
+export async function addAddress(user: User, address: Address) {
+    const response = await serverInstance.patch<{ user: User }>(
+        `user/address/${user.id}`,
+        address
+    )
+    return response.data
+}
+
+export async function deleteAddress(user: User, address: Address) {
+    const response = await serverInstance.delete<{
+        newDefaultAddress: Address
+        deletedAddress: Address
+    }>(`user/address/${user.id}/${address.id}`)
+    const data = response.data
+
     return data
 }
 
-export async function addAddress(
-    user: UserWithAddresses,
-    address: Types.Address
-) {
-    await updateDefaultAddress(user.addresses, address)
-    const updatedUser = await prisma.user.update({
-        where: { id: user.id },
-        include: { addresses: true },
-        data: {
-            addresses: {
-                create: address,
-            },
-        },
-    })
-    return updatedUser
-}
-
-export async function deleteAddress(
-    user: UserWithAddresses,
-    address: Types.Address
-) {
-    const data = await prisma.address.delete({
-        where: { id: address.id },
-    })
-
-    if (address.isDefault) {
-        const randomAddress = user.addresses.find(
-            (address) => address.id !== data.id
-        )
-        if (randomAddress) {
-            await prisma.address.update({
-                where: { id: randomAddress.id },
-                data: { isDefault: true },
-            })
-            return {
-                deletedAddress: data,
-                newDefaultAddress: randomAddress,
-            }
-        }
-    }
-    return { deletedAddress: data }
-}
-
 export async function updateProfile(id: string, data: UserUpdateInput) {
-    const updatedUser = await prisma.user.update({
-        where: { id },
-        data: data,
-    })
+    const response = await serverInstance.patch<{ user: User }>(
+        `user/${id}`,
+        data
+    )
+    const updatedUser = response.data
     return updatedUser
 }

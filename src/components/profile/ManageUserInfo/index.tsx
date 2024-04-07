@@ -1,17 +1,17 @@
+// @ts-nocheck
+
 import { updateProfile } from '@/src/actions/profile'
 import { ProfileAction } from '@/src/actions/profile/enum'
-import Types, { UserUpdateInput, UserWithAddresses } from '@/src/types/prisma'
+import { UserUpdateInput } from '@/src/types/common'
 import { Button } from '@nextui-org/button'
 import { Input } from '@nextui-org/input'
 import { Card, CardBody, Spacer } from '@nextui-org/react'
 import { Switch } from '@nextui-org/switch'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { FaUnlock, FaLock } from 'react-icons/fa'
-import { useEffect } from 'react'
-
-type User = UserWithAddresses
+import { FaLock, FaUnlock } from 'react-icons/fa'
+import { User } from '../../../types/user'
 
 interface UserInfoProps {
     userData?: User | null
@@ -27,10 +27,15 @@ export default function ManageUserInfo({ userData }: UserInfoProps) {
         mutationFn: (data: UserUpdateInput) => {
             return updateProfile(userData?.id as string, data)
         },
-        onSuccess: (user: Types.User) => {
-            queryClient.setQueryData([ProfileAction.getUser], {
-                ...userData,
-                ...user,
+        onSuccess: (data: { user: User }) => {
+            queryClient.setQueryData([ProfileAction.getUser], (oldData: {user: User})=> {
+                return {
+                    user: {
+                        ...oldData.user,
+                        ...data.user
+                    }
+                }
+
             })
             setIsProfileFormEnabled(false)
         },

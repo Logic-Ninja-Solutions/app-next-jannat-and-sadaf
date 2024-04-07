@@ -1,8 +1,8 @@
-import Types from '@/src/types/prisma'
 import { Card, CardBody, CardFooter } from '@nextui-org/react'
+import { Address } from '../../../types/address'
 
 interface AddressProps {
-    address: Types.Address
+    address: Address
     onEdit?: () => void
     onDelete?: () => void
 }

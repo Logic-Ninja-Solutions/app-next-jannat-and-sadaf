@@ -1,7 +1,7 @@
 import { getCart, removeFromCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
 import { formatPrice } from '@/src/models/product'
-import { CartItem } from '@/src/types/prisma'
+import { CartItem } from '@/src/types/common'
 import { Button } from '@nextui-org/button'
 import { Chip, Image, Spinner } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'

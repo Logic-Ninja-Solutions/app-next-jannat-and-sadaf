@@ -1,7 +1,7 @@
 import { makeCartEmpty } from '@/src/actions/cart'
 import { createOrder } from '@/src/actions/order'
 import { OrderActionType } from '@/src/actions/order/enum'
-import { CartItem } from '@/src/types/prisma'
+import { CartItem } from '@/src/types/common'
 import { useMutation } from '@tanstack/react-query'
 
 import { useRouter } from 'next/navigation'

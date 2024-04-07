@@ -9,9 +9,10 @@ import {
     Divider,
     Image,
 } from '@nextui-org/react'
-import { CartItem } from '@prisma/client'
+
 import { title, subtitle } from '../../primitives'
 import clsx from 'clsx'
+import { CartItem } from '../../../types/order'
 
 interface CartInfoProps {
     cart?: CartItem[]

@@ -1,26 +1,19 @@
 'use server'
 
-import { prisma } from '@/server'
-import Types from '@/src/types/prisma'
-import { getPaginatedData } from '@/src/utils/api/pagination'
+import { Product } from '../../types/product'
+import serverInstance from '../api'
 
 export async function listPaginatedProducts(
     take: string,
     lastCursor?: string | null
 ) {
-    const data = await getPaginatedData<Types.Product>(
-        prisma.product.findMany,
-        take as string,
-        lastCursor as string
-    )
-    return data
+    const response = await serverInstance.get<{ data: Product[] }>(`product`)
+    const products = response.data
+    return products
 }
 
 export async function getProduct(slug: string) {
-    const product = await prisma.product.findUnique({
-        where: {
-            slug,
-        },
-    })
+    const response = await serverInstance.get(`product/slug/${slug}`)
+    const product = response.data
     return product
 }

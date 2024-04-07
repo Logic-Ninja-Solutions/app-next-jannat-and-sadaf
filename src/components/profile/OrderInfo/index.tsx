@@ -1,6 +1,5 @@
 import { listOrders } from '@/src/actions/order'
 import { OrderActionType } from '@/src/actions/order/enum'
-import Types from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import {
     Card,
@@ -14,6 +13,7 @@ import {
 } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { Order } from '../../../types/order'
 
 interface OrderInfoProps {
     userID?: string
@@ -35,7 +35,7 @@ function NoOrdersCard() {
 }
 
 interface OrderInfoProps {
-    order: Types.Order
+    order: Order
 }
 
 function OrderInfo({ order }: OrderInfoProps) {

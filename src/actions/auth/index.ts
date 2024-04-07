@@ -1,69 +1,84 @@
 'use server'
 
-import { prisma } from '@/server'
-import { auth, signIn, signOut } from '@/src/auth'
-import Types, { CreateUserInput } from '@/src/types/prisma'
-import { Prisma } from '@prisma/client'
-import { AuthError } from 'next-auth'
+import { CreateUserInput } from '@/src/types/common'
 import * as bcrypt from 'bcryptjs'
+import { cookies } from 'next/headers'
+import { z } from 'zod'
+import serverInstance from '../api'
+import { User } from '../../types/user'
+
+type Credentials = {
+    email: string
+    password: string
+}
+
+export async function signIn(credentials: Credentials) {
+    const parsedCredentials = z
+        .object({
+            email: z.string().email(),
+            password: z.string().min(6),
+        })
+        .safeParse(credentials)
+
+    if (parsedCredentials.success) {
+        const response = await serverInstance.post(
+            '/auth/login',
+            parsedCredentials.data
+        )
+        const data = response.data
+        const token = data.token
+
+        if (token) {
+            cookies().set('token', data.token)
+        }
+    }
+}
 
 export async function isAuthenticated() {
-    return await auth()
+    const response = await serverInstance.get<{ user: User }>('auth')
+    return response.data
+}
+
+export async function getAccessToken() {
+    return cookies().get('token')?.value
 }
 
 export async function unauthenticate() {
-    await signOut()
+    cookies().delete('token')
 }
 
 export async function authenticate(
-    prevState: string | undefined,
+    prevState: string | undefined | null,
     formData: FormData
 ) {
     try {
-        await signIn('credentials', formData)
-    } catch (error) {
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return 'Invalid credentials.'
-                default:
-                    return 'Something went wrong.'
-            }
-        }
-        throw error
+        await signIn({
+            email: formData.get('email') as string,
+            password: formData.get('password') as string,
+        })
+
+        return null
+    } catch (error: any) {
+        return error?.message ?? 'Something went wrong.'
     }
 }
 
 export async function createUser(data: CreateUserInput) {
-    const userExists = await prisma.user.findUnique({
-        where: { email: data.email },
-    })
-    if (userExists) {
-        throw new Error('User already exists.')
-    }
-    const user = await prisma.user.create({ data })
-    console.log('Successfully created user: ', user)
-    return user
+    const response = await serverInstance.post('/auth/signup', data)
+    return response.data
 }
 
 export async function signUp(formData: CreateUserInput) {
-    try {
-        await createUser({
-            ...formData,
-            emailVerified: false,
-            isStaff: false,
-            isActive: true,
-            password: await bcrypt.hash(formData.password, 10),
-        })
+    await createUser({
+        ...formData,
+        emailVerified: false,
+        isStaff: false,
+        isActive: true,
+        password: await bcrypt.hash(formData.password, 10),
+    })
 
-        await signIn('credentials', {
-            email: formData.email,
-            password: formData.password,
-        })
-    } catch (error) {
-        if (error instanceof AuthError) {
-        }
-        console.log(error)
-        throw error
-    }
+    await signIn({
+        email: formData.email,
+        password: formData.password,
+    })
 }

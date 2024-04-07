@@ -1,11 +1,12 @@
 import { addAddress, deleteAddress, updateAddress } from '@/src/actions/profile'
 import { ProfileAction } from '@/src/actions/profile/enum'
-import Types, { UserWithAddresses } from '@/src/types/prisma'
-import { User } from '@prisma/client'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Address } from '../../../types/address'
+import { User } from '../../../types/user'
 
 interface AddressMutationProps {
-    userData?: UserWithAddresses | null
+    userData?: User | null
     onSuccessfulMutation?: () => void
 }
 
@@ -17,34 +18,12 @@ export function UseUpdateAddressMutation({
 
     const mutation = useMutation({
         mutationKey: [ProfileAction.updateAddress],
-        mutationFn: async (data: Types.Address) => {
+        mutationFn: async (data: Address) => {
             return updateAddress(userData!, data)
         },
-
-        onSuccess: (updatedAddress: Types.Address) => {
+        onSuccess: (updatedUser: { user: User }) => {
             onSuccessfulMutation?.()
-            queryClient.setQueryData(
-                [ProfileAction.getUser],
-                (user: UserWithAddresses) => {
-                    const updatedAddresses = user.addresses?.map((address) => {
-                        if (address.id === updatedAddress.id) {
-                            return updatedAddress
-                        }
-                        if (address.isDefault && updatedAddress.isDefault) {
-                            return {
-                                ...address,
-                                isDefault: false,
-                            }
-                        }
-                        return address
-                    })
-
-                    return {
-                        ...user,
-                        addresses: updatedAddresses,
-                    }
-                }
-            )
+            queryClient.setQueryData([ProfileAction.getUser], updatedUser)
         },
     })
 
@@ -58,14 +37,12 @@ export function UseCreateAddressMutation({
     const queryClient = useQueryClient()
     const mutation = useMutation({
         mutationKey: [ProfileAction.addAddress],
-        mutationFn: async (data: Types.Address) => {
+        mutationFn: async (data: Address) => {
             return addAddress(userData!, data)
         },
-        onSuccess: (data: User) => {
+        onSuccess: (data: { user: User }) => {
             onSuccessfulMutation?.()
-            queryClient.setQueryData([ProfileAction.getUser], () => {
-                return data
-            })
+            queryClient.setQueryData([ProfileAction.getUser], data)
         },
     })
 
@@ -79,17 +56,18 @@ export function UseDeleteAddressMutation({
     const queryClient = useQueryClient()
     const mutation = useMutation({
         mutationKey: [ProfileAction.addAddress],
-        mutationFn: async (data: Types.Address) => {
+        mutationFn: (data: Address) => {
             return deleteAddress(userData!, data)
         },
         onSuccess: ({ deletedAddress, newDefaultAddress }) => {
             onSuccessfulMutation?.()
             queryClient.setQueryData(
                 [ProfileAction.getUser],
-                (oldData: UserWithAddresses) => {
-                    const updatedAddresses = oldData.addresses?.filter(
+                (oldData: { user: User }) => {
+                    
+                    const updatedAddresses = oldData.user.addresses?.filter(
                         (address) => {
-                            return address.id !== deletedAddress.id
+                            return address.id !== deletedAddress?.id
                         }
                     )
                     if (newDefaultAddress) {
@@ -100,8 +78,10 @@ export function UseDeleteAddressMutation({
                         })
                     }
                     return {
-                        ...oldData,
-                        addresses: updatedAddresses,
+                        user: {
+                            ...oldData,
+                            addresses: updatedAddresses,
+                        },
                     }
                 }
             )

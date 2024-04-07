@@ -1,12 +1,12 @@
 'use client'
 
-import { CreateUserInput } from '@/src/types/prisma'
+import { signUp } from '@/src/actions/auth'
+import { CreateUserInput } from '@/src/types/common'
 import { Button, Card, CardBody, Input } from '@nextui-org/react'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
-import { signUp, authenticate } from '@/src/actions/auth'
 import { useMutation } from '@tanstack/react-query'
-import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 export default function Signup() {
     const {
@@ -20,7 +20,6 @@ export default function Signup() {
         mutationKey: ['signup'],
         mutationFn: signUp,
         onError: (error) => {
-            console.log(' i am here')
             setError(true)
         },
     })

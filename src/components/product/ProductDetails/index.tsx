@@ -4,8 +4,7 @@ import { addToCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
 import { CustomSizes } from '@/src/models/custom.sizes'
 import { formatPrice } from '@/src/models/product'
-import { CartItem } from '@/src/types/prisma'
-import Types from '@/src/types/prisma'
+import { CartItem } from '@/src/types/common'
 import { Button } from '@nextui-org/button'
 import { Accordion, AccordionItem, useDisclosure } from '@nextui-org/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -14,6 +13,7 @@ import { useContext, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaInfo } from 'react-icons/fa'
 import { IoLogoWhatsapp } from 'react-icons/io'
+import { Product, ProductVariant } from '../../../types/product'
 import { AnchorIcon, HeartIcon } from '../../core/Icons'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
 import { subtitle, title } from '../../primitives'
@@ -25,7 +25,7 @@ const disclaimer =
     'Actual colours of the outfit may vary. We do our best to ensure that our photos are as true to colour as possible. However, due to photography lighting sources and colour settings of different monitors, there may be slight variations.'
 
 interface ProductDetailsProps {
-    product: Types.Product
+    product: Product
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
@@ -56,7 +56,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         }
     }
 
-    function handleVariantChange(variant: Types.ProductVariant) {
+    function handleVariantChange(variant: ProductVariant) {
         setSelectedVariant(variant)
         updateVariantQuantity(quantity)
         setQuantity(
@@ -72,7 +72,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     }
 
     const [selectedVariant, setSelectedVariant] = useState<
-        Types.ProductVariant | undefined
+        ProductVariant | undefined
     >(defaultVariant)
     const [isEnterSizeManually, setIsEnterSizeManually] = useState(false)
     const {

@@ -2,7 +2,10 @@
 
 import { authenticate } from '@/src/actions/auth'
 import { Button, Card, CardBody, Checkbox, Input } from '@nextui-org/react'
+import { useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
 function LoginButton() {
@@ -16,7 +19,19 @@ function LoginButton() {
 }
 
 export default function Login() {
-    const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+    const [errorState, dispatch] = useFormState<string | undefined, FormData>(
+        authenticate,
+        ""
+    )
+    const router = useRouter()
+    const client = useQueryClient()
+
+    useEffect(() => {
+        if (errorState==null) {
+            client.invalidateQueries();
+            router.replace('/')
+        }
+    }, [client, errorState, router])
 
     return (
         <div className="flex items-center justify-center h-screen">
@@ -50,8 +65,8 @@ export default function Login() {
                             </Link>
                         </div>
 
-                        {errorMessage && (
-                            <p className="text-danger">{errorMessage}</p>
+                        {errorState && (
+                            <p className="text-danger">{errorState}</p>
                         )}
 
                         <LoginButton />

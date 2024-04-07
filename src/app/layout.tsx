@@ -1,12 +1,12 @@
 import '@styles/globals.css'
 
 import DefaultLayout from '@components/layouts/DefaultLayout'
-import type { Metadata } from 'next'
 import { font } from '@styles/font'
-import { NextUIKitProvider } from '../providers/Ui'
 import clsx from 'clsx'
+import type { Metadata } from 'next'
 import ClientProvider from '../providers/Client'
-import { SessionProvider } from 'next-auth/react'
+import AuthProvider from '../providers/Session'
+import { NextUIKitProvider } from '../providers/Ui'
 
 export const metadata: Metadata = {
     title: 'Jannat & Sadaf',
@@ -34,7 +34,9 @@ export default function RootLayout({
                     }}
                 >
                     <ClientProvider>
-                        <DefaultLayout>{children}</DefaultLayout>
+                        <AuthProvider>
+                            <DefaultLayout>{children}</DefaultLayout>
+                        </AuthProvider>
                     </ClientProvider>
                 </NextUIKitProvider>
             </body>

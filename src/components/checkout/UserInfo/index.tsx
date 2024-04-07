@@ -1,4 +1,4 @@
-import Types, { UserWithAddresses } from '@/src/types/prisma'
+import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
 import { Button } from '@nextui-org/button'
 import {
     Accordion,
@@ -12,11 +12,12 @@ import {
 } from '@nextui-org/react'
 import { useState } from 'react'
 import { FaEdit, FaPlus } from 'react-icons/fa'
+import { Address } from '../../../types/address'
+import { User } from '../../../types/user'
 import AddressForm from '../../profile/AddressForm'
-import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
 
 interface AddressCardProps {
-    address: Types.Address
+    address: Address
 }
 
 function AddressCard({ address }: AddressCardProps) {
@@ -39,7 +40,7 @@ function AddressCard({ address }: AddressCardProps) {
 }
 
 interface UserInfoProps {
-    userData?: UserWithAddresses | null
+    userData?: User | null
     selectedAddressID: string | undefined
     setSelectedAddressID: (id: string | undefined) => void
 
@@ -68,9 +69,9 @@ export default function UserInfo({
     onCreateOrder,
 }: UserInfoProps) {
     const [selectedEditAddress, setSelectedEditAddress] =
-        useState<Types.Address>()
+        useState<Address>()
 
-    function handleAddressEdit(address: Types.Address) {
+    function handleAddressEdit(address: Address) {
         setSelectedEditAddress(address)
         openAddressModal()
     }

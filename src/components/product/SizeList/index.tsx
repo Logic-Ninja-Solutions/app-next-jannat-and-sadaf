@@ -1,8 +1,7 @@
-import Types from '@/src/types/prisma'
 import { Button } from '@nextui-org/react'
 import clsx from 'clsx'
+import { ProductVariant } from '../../../types/product'
 
-type ProductVariant = Types.ProductVariant
 
 interface SizesListProps {
     variants: ProductVariant[]

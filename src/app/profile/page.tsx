@@ -1,7 +1,5 @@
 'use client'
 
-import { isAuthenticated } from '@/src/actions/auth'
-import { AuthAction } from '@/src/actions/auth/enum'
 import { getUserData } from '@/src/actions/profile'
 import { ProfileAction } from '@/src/actions/profile/enum'
 import { subtitle, title } from '@/src/components/primitives'
@@ -12,22 +10,18 @@ import { Card, CardBody, Spacer, Spinner, Tab, Tabs } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { GetAuth } from '../../api/user'
 
 export default function Profile() {
-    const {
-        data: auth,
-        isSuccess: isAuthSuccess,
-        isLoading: isAuthLoading,
-    } = useQuery({
-        queryKey: [AuthAction.auth],
-        queryFn: isAuthenticated,
-    })
+    const { data: auth } = GetAuth()
 
-    const { data: userData, isLoading: isUserLoading } = useQuery({
+    const { data: user, isLoading: isUserLoading } = useQuery({
         queryKey: [ProfileAction.getUser],
         queryFn: () => getUserData(auth?.user?.email),
-        enabled: isAuthSuccess && !!auth,
+        enabled: !!auth,
     })
+
+    const userData = user?.user
 
     const searchParams = useSearchParams()
     const [activeTab, setActiveTab] = useState('profile')
@@ -37,6 +31,10 @@ export default function Profile() {
             setActiveTab('orders')
         }
     }, [searchParams])
+
+    if (isUserLoading || !userData) {
+        return <Spinner color="secondary" />
+    }
 
     return (
         <div className="mb-unit-xl">
@@ -58,7 +56,7 @@ export default function Profile() {
                         <Tab key="profile" title="Profile">
                             <Card>
                                 <CardBody className="min-h-[800px]">
-                                    {isUserLoading || isAuthLoading ? (
+                                    {isUserLoading ? (
                                         <Spinner color="secondary" />
                                     ) : (
                                         <div className="p-0 sm:p-unit-lg">

@@ -30,11 +30,13 @@ export default function Checkout() {
         queryFn: isAuthenticated,
     })
 
-    const { data: userData, isLoading: isUserLoading } = useQuery({
+    const { data: user, isLoading: isUserLoading } = useQuery({
         queryKey: [ProfileAction.getUser],
         queryFn: () => getUserData(auth?.user?.email),
         enabled: isAuthSuccess && !!auth,
     })
+
+    const userData = user?.user;
 
     const [selectedAddressID, setSelectedAddressID] = useState<
         string | undefined

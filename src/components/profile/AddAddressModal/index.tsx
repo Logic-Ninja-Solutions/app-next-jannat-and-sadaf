@@ -1,4 +1,3 @@
-import Types from '@/src/types/prisma'
 import {
     Button,
     Checkbox,
@@ -10,12 +9,13 @@ import {
     ModalHeader,
 } from '@nextui-org/react'
 import { Control, Controller } from 'react-hook-form'
+import { Address } from '../../../types/address'
 
 interface AddressModalProps {
     isOpen: boolean
     isLoading: boolean
     onOpenChange: (open: boolean) => void
-    control: Control<Types.Address>
+    control: Control<Address>
     buttonText?: string
 }
 

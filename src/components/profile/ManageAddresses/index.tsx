@@ -1,13 +1,13 @@
 import { UseDeleteAddressMutation } from '@/src/api/address/mutations'
-import Types, { UserWithAddresses } from '@/src/types/prisma'
 import { Button } from '@nextui-org/button'
 import { Card, CardBody, CardHeader, useDisclosure } from '@nextui-org/react'
 import { useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
+import { Address } from '../../../types/address'
+import { User } from '../../../types/user'
 import AddressDetails from '../AddressDetail'
 import AddressForm from '../AddressForm'
 
-type User = UserWithAddresses
 
 interface ManageAddressesProps {
     userData?: User | null
@@ -21,9 +21,9 @@ export default function ManageAddresses({ userData }: ManageAddressesProps) {
         onOpenChange,
     } = useDisclosure()
 
-    const [selectedAddress, setSelectedAddress] = useState<Types.Address>()
+    const [selectedAddress, setSelectedAddress] = useState<Address>()
 
-    function handleAddressEdit(address: Types.Address) {
+    function handleAddressEdit(address: Address) {
         setSelectedAddress(address)
         openAddressModal()
     }
@@ -35,7 +35,7 @@ export default function ManageAddresses({ userData }: ManageAddressesProps) {
         },
     })
 
-    function handleAddressDelete(address: Types.Address) {
+    function handleAddressDelete(address: Address) {
         const data = confirm('Are you sure you want to delete this address?')
         if (data) deleteAddressMutation.mutate(address)
     }

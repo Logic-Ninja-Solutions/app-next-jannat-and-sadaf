@@ -1,7 +1,8 @@
 'use server'
 
-import { prisma } from '@/server'
-import { CartItem } from '@/src/types/prisma'
+import { CartItem } from '@/src/types/common'
+import { Order } from '../../types/order'
+import serverInstance from '../api'
 import { OrderStatus } from './enum'
 
 interface CreateOrderProps {
@@ -38,28 +39,25 @@ export async function createOrder({
 }: CreateOrderProps) {
     if (!userID || !addressId) return null
 
-    const order = await prisma.order.create({
-        data: {
-            orderNumber: generateOrderNumber(3),
-            items: cart,
-            userId: userID,
-            totalPrice: finalPrice,
-            shippingPrice: 0,
-            status: OrderStatus.PENDING,
-            paymentMethod,
-            addressId: addressId,
-        },
-    })
+    const data = {
+        orderNumber: generateOrderNumber(3),
+        items: cart,
+        userId: userID,
+        totalPrice: finalPrice,
+        shippingPrice: 0,
+        status: OrderStatus.PENDING,
+        paymentMethod,
+        addressId: addressId,
+    }
+
+    const response = await serverInstance.post('order', data)
+    const order = response.data
 
     return order
 }
 
 export async function listOrders(userID: string) {
-    const orders = await prisma.order.findMany({
-        where: { userId: userID },
-        include: {
-            address: true,
-        },
-    })
+    const response = await serverInstance.get<Order[]>(`order/user/${userID}`)
+    const orders = response.data
     return orders
 }

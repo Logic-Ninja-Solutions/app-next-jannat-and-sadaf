@@ -15,20 +15,23 @@ import { FaSearch, FaShoppingBag, FaUser } from 'react-icons/fa'
 import { IoLogOut } from 'react-icons/io5'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
 import { AuthAction } from '@/src/actions/auth/enum'
+import { useRouter } from 'next/navigation'
 
 export function Navbar() {
-    const { data, isSuccess } = useQuery({
+    const { isSuccess } = useQuery({
         queryKey: [AuthAction.auth],
         queryFn: () => isAuthenticated(),
     })
 
     const queryClient = useQueryClient()
+    const router = useRouter()
 
     const logoutMutation = useMutation({
         mutationKey: [AuthAction.logout],
         mutationFn: unauthenticate,
         onSuccess: () => {
             queryClient.invalidateQueries()
+            router.replace('/login')
         },
     })
 
@@ -54,7 +57,7 @@ export function Navbar() {
                         <FaShoppingBag className="text-default-500" />
                     </Link>
 
-                    {isSuccess && !!data && (
+                    {isSuccess && (
                         <Link
                             href="#"
                             onClick={async () => {
