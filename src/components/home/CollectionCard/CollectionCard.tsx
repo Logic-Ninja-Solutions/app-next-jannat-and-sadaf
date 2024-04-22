@@ -1,12 +1,12 @@
 import { Button } from '@nextui-org/button'
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
-import Subtitle from '../../core/Subtitle/Subtitle'
+import Title from '../../core/Title/Title'
 
 type CategoryCardProps = {
     title: string
 }
 
-function CategoryCard({ title }: CategoryCardProps) {
+function CollectionCard({ title }: CategoryCardProps) {
     return (
         <div className="container">
                 <Card className="shadow-none ">
@@ -22,7 +22,7 @@ function CategoryCard({ title }: CategoryCardProps) {
                     </CardBody>
                     <CardFooter className="bg-[#ebeef0] container">
                         <div className="mx-auto">
-                            <Subtitle className="mb-1 sm:my-8">{title}</Subtitle>
+                            <Title className="mb-1 sm:my-8">{title}</Title>
                             <Button className="block mx-auto mb-0 sm:mb-8 ">
                                 Shop Now
                             </Button>
@@ -33,4 +33,4 @@ function CategoryCard({ title }: CategoryCardProps) {
     )
 }
 
-export default CategoryCard
+export default CollectionCard

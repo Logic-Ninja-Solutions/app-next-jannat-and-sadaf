@@ -55,8 +55,7 @@ export default function ProductGrid() {
 
     return (
         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-            <>
-                {isFetching || isFetchingNextPage ? (
+            {isFetching || isFetchingNextPage ? (
                     <Spinner color="secondary" />
                 ) : (
                     <div className="container mx-auto px-8 sm:px-4">
@@ -104,7 +103,6 @@ export default function ProductGrid() {
                         </div>
                     </div>
                 )}
-            </>
         </section>
     )
 }

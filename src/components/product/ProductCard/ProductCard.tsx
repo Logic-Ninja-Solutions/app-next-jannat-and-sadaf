@@ -8,10 +8,9 @@ type ProductCardProps = {
     product: any
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }: Readonly<ProductCardProps>) {
     return (
-        <>
-            <Card
+        <Card
                 className="group relative h-[18rem] md:h-[35rem] lg:h-[35rem] xl:h-unit-8xl 2xl:h-unit-9xl sm:h-[30rem]"
                 as={Link}
                 href={`/product/${product.slug}`}
@@ -46,7 +45,6 @@ function ProductCard({ product }: ProductCardProps) {
                     </Button>
                 </div>
             </Card>
-        </>
     )
 }
 

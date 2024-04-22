@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 import { subtitle } from '../../primitives'
 import clsx from 'clsx'
 
-function Title({
+function Subtitle({
     children,
     className,
 }: PropsWithChildren & { className?: string }) {
@@ -10,7 +10,7 @@ function Title({
         <h1
             className={clsx(
                 subtitle,
-                'text-center text-medium sm:text-1xl lg:text-2xl  uppercase',
+                'text-center text-medium sm:text-lg lg:text-xl  uppercase',
                 className
             )}
         >
@@ -19,4 +19,4 @@ function Title({
     )
 }
 
-export default Title
+export default Subtitle
