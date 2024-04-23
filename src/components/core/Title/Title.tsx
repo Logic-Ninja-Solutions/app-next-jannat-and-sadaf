@@ -10,7 +10,7 @@ function Title({
         <h1
             className={clsx(
                 subtitle,
-                'text-center text-medium sm:text-1xl lg:text-2xl  uppercase',
+                'text-center text-medium sm:text-1xl lg:text-2xl uppercase',
                 className
             )}
         >

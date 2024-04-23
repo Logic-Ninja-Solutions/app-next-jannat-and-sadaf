@@ -48,6 +48,7 @@ module.exports = {
                 light: {
                     colors: {
                         primary: '#FFFFFF',
+                        content1: '#EBEEF0',
                         secondary: {
                             DEFAULT: '#000000',
                             foreground: '#FFFFFF',
@@ -57,6 +58,7 @@ module.exports = {
                 dark: {
                     colors: {
                         primary: '#000000',
+                        content1: '#000000',
                         secondary: {
                             DEFAULT: '#FFFFFF',
                             foreground: '#000000',
