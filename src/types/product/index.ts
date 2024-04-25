@@ -7,6 +7,7 @@ export interface ProductVariant {
 
 export interface Product {
     id: string;
+    isNew: boolean;
     title: string;
     description: string;
     slug: string;
