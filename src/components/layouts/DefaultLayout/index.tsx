@@ -4,6 +4,7 @@ import { useDisclosure } from '@nextui-org/react'
 import CartDrawer from '../../cart/drawer'
 import { Navbar } from '../../core/Navbar'
 import React from 'react'
+import Footer from '../../core/Footer/Footer'
 
 interface CartDrawerContextProps {
     isCartOpen: boolean
@@ -45,6 +46,7 @@ export default function DefaultLayout({
                 />
                 <Navbar />
                 {children}
+                <Footer />
             </CartDrawerContext.Provider>
         </div>
     )
