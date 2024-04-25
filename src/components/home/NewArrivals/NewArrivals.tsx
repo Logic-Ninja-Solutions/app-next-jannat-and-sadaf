@@ -1,8 +1,9 @@
 import React from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
-import products from './products.json'
+
 import ProductCard from '../../product/ProductCard/ProductCard'
+import { Product } from '../../../types/product'
 
 // sm	640px	@media (min-width: 640px) { ... }
 // md	768px	@media (min-width: 768px) { ... }
@@ -10,14 +11,15 @@ import ProductCard from '../../product/ProductCard/ProductCard'
 // xl	1280px	@media (min-width: 1280px) { ... }
 // 2xl	1536px	@media (min-width: 1536px) { ... }
 
-function NewArrivals() {
+type Props = {
+    products: Product[]
+}
+
+function NewArrivals({products}: Props) {
     const [sliderRef] = useKeenSlider({
         slides: { perView: 2, spacing: 5 },
         mode: 'free-snap',
         breakpoints: {
-            // '(min-width: 640px)': {
-            //     slides: { perView: 2, spacing: 5 },
-            // },
             '(min-width: 768px)': {
                 slides: { perView: 2, spacing: 10 },
             },

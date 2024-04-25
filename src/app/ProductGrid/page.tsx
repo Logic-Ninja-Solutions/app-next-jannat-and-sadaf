@@ -6,8 +6,7 @@ import {
     Card,
     CardFooter,
     CardHeader,
-    Image,
-    Spinner,
+    Image
 } from '@nextui-org/react'
 import Link from 'next/link'
 import { Product } from '../../types/product'
