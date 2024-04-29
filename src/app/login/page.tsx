@@ -10,6 +10,7 @@ import { useFormState, useFormStatus } from 'react-dom'
 
 function LoginButton() {
     const { pending } = useFormStatus()
+    
 
     return (
         <Button isLoading={pending} type="submit" fullWidth color="secondary">
@@ -18,24 +19,29 @@ function LoginButton() {
     )
 }
 
+interface LoginFormState {
+    message: string
+}
+
 export default function Login() {
-    const [errorState, dispatch] = useFormState<string | undefined, FormData>(
-        authenticate,
-        ""
-    )
+    const initialState: LoginFormState | null = {
+        message: '',
+    }
+
+    const [formState, formAction] = useFormState(authenticate, initialState)
     const router = useRouter()
     const client = useQueryClient()
 
     useEffect(() => {
-        if (errorState==null) {
+        if (formState == null) {
             client.invalidateQueries();
             router.replace('/')
         }
-    }, [client, errorState, router])
+    }, [client, formState, router])
 
     return (
         <div className="flex items-center justify-center h-screen">
-            <form action={dispatch}>
+            <form action={formAction}>
                 <Card className="p-6 sm:min-w-[400px]">
                     <CardBody className="gap-3">
                         <Input
@@ -65,8 +71,8 @@ export default function Login() {
                             </Link>
                         </div>
 
-                        {errorState && (
-                            <p className="text-danger">{errorState}</p>
+                        {formState?.message && (
+                            <p className="text-danger">{formState?.message}</p>
                         )}
 
                         <LoginButton />

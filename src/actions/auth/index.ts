@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { z } from 'zod'
 import { User } from '../../types/user'
 import serverInstance from '../api'
+import { AxiosError } from 'axios'
 
 type Credentials = {
     email: string
@@ -19,17 +20,20 @@ export async function signIn(credentials: Credentials) {
         })
         .safeParse(credentials)
 
-    if (parsedCredentials.success) {
-        const response = await serverInstance.post(
-            '/auth/login',
-            parsedCredentials.data
-        )
-        const data = response.data
-        const token = data.token
+    if (!parsedCredentials.success) {
+        throw new Error('Invalid credentials')
+    }
 
-        if (token) {
-            cookies().set('token', data.token)
-        }
+    const response = await serverInstance.post(
+        '/auth/login',
+        parsedCredentials.data
+    )
+
+    const data = response.data
+    const token = data.token
+
+    if (token) {
+        cookies().set('token', data.token)
     }
 }
 
@@ -47,7 +51,7 @@ export async function unauthenticate() {
 }
 
 export async function authenticate(
-    prevState: string | undefined | null,
+    prevState: { message: string } | null,
     formData: FormData
 ) {
     try {
@@ -58,7 +62,19 @@ export async function authenticate(
 
         return null
     } catch (error: any) {
-        return error?.message ?? 'Something went wrong.'
+        const defaultMessage = 'Something went wrong.'
+        if (error instanceof AxiosError)
+            return {
+                message: error?.response?.data?.message ?? defaultMessage,
+            }
+        if (error instanceof Error)
+            return {
+                message: error?.message ?? defaultMessage,
+            }
+
+        return {
+            message: defaultMessage,
+        }
     }
 }
 
