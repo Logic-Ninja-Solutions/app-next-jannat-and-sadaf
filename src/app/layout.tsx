@@ -5,10 +5,9 @@ import { font } from '@styles/font'
 import clsx from 'clsx'
 import type { Metadata } from 'next'
 import ClientProvider from '../providers/Client'
-import AuthProvider from '../providers/Session'
+
+import AuthProvider from '../providers/Auth/AuthProvider'
 import { NextUIKitProvider } from '../providers/Ui'
-import { isAuthenticated } from '../actions/auth'
-import { User } from '../types/user'
 
 export const metadata: Metadata = {
     title: 'Jannat & Sadaf',
@@ -20,15 +19,6 @@ export default async function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-    let user: User | undefined
-    await isAuthenticated()
-        .then((res) => {
-            user = res.user
-        })
-        .catch(() => {
-            user = undefined
-        })
-
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
@@ -45,7 +35,7 @@ export default async function RootLayout({
                     }}
                 >
                     <ClientProvider>
-                        <AuthProvider user={user}>
+                        <AuthProvider>
                             <DefaultLayout>{children}</DefaultLayout>
                         </AuthProvider>
                     </ClientProvider>

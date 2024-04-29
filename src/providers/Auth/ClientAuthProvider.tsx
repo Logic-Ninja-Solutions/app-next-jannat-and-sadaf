@@ -1,11 +1,10 @@
 'use client'
 
 import { redirect, usePathname, useSearchParams } from 'next/navigation'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { User } from '../../types/user'
 
-type AuthProviderProps = {
-    children: React.ReactNode
+type AuthProviderProps = PropsWithChildren & {
     user?: User
 }
 
@@ -16,7 +15,7 @@ function isInRoutes(url: string, routes: string[]) {
     return routes.some((route) => url.startsWith(route))
 }
 
-function AuthProvider({ children, user }: AuthProviderProps) {
+function ClientAuthProvider({ children, user }: AuthProviderProps) {
     const path = usePathname()
     const isLoggedIn = !!user
     const inAuthenticatedRoutes = isInRoutes(path, authenticatedRoutes)
@@ -36,4 +35,4 @@ function AuthProvider({ children, user }: AuthProviderProps) {
     return <>{children}</>
 }
 
-export default AuthProvider
+export default ClientAuthProvider
