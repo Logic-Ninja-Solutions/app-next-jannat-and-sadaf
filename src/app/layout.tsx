@@ -7,17 +7,28 @@ import type { Metadata } from 'next'
 import ClientProvider from '../providers/Client'
 import AuthProvider from '../providers/Session'
 import { NextUIKitProvider } from '../providers/Ui'
+import { isAuthenticated } from '../actions/auth'
+import { User } from '../types/user'
 
 export const metadata: Metadata = {
     title: 'Jannat & Sadaf',
     description: 'Jannat & Sadaf',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    let user: User | undefined
+    await isAuthenticated()
+        .then((res) => {
+            user = res.user
+        })
+        .catch(() => {
+            user = undefined
+        })
+
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
@@ -34,7 +45,7 @@ export default function RootLayout({
                     }}
                 >
                     <ClientProvider>
-                        <AuthProvider>
+                        <AuthProvider user={user}>
                             <DefaultLayout>{children}</DefaultLayout>
                         </AuthProvider>
                     </ClientProvider>
