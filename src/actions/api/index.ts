@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { getAccessToken } from '../auth'
 
-
-const baseUrl = 'http://localhost:3000/api'
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const serverInstance = axios.create({
     baseURL: baseUrl,
