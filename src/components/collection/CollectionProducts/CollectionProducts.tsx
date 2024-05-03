@@ -1,7 +1,7 @@
 'use client'
 
 import { ProductActionType } from '../../../actions/product/enums'
-import ProductGrid from '../../../app/ProductGrid/page'
+import ProductGrid from '../../ProductGrid/page'
 import { usePaginatedInfiniteQuery } from '../../../hooks/paginatedQuery'
 import { Product } from '../../../types/product'
 
