@@ -57,11 +57,11 @@ module.exports = {
                 },
                 dark: {
                     colors: {
-                        primary: '#000000',
+                        primary: '#000000', 
                         content1: '#000000',
                         secondary: {
-                            DEFAULT: '#FFFFFF',
-                            foreground: '#000000',
+                            DEFAULT: '#FFDFC4', 
+                            foreground: '#1E1E1E',
                         },
                     },
                 },

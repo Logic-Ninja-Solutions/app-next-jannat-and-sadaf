@@ -96,3 +96,4 @@ export async function signUp(formData: CreateUserInput) {
         password: formData.password,
     })
 }
+
