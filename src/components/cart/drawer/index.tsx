@@ -3,13 +3,15 @@ import { CartActionType } from '@/src/actions/cart/enums'
 import { formatPrice } from '@/src/models/product'
 import { CartItem } from '@/src/types/common'
 import { Button } from '@nextui-org/button'
-import { Chip, Image, Spinner } from '@nextui-org/react'
+import { Chip, Image, Spinner, useDisclosure } from '@nextui-org/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { FaEye, FaTrash } from 'react-icons/fa'
 import Drawer, { DrawerBody, DrawerFooter, DrawerHeader } from '../../drawer'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
+import CustomSizeModalStatic from '../../product/CustomSizeModal/static'
+import { CustomSizes } from '../../../models/custom.sizes'
 
 type Props = {
     isOpen: boolean
@@ -42,8 +44,24 @@ function CartBody({ cart }: CartBodyProps) {
 
     const { closeCart } = useContext(CartDrawerContext)
 
+    const {
+        isOpen: isCustomSizesModalOpened,
+        onOpen: openCustomSizesModal,
+        onClose: closeCustomSizesModal,
+        onOpenChange: onCustomSizesModalOpenChange,
+    } = useDisclosure()
+
+    const [cartSizes, setCartSizes] = useState<CustomSizes>({})
+
     return (
         <>
+            <CustomSizeModalStatic
+                sizes={cartSizes}
+                opened={isCustomSizesModalOpened}
+                close={closeCustomSizesModal}
+                onOpenChange={onCustomSizesModalOpenChange}
+            />
+
             {cart?.map((item, index) => (
                 <div
                     key={index}
@@ -63,6 +81,31 @@ function CartBody({ cart }: CartBodyProps) {
 
                         <div className="flex flex-col gap-2">
                             <p>{item.title}</p>
+                            {item.variant.size === 'Custom' && (
+                                <div className="my-[-4px]">
+                                    {item.customSizePreference == 'custom' ? (
+                                        <>
+                                            <Button
+                                                size="sm"
+                                                onClick={() => {
+                                                    openCustomSizesModal()
+                                                    setCartSizes(
+                                                        item.customSizeData
+                                                    )
+                                                }}
+                                            >
+                                                <p className="italic text-xs">
+                                                    Custom Dimensions
+                                                </p>
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <p className="italic text-xs">
+                                            You will recieve a callback
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                             <p>{item.variant.size}</p>
                             <p>{formatPrice(item.variant.price)}</p>
                             <div className="flex gap-3">

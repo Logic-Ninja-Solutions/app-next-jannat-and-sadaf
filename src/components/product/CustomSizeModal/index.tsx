@@ -1,8 +1,7 @@
-import { BackSizes, CustomSizes, FrontSizes } from '@/src/models/custom.sizes'
+import { CustomSizes } from '@/src/models/custom.sizes'
 import {
     Button,
     Card,
-    Image,
     Input,
     Modal,
     ModalBody,
@@ -15,8 +14,12 @@ import {
 
 import { Key } from '@react-types/shared'
 import clsx from 'clsx'
+import Image from 'next/image'
 import { useState } from 'react'
 import { Control, Controller } from 'react-hook-form'
+import backImage from './back_chart.png'
+import frontImage from './front_chart.png'
+import { backSizes, frontSizes } from './constants'
 
 interface CustomSizeFormProps {
     control: Control<CustomSizes>
@@ -28,40 +31,11 @@ interface CustomSizeModalProps extends CustomSizeFormProps {
     onOpenChange?: (opened: boolean) => void
 }
 
-const frontImage = 'size_chart_front.png'
-const backImage = 'size_chart_back.png'
-
-const frontSizes: (keyof FrontSizes)[] = [
-    'Neck Path',
-    'Sleeve Length',
-    'Shirt Length',
-    'Bust Circumference',
-    'Waist',
-    'Hip Circumference',
-    'Thigh Circumference',
-    'Knee Circumference',
-    'Calf Circumference',
-    'Ankle',
-]
-
-const backSizes: (keyof BackSizes)[] = [
-    'Back Next Depth',
-    'Cross Shoulder',
-    'Trouser Length',
-    'Armhole',
-    'Bicep',
-]
-
 function FrontSizesForm({ control }: CustomSizeFormProps) {
     return (
         <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
-                <Image
-                    className="bg-gray-200  "
-                    radius="lg"
-                    src={frontImage}
-                    alt="front"
-                />
+                <Image className="bg-gray-200  " src={frontImage} alt="front" />
             </div>
             <div
                 className={clsx(
@@ -92,12 +66,7 @@ function BackSizesForm({ control }: CustomSizeFormProps) {
     return (
         <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
-                <Image
-                    className="bg-gray-200  "
-                    radius="lg"
-                    src={backImage}
-                    alt="front"
-                />
+                <Image className="bg-gray-200" src={backImage} alt="front" />
             </div>
             <div
                 className={clsx(

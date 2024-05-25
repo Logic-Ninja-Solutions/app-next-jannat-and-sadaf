@@ -6,7 +6,7 @@ import serverInstance from '../api'
 
 
 export async function getProduct(slug: string) {
-    const response = await serverInstance.get(`product/slug/${slug}`)
+    const response = await serverInstance.get<Product>(`product/slug/${slug}`)
     const product = response.data
     return product
 }

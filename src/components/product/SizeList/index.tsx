@@ -2,7 +2,6 @@ import { Button } from '@nextui-org/react'
 import clsx from 'clsx'
 import { ProductVariant } from '../../../types/product'
 
-
 interface SizesListProps {
     variants: ProductVariant[]
     selectedVariant: ProductVariant | undefined
@@ -26,10 +25,10 @@ export default function SizesList({
                         isIconOnly={variant.size != 'Custom'}
                         key={index}
                         className={clsx(
+                            'min-w-fit px-2',
                             selectedVariant?.size === variant.size &&
                                 'bg-secondary text-foreground-50',
-                            (variant.quantity === 0 || !variant.isAvailable) &&
-                                'line-through'
+                            !variant.isAvailable && 'line-through'
                         )}
                     >
                         {variant.size}
