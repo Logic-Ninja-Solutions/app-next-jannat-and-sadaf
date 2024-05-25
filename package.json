@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "start": "next start -p 3001",
+    "pm2-start": "pm2 start npm --name 'app-fe' -- start",
     "build": "next build",
     "lint": "next lint",
     "vercel-build": "next build"
