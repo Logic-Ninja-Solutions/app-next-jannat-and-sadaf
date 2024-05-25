@@ -212,11 +212,15 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                         )}
                     </div>
                 ) : (
-                    <div>
-                        <Button onClick={openVariantSizeChartModal}>
-                            Size Chart
-                        </Button>
-                    </div>
+                    <>
+                        {(selectedVariant?.sizeMetadata?.length ?? 0) > 0 && (
+                            <div>
+                                <Button onClick={openVariantSizeChartModal}>
+                                    Size Chart
+                                </Button>
+                            </div>
+                        )}
+                    </>
                 )}
 
                 <div className="flex flex-col gap-5 text-md p-5 sm:p-0">
