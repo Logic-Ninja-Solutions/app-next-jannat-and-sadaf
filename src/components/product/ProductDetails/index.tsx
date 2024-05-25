@@ -9,6 +9,7 @@ import { Button } from '@nextui-org/button'
 import {
     Accordion,
     AccordionItem,
+    Link,
     Radio,
     RadioGroup,
     useDisclosure,
@@ -247,7 +248,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 </div>
 
                 <div className="px-4 sm:px-0">
+                    {/* +92 300 8663210 */}
                     <Button
+                        as={Link}
+                        href="https://wa.me/923008663210"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="uppercase mt-4"
                         color="success"
                         variant="bordered"
