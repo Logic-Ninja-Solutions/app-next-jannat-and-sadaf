@@ -1,13 +1,7 @@
 'use client'
 
 import { formatPrice } from '@/src/models/product'
-import {
-    Button,
-    Card,
-    CardFooter,
-    CardHeader,
-    Image
-} from '@nextui-org/react'
+import { Button, Card, CardFooter, CardHeader, Image } from '@nextui-org/react'
 import Link from 'next/link'
 import { Product } from '../../types/product'
 
@@ -74,9 +68,11 @@ export default function ProductGrid({
                 </div>
             </div>
 
-            <Button disabled={!hasNextPage} onClick={onFetchNextPage}>
-                {isFetchingNextPage ? 'Loading more...' : 'Load more'}
-            </Button>
+            {hasNextPage && (
+                <Button disabled={!hasNextPage} onClick={onFetchNextPage}>
+                    {isFetchingNextPage ? 'Loading more...' : 'Load more'}
+                </Button>
+            )}
         </section>
     )
 }
