@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react'
-import { isAuthenticated } from '../../actions/auth'
 import { User } from '../../types/user'
 import ClientAuthProvider from './ClientAuthProvider'
+import { isAuthenticated } from '../../actions/auth/auth'
 
 type AuthProviderProps = PropsWithChildren
 

@@ -1,6 +1,5 @@
 'use client'
 
-import { isAuthenticated } from '@/src/actions/auth'
 import { AuthAction } from '@/src/actions/auth/enum'
 import { getCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
@@ -14,6 +13,7 @@ import { Spinner, Button } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { isAuthenticated } from '../../actions/auth/auth'
 
 export default function Checkout() {
     const { data: cart, isLoading: isCartLoading } = useQuery({
@@ -36,7 +36,7 @@ export default function Checkout() {
         enabled: isAuthSuccess && !!auth,
     })
 
-    const userData = user?.user;
+    const userData = user?.user
 
     const [selectedAddressID, setSelectedAddressID] = useState<
         string | undefined
@@ -85,7 +85,7 @@ export default function Checkout() {
     if (!userData?.id)
         return (
             <div className="m-auto">
-                <div className="flex flex-col gap-5 items-center justify-center debug">
+                <div className="flex flex-col gap-5 items-center justify-center">
                     <p>You need to be signed in to continue</p>
                     <div className="flex justify-center mt-5">
                         <Button as={Link} href="/login">

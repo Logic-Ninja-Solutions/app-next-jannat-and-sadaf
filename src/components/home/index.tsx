@@ -27,12 +27,14 @@ function HomePage({ collections }: HomePageProps) {
         <>
             <Title>Collections</Title>
             <div className="mb-3" />
-            <div className="container mx-auto flex gap-5 relative justify-center">
+            <div className="container mx-auto flex flex-wrap gap-5 relative justify-center">
                 {collections.map((collection) => (
-                    <CollectionCard
+                    <div
+                        className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
                         key={collection.id}
-                        collection={collection}
-                    />
+                    >
+                        <CollectionCard collection={collection} />
+                    </div>
                 ))}
             </div>
             <div className="mt-10" />
@@ -40,7 +42,6 @@ function HomePage({ collections }: HomePageProps) {
                 <>
                     <Title>New Arrivals</Title>
                     <div className="mb-3" />
-
                     <NewArrivals products={newArrivals ?? []} />
                 </>
             )}

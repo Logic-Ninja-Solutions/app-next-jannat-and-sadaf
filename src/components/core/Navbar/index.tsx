@@ -6,7 +6,7 @@ import {
     Navbar as NextUINavbar,
 } from '@nextui-org/navbar'
 
-import { isAuthenticated, unauthenticate } from '@/src/actions/auth'
+import { unauthenticate } from '@/src/actions/auth'
 import { Logo } from '@components/core/Logo'
 import { ThemeSwitch } from '@components/core/ThemeSwitch'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -16,11 +16,12 @@ import { IoLogOut } from 'react-icons/io5'
 import { CartDrawerContext } from '../../layouts/DefaultLayout'
 import { AuthAction } from '@/src/actions/auth/enum'
 import { useRouter } from 'next/navigation'
+import { isAuthenticated } from '../../../actions/auth/auth'
 
 export function Navbar() {
     const { isSuccess } = useQuery({
         queryKey: [AuthAction.auth],
-        queryFn: () => isAuthenticated(),
+        queryFn: isAuthenticated,
     })
 
     const queryClient = useQueryClient()

@@ -1,11 +1,10 @@
 'use server'
 
 import { CreateUserInput } from '@/src/types/common'
+import { AxiosError } from 'axios'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
-import { User } from '../../types/user'
 import serverInstance from '../api'
-import { AxiosError } from 'axios'
 
 type Credentials = {
     email: string
@@ -35,11 +34,6 @@ export async function signIn(credentials: Credentials) {
     if (token) {
         cookies().set('token', data.token)
     }
-}
-
-export async function isAuthenticated() {
-    const response = await serverInstance.get<{ user: User }>('auth')
-    return response.data
 }
 
 export async function getAccessToken() {
@@ -96,4 +90,3 @@ export async function signUp(formData: CreateUserInput) {
         password: formData.password,
     })
 }
-

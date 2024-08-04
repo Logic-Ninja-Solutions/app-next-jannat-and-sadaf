@@ -2,7 +2,7 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { AuthAction } from '../../actions/auth/enum'
-import { isAuthenticated } from '../../actions/auth'
+import { isAuthenticated } from '../../actions/auth/auth'
 
 export function GetCachedAuth(): any {
     const client = useQueryClient()
