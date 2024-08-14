@@ -1,7 +1,11 @@
 'use client'
 
-import { redirect, usePathname, useSearchParams } from 'next/navigation'
-import { PropsWithChildren } from 'react'
+import {
+    usePathname,
+    useRouter,
+    useSearchParams
+} from 'next/navigation'
+import { PropsWithChildren, useEffect } from 'react'
 import AuthUser from '../../actions/auth/models/auth.user'
 import UserProvider from './UserProvider'
 
@@ -25,13 +29,17 @@ function ClientAuthProvider({ children, user }: AuthProviderProps) {
     const searchParams = useSearchParams()
     const callbackURL = searchParams.get('callbackUrl') as string
 
-    if (inAuthenticatedRoutes && !isLoggedIn) {
-        return redirect(`/login?callbackUrl=${path}`)
-    }
+    const router = useRouter()
 
-    if (inUserAuthRoutes && isLoggedIn) {
-        return redirect(callbackURL ?? '/')
-    }
+    useEffect(() => {
+        if (inAuthenticatedRoutes && !isLoggedIn) {
+            router.replace(`/login?callbackUrl=${path}`)
+        }
+
+        if (inUserAuthRoutes && isLoggedIn) {
+            router.replace(callbackURL ?? '/')
+        }
+    }, [isLoggedIn, inAuthenticatedRoutes, inUserAuthRoutes, path])
 
     return <UserProvider user={user}>{children}</UserProvider>
 }
