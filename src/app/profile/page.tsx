@@ -17,7 +17,7 @@ export default function Profile() {
     const auth = { user: authenticatedUser }
 
     const { data: user, isLoading: isUserLoading } = useQuery({
-        queryKey: [ProfileAction.getUser],
+        queryKey: [ProfileAction.getUser, auth?.user?.email],
         queryFn: () => getUserData(auth?.user?.email),
         enabled: !!auth,
     })

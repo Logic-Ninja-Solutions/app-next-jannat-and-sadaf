@@ -39,7 +39,7 @@ function ClientAuthProvider({ children, user }: AuthProviderProps) {
         if (inUserAuthRoutes && isLoggedIn) {
             router.replace(callbackURL ?? '/')
         }
-    }, [isLoggedIn, inAuthenticatedRoutes, inUserAuthRoutes, path])
+    }, [isLoggedIn, inAuthenticatedRoutes, inUserAuthRoutes, path, router, callbackURL])
 
     return <UserProvider user={user}>{children}</UserProvider>
 }

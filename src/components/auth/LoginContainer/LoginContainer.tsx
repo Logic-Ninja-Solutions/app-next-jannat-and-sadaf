@@ -1,20 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import { Button, Card, CardBody, Checkbox, Input } from '@nextui-org/react'
-import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { authenticate } from '../../../actions/auth/actions'
 import PasswordField from '../PasswordField'
+import { ProfileAction } from '../../../actions/profile/enum'
 
 export default function LoginContainer() {
     const [formState, setFormState] = useState<{ message: string } | null>(null)
     const router = useRouter()
     const client = useQueryClient()
-
-    const searchParams = useSearchParams()
-    const callbackUrl = searchParams.get('callbackUrl')
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -27,7 +25,9 @@ export default function LoginContainer() {
 
         const response = await authenticate(email, password)
         if (response === null) {
-            client.clear();
+            client.invalidateQueries({
+                queryKey: [ProfileAction.getUser]
+            })
             router.refresh()
         } else {
             setFormState(response)
