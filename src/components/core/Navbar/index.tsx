@@ -5,7 +5,7 @@ import {
     NavbarItem,
     Navbar as NextUINavbar,
 } from '@nextui-org/navbar'
-
+import { Tooltip } from '@nextui-org/react'
 import { unauthenticate } from '@/src/actions/auth'
 import { AuthAction } from '@/src/actions/auth/enum'
 import { Logo } from '@components/core/Logo'
@@ -47,25 +47,33 @@ export function Navbar() {
 
             <NavbarContent className="flex" justify="end">
                 <NavbarItem className="flex gap-5">
-                    <Link href="/profile">
-                        <FaUser className="text-default-500" />
-                    </Link>
+                    <Tooltip content="Profile">
+                        <Link href="/profile">
+                            <FaUser className="text-default-500" />
+                        </Link>
+                    </Tooltip>
 
-                    <Link href="#" onClick={openCart}>
-                        <FaShoppingBag className="text-default-500" />
-                    </Link>
+                    <Tooltip content="Cart">
+                        <Link href="#" onClick={openCart}>
+                            <FaShoppingBag className="text-default-500" />
+                        </Link>
+                    </Tooltip>
 
                     {isSuccess && (
-                        <Link
-                            href="#"
-                            onClick={async () => {
-                                await logoutMutation.mutateAsync()
-                            }}
-                        >
-                            <IoLogOut size={20} className="text-default-500" />
-                        </Link>
+                        <Tooltip content="Logout">
+                            <Link
+                                href="#"
+                                onClick={async () => {
+                                    await logoutMutation.mutateAsync()
+                                }}
+                            >
+                                <IoLogOut size={20} className="text-default-500" />
+                            </Link>
+                        </Tooltip>
                     )}
+                    
                     <ThemeSwitch />
+                    
                 </NavbarItem>
             </NavbarContent>
         </NextUINavbar>
