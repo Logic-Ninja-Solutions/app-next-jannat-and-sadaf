@@ -10,10 +10,11 @@ import { Card, CardBody, Spacer, Spinner, Tab, Tabs } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { GetAuth } from '../../api/user'
+import { useUserContext } from '../../providers/Auth/UserProvider'
 
 export default function Profile() {
-    const { data: auth } = GetAuth()
+    const { user: authenticatedUser } = useUserContext()
+    const auth = { user: authenticatedUser }
 
     const { data: user, isLoading: isUserLoading } = useQuery({
         queryKey: [ProfileAction.getUser],
@@ -33,7 +34,11 @@ export default function Profile() {
     }, [searchParams])
 
     if (isUserLoading || !userData) {
-        return <Spinner color="secondary" />
+        return (
+            <div className="flex items-center justify-center">
+                <Spinner color="secondary" />
+            </div>
+        )
     }
 
     return (

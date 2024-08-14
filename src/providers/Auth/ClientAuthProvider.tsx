@@ -1,11 +1,12 @@
 'use client'
 
 import { redirect, usePathname, useSearchParams } from 'next/navigation'
-import React, { PropsWithChildren } from 'react'
-import { User } from '../../types/user'
+import { PropsWithChildren } from 'react'
+import AuthUser from '../../actions/auth/models/auth.user'
+import UserProvider from './UserProvider'
 
 type AuthProviderProps = PropsWithChildren & {
-    user?: User
+    user?: AuthUser
 }
 
 const authenticatedRoutes = ['/profile']
@@ -32,7 +33,7 @@ function ClientAuthProvider({ children, user }: AuthProviderProps) {
         return redirect(callbackURL ?? '/')
     }
 
-    return <>{children}</>
+    return <UserProvider user={user}>{children}</UserProvider>
 }
 
 export default ClientAuthProvider

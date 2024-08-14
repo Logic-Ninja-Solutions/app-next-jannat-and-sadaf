@@ -1,6 +1,5 @@
 'use client'
 
-import { AuthAction } from '@/src/actions/auth/enum'
 import { getCart } from '@/src/actions/cart'
 import { CartActionType } from '@/src/actions/cart/enums'
 import { paymentMethods, shippingMethods } from '@/src/actions/order/constants'
@@ -9,11 +8,13 @@ import { ProfileAction } from '@/src/actions/profile/enum'
 import { UseCreateOrderMutation } from '@/src/api/order/mutations'
 import CartInfo from '@/src/components/checkout/CartInfo'
 import UserInfo from '@/src/components/checkout/UserInfo'
-import { Spinner, Button } from '@nextui-org/react'
+import { Button, Link, Spinner } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { isAuthenticated } from '../../actions/auth/auth'
+import { useForm } from 'react-hook-form'
+import { useUserContext } from '../../providers/Auth/UserProvider'
+import { GuestAddress } from '../../types/address'
+import { showErrorToast } from '../../utils/toaster'
 
 export default function Checkout() {
     const { data: cart, isLoading: isCartLoading } = useQuery({
@@ -21,19 +22,14 @@ export default function Checkout() {
         queryFn: getCart,
     })
 
-    const {
-        data: auth,
-        isSuccess: isAuthSuccess,
-        isLoading: isAuthLoading,
-    } = useQuery({
-        queryKey: [AuthAction.auth],
-        queryFn: isAuthenticated,
-    })
+    const { user: authenticatedUser } = useUserContext()
+    const auth = { user: authenticatedUser }
 
     const { data: user, isLoading: isUserLoading } = useQuery({
         queryKey: [ProfileAction.getUser],
         queryFn: () => getUserData(auth?.user?.email),
-        enabled: isAuthSuccess && !!auth,
+        enabled: !!authenticatedUser,
+        staleTime: 0,
     })
 
     const userData = user?.user
@@ -59,39 +55,71 @@ export default function Checkout() {
     }, [defaultAddress])
 
     const price = cart?.reduce((acc, curr) => acc + curr.variant.price, 0) || 0
+
+    const {
+        control: guestAddressFormControl,
+        getValues: guestAddressGetValues,
+        handleSubmit: guestAddressHandleSubmit,
+        setValue,
+        formState: {
+            isValid: guestAddressFormIsValid,
+            errors: guestAddressFormErrors,
+        },
+    } = useForm<GuestAddress>({})
+
     const orderMutation = UseCreateOrderMutation({
-        userID: userData?.id!,
-        addressID: selectedAddressID!,
-        paymentMethod: 'Cash on Delivery',
+        userID: userData?.id,
+        addressID: selectedAddressID,
+        paymentMethod: selectedPaymentMethod,
         cart: cart!,
         finalPrice: price,
+        guestAddressInfo: guestAddressGetValues(),
     })
 
     async function onCreateOrder() {
-        if (!userData?.id) return null
+        if (userData && !selectedAddressID) {
+            showErrorToast('Please select an address')
+            return
+        }
+        if (!selectedShippingMethod) {
+            showErrorToast('Please select a shipping method')
+            return
+        }
+        if (!userData) {
+            const values = guestAddressGetValues()
+            if (!values.guestEmail || values.guestEmail === '') {
+                showErrorToast('Please provide an email')
+                return
+            }
+
+            if (!guestAddressFormIsValid) {
+                showErrorToast(
+                    'Please fill all required fields in the address form'
+                )
+                return
+            }
+        }
+
+        console.log('Creating order')
         await orderMutation.mutateAsync()
     }
 
-    if (isCartLoading || isAuthLoading || isUserLoading)
-        return <Spinner color="secondary" />
+    if (isCartLoading || isUserLoading) {
+        return (
+            <div className="flex items-center justify-center">
+                <Spinner color="secondary" />
+            </div>
+        )
+    }
 
     if (cart?.length === 0)
         return (
-            <div className="m-auto">
-                <p>Your cart is empty</p>
-            </div>
-        )
-
-    if (!userData?.id)
-        return (
-            <div className="m-auto">
-                <div className="flex flex-col gap-5 items-center justify-center">
-                    <p>You need to be signed in to continue</p>
-                    <div className="flex justify-center mt-5">
-                        <Button as={Link} href="/login">
-                            Login
-                        </Button>
-                    </div>
+            <div className="flex items-center justify-center">
+                <div className="flex flex-col gap-5 items-center">
+                    <p>Your cart is empty</p>
+                    <Button href="/" as={Link}>
+                        Continue Shopping
+                    </Button>
                 </div>
             </div>
         )
@@ -113,10 +141,16 @@ export default function Checkout() {
                             selectedPaymentMethod={selectedPaymentMethod}
                             setSelectedPaymentMethod={setSelectedPaymentMethod}
                             userData={userData}
+                            guestAddressFormControl={guestAddressFormControl}
                         />
                     </div>
                     <div className="h-full col-span-2 md:col-span-1">
                         <CartInfo cart={cart} totalPrice={price} />
+                        {!userData && (
+                            <Button as={Link} href="/login">
+                                Login Here
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

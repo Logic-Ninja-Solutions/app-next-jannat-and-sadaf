@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react'
-import { User } from '../../types/user'
 import ClientAuthProvider from './ClientAuthProvider'
 import { isAuthenticated } from '../../actions/auth/auth'
+import AuthUser from '../../actions/auth/models/auth.user'
 
 type AuthProviderProps = PropsWithChildren
 
 async function AuthProvider({ children }: AuthProviderProps) {
-    let user: User | undefined
+    let user: AuthUser | undefined
     await isAuthenticated()
         .then((res) => {
             user = res.user
@@ -15,7 +15,11 @@ async function AuthProvider({ children }: AuthProviderProps) {
             user = undefined
         })
 
-    return <ClientAuthProvider user={user}>{children}</ClientAuthProvider>
+    return (
+        <ClientAuthProvider key={user?.email} user={user}>
+            {children}
+        </ClientAuthProvider>
+    )
 }
 
 export default AuthProvider

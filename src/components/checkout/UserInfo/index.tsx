@@ -6,15 +6,20 @@ import {
     Card,
     CardBody,
     Chip,
+    Input,
     Radio,
     RadioGroup,
     useDisclosure,
 } from '@nextui-org/react'
+import Link from 'next/link'
 import { useState } from 'react'
+import { Control, Controller } from 'react-hook-form'
 import { FaEdit, FaPlus } from 'react-icons/fa'
-import { Address } from '../../../types/address'
+import { Address, GuestAddress } from '../../../types/address'
 import { User } from '../../../types/user'
 import AddressForm from '../../profile/AddressForm'
+import BankDetails from '../BankDetails'
+import GuestAddressForm from '../GuessAddressForm'
 
 interface AddressCardProps {
     address: Address
@@ -52,6 +57,8 @@ interface UserInfoProps {
 
     isLoading?: boolean
     onCreateOrder?: () => void
+
+    guestAddressFormControl: Control<GuestAddress>
 }
 
 export default function UserInfo({
@@ -67,9 +74,9 @@ export default function UserInfo({
 
     isLoading,
     onCreateOrder,
+    guestAddressFormControl,
 }: UserInfoProps) {
-    const [selectedEditAddress, setSelectedEditAddress] =
-        useState<Address>()
+    const [selectedEditAddress, setSelectedEditAddress] = useState<Address>()
 
     function handleAddressEdit(address: Address) {
         setSelectedEditAddress(address)
@@ -82,6 +89,10 @@ export default function UserInfo({
         onOpenChange: onAddressModalOpenChange,
         onClose: closeAddressModal,
     } = useDisclosure()
+
+    const isNotAllowed = !selectedShippingMethod || !selectedPaymentMethod
+    const isAuthUserNotAllowed = !selectedAddressID || isNotAllowed
+    const isGuestUserNotAllowed = isNotAllowed
 
     return (
         <>
@@ -96,65 +107,102 @@ export default function UserInfo({
             />
             <Card>
                 <CardBody className="p-unit-md">
-                    <Accordion defaultSelectedKeys={['2', '3', '4']}>
+                    <Accordion
+                        selectionMode="multiple"
+                        defaultSelectedKeys={['1', '2', '3', '4']}
+                    >
                         <AccordionItem
                             key="1"
                             aria-label="Account"
                             title="Account"
                         >
-                            <div className="flex justify-between align-middle items-center ">
-                                <p>
-                                    Email: <span>{userData?.email}</span>
-                                </p>
-                                <Button>Logout</Button>
-                            </div>
+                            {userData ? (
+                                <div className="flex justify-between align-middle items-center ">
+                                    <p>
+                                        Email: <span>{userData?.email}</span>
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-5">
+                                    <Controller
+                                        name="guestEmail"
+                                        control={guestAddressFormControl}
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                            <Input
+                                                fullWidth
+                                                {...field}
+                                                label="Guest Email Address"
+                                                placeholder="Enter your email"
+                                                isRequired
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            )}
                         </AccordionItem>
                         <AccordionItem
                             key="2"
                             aria-label="Address"
                             title="Address"
                         >
-                            <RadioGroup
-                                value={selectedAddressID}
-                                onValueChange={setSelectedAddressID}
-                                color="secondary"
-                                label="Select your address"
-                                className="w-ful"
-                            >
-                                {userData?.addresses.map((address, index) => {
-                                    return (
-                                        <div
-                                            key={index}
-                                            className="flex items-center gap-5"
-                                        >
-                                            <Radio
-                                                value={address.id}
-                                                className="mb-5"
-                                            >
-                                                <AddressCard
-                                                    address={address}
-                                                />
-                                            </Radio>
-                                            <Button
-                                                isIconOnly
-                                                onClick={() => {
-                                                    handleAddressEdit(address)
-                                                }}
-                                            >
-                                                <FaEdit />
-                                            </Button>
-                                        </div>
-                                    )
-                                })}
-                            </RadioGroup>
-                            <Button
-                                onClick={() => {
-                                    openAddressModal()
-                                    setSelectedAddressID(undefined)
-                                }}
-                            >
-                                Add Address <FaPlus />
-                            </Button>
+                            {userData ? (
+                                <>
+                                    <RadioGroup
+                                        value={selectedAddressID}
+                                        onValueChange={setSelectedAddressID}
+                                        color="secondary"
+                                        label="Select your address"
+                                        className="w-ful"
+                                    >
+                                        {userData?.addresses.map(
+                                            (address, index) => {
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className="flex items-center gap-5"
+                                                    >
+                                                        <Radio
+                                                            value={address.id}
+                                                            className="mb-5"
+                                                        >
+                                                            <AddressCard
+                                                                address={
+                                                                    address
+                                                                }
+                                                            />
+                                                        </Radio>
+                                                        <Button
+                                                            isIconOnly
+                                                            onClick={() => {
+                                                                handleAddressEdit(
+                                                                    address
+                                                                )
+                                                            }}
+                                                        >
+                                                            <FaEdit />
+                                                        </Button>
+                                                    </div>
+                                                )
+                                            }
+                                        )}
+                                    </RadioGroup>
+                                    <Button
+                                        onClick={() => {
+                                            openAddressModal()
+                                            setSelectedAddressID(undefined)
+                                        }}
+                                    >
+                                        Add Address <FaPlus />
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <GuestAddressForm
+                                        control={guestAddressFormControl}
+                                    />
+                                </>
+                            )}
                         </AccordionItem>
 
                         <AccordionItem
@@ -207,14 +255,17 @@ export default function UserInfo({
                                     )
                                 })}
                             </RadioGroup>
+                            {selectedPaymentMethod === 'Bank Transfer' && (
+                                <BankDetails />
+                            )}
                         </AccordionItem>
                     </Accordion>
 
                     <Button
                         isDisabled={
-                            !selectedAddressID ||
-                            !selectedShippingMethod ||
-                            !selectedPaymentMethod
+                            userData
+                                ? isAuthUserNotAllowed
+                                : isGuestUserNotAllowed
                         }
                         isLoading={isLoading}
                         onClick={onCreateOrder}

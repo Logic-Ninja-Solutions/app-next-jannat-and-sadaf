@@ -1,4 +1,5 @@
 import '@styles/globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 import DefaultLayout from '@components/layouts/DefaultLayout'
 import { font } from '@styles/font'
@@ -8,6 +9,7 @@ import ClientProvider from '../providers/Client'
 
 import AuthProvider from '../providers/Auth/AuthProvider'
 import { NextUIKitProvider } from '../providers/Ui'
+import { ToastContainer } from 'react-toastify'
 
 export const metadata: Metadata = {
     title: 'Jannat & Sadaf',
@@ -36,7 +38,10 @@ export default async function RootLayout({
                 >
                     <ClientProvider>
                         <AuthProvider>
-                            <DefaultLayout>{children}</DefaultLayout>
+                            <DefaultLayout>
+                                {children}
+                                <ToastContainer />
+                            </DefaultLayout>
                         </AuthProvider>
                     </ClientProvider>
                 </NextUIKitProvider>

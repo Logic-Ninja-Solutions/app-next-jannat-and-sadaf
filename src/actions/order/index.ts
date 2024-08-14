@@ -1,16 +1,18 @@
 'use server'
 
 import { CartItem } from '@/src/types/common'
+import { GuestAddress } from '../../types/address'
 import { Order } from '../../types/order'
 import serverInstance from '../api'
 import { OrderStatus } from './enum'
 
 interface CreateOrderProps {
     cart: CartItem[]
-    addressID: string
+    addressID?: string
     finalPrice: number
     userID?: string
     paymentMethod: string
+    guestAddressInfo?: GuestAddress
 }
 
 function generateOrderNumber(length: number): string {
@@ -36,9 +38,8 @@ export async function createOrder({
     userID,
     addressID: addressId,
     paymentMethod,
+    guestAddressInfo,
 }: CreateOrderProps) {
-    if (!userID || !addressId) return null
-
     const data = {
         orderNumber: generateOrderNumber(3),
         items: cart,
@@ -48,6 +49,7 @@ export async function createOrder({
         status: OrderStatus.PENDING,
         paymentMethod,
         addressId: addressId,
+        guestAddressInfo,
     }
 
     const response = await serverInstance.post('order', data)

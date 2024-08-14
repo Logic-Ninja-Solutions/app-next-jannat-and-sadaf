@@ -269,7 +269,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                         Whatsapp
                     </Button>
                 </div>
-
+                {/* 
                 <div className="px-4 sm:px-0">
                     <Button
                         className="uppercase px-4 heart-icon-parent"
@@ -280,7 +280,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                     >
                         Add to Wishlist
                     </Button>
-                </div>
+                </div> */}
 
                 <div className="px-4 sm:px-0">
                     <Accordion>
@@ -299,3 +299,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </>
     )
 }
+
+
+

@@ -1,8 +1,5 @@
-
-
-import { CustomSizes } from "../../models/custom.sizes"
-import { ProductVariant } from "../product"
-
+import { CustomSizes } from '../../models/custom.sizes'
+import { ProductVariant } from '../product'
 
 export type UserUpdateInput = any
 export type CreateUserInput = any

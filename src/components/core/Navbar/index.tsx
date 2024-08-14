@@ -7,22 +7,20 @@ import {
 } from '@nextui-org/navbar'
 
 import { unauthenticate } from '@/src/actions/auth'
+import { AuthAction } from '@/src/actions/auth/enum'
 import { Logo } from '@components/core/Logo'
 import { ThemeSwitch } from '@components/core/ThemeSwitch'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useContext } from 'react'
-import { FaSearch, FaShoppingBag, FaUser } from 'react-icons/fa'
-import { IoLogOut } from 'react-icons/io5'
-import { CartDrawerContext } from '../../layouts/DefaultLayout'
-import { AuthAction } from '@/src/actions/auth/enum'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { isAuthenticated } from '../../../actions/auth/auth'
+import { useContext } from 'react'
+import { FaShoppingBag, FaUser } from 'react-icons/fa'
+import { IoLogOut } from 'react-icons/io5'
+import { useUserContext } from '../../../providers/Auth/UserProvider'
+import { CartDrawerContext } from '../../layouts/DefaultLayout'
 
 export function Navbar() {
-    const { isSuccess } = useQuery({
-        queryKey: [AuthAction.auth],
-        queryFn: isAuthenticated,
-    })
+    const { user: authenticatedUser } = useUserContext()
+    const isSuccess = !!authenticatedUser
 
     const queryClient = useQueryClient()
     const router = useRouter()
@@ -32,7 +30,8 @@ export function Navbar() {
         mutationFn: unauthenticate,
         onSuccess: () => {
             queryClient.invalidateQueries()
-            router.replace('/login')
+            queryClient.clear()
+            router.refresh()
         },
     })
 
@@ -51,9 +50,7 @@ export function Navbar() {
                     <Link href="/profile">
                         <FaUser className="text-default-500" />
                     </Link>
-                    <Link href="#">
-                        <FaSearch className="text-default-500" />
-                    </Link>
+
                     <Link href="#" onClick={openCart}>
                         <FaShoppingBag className="text-default-500" />
                     </Link>

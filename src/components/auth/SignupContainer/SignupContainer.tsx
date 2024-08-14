@@ -1,12 +1,13 @@
 'use client'
 
-import { signUp } from '@/src/actions/auth'
 import { CreateUserInput } from '@/src/types/common'
 import { Button, Card, CardBody, Input } from '@nextui-org/react'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { signUp } from '../../../actions/auth/actions'
+import PasswordField from '../PasswordField'
 
 export default function SignupContainer() {
     const {
@@ -19,7 +20,7 @@ export default function SignupContainer() {
     const signUpMutation = useMutation({
         mutationKey: ['signup'],
         mutationFn: signUp,
-        onError: (error) => {
+        onError: () => {
             setError(true)
         },
     })
@@ -87,8 +88,8 @@ export default function SignupContainer() {
                             })}
                             radius={'md'}
                             type="phone"
-                            label="PhoneNumber"
-                            placeholder="Enter your phone Number"
+                            label="Phone Number"
+                            placeholder="Enter your phone number"
                         />
                         {errors.phone && (
                             <p className="text-danger text-sm">
@@ -96,14 +97,14 @@ export default function SignupContainer() {
                             </p>
                         )}
 
-                        <Input
-                            {...register('password', {
-                                required: 'Password is required',
-                            })}
-                            radius={'md'}
-                            type="password"
-                            label="password"
+                        <PasswordField
+                            label="Password"
                             placeholder="Enter your password"
+                            otherProps={{
+                                ...register('password', {
+                                    required: 'Password is required',
+                                }),
+                            }}
                         />
                         {errors.password && (
                             <p className="text-danger text-sm">
@@ -111,17 +112,17 @@ export default function SignupContainer() {
                             </p>
                         )}
 
-                        <Input
-                            {...register('confirmPassword', {
-                                required: 'Confirm password is required',
-                                validate: (value) =>
-                                    value === watch('password') ||
-                                    'The passwords do not match',
-                            })}
-                            radius={'md'}
-                            type="password"
-                            label="Confirm password"
+                        <PasswordField
+                            label="Confirm Password"
                             placeholder="Confirm your password"
+                            otherProps={{
+                                ...register('confirmPassword', {
+                                    required: 'Confirm password is required',
+                                    validate: (value) =>
+                                        value === watch('password') ||
+                                        'The passwords do not match',
+                                }),
+                            }}
                         />
                         {errors.confirmPassword && (
                             <p className="text-danger text-sm">
