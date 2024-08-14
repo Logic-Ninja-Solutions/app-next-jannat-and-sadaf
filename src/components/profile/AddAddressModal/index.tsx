@@ -57,7 +57,6 @@ export default function AddressModal({
                                 <Controller
                                     name="addressLine2"
                                     control={control}
-                                    rules={{ required: true }}
                                     render={({ field }) => (
                                         <Input
                                             {...field}

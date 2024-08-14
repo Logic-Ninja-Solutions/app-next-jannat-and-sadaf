@@ -73,7 +73,7 @@ function OrderInfo({ order }: OrderInfoProps) {
                 </div>
 
                 <CardFooter className="flex justify-end">
-                    <span>Total Price: ${order.totalPrice}</span>
+                    <span>Total Price: PKR {order.totalPrice}</span>
                 </CardFooter>
             </Card>
             <Divider className="my-3" />
