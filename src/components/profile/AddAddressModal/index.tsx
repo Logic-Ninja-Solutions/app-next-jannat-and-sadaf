@@ -50,6 +50,7 @@ export default function AddressModal({
                                             {...field}
                                             label={'Address Line 1'}
                                             placeholder="1234 Main St"
+                                            isRequired
                                         />
                                     )}
                                 />
@@ -79,6 +80,7 @@ export default function AddressModal({
                                             fullWidth
                                             label={'Contact Number'}
                                             placeholder="Contact Number"
+                                            isRequired
                                         />
                                     )}
                                 />
@@ -125,6 +127,7 @@ export default function AddressModal({
                                                 fullWidth
                                                 label={'City'}
                                                 placeholder="Karachi"
+                                                isRequired
                                             />
                                         )}
                                     />
