@@ -27,12 +27,8 @@ export default function LoginContainer() {
 
         const response = await authenticate(email, password)
         if (response === null) {
-            client.invalidateQueries()
-            if (callbackUrl) {
-                router.replace(callbackUrl)
-                return
-            }
-            router.replace('/')
+            client.clear();
+            router.refresh()
         } else {
             setFormState(response)
         }
