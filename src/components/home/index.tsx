@@ -1,18 +1,20 @@
 'use client'
 
+import { Spinner } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { Collection } from '../../actions/collections'
+import serverInstance from '../../actions/api'
+import { listCollections } from '../../actions/collections'
+import { Product } from '../../types/product'
 import Title from '../core/Title/Title'
 import CollectionCard from './CollectionCard/CollectionCard'
 import NewArrivals from './NewArrivals/NewArrivals'
-import serverInstance from '../../actions/api'
-import { Product } from '../../types/product'
 
-type HomePageProps = {
-    collections: Collection[]
-}
+function HomePage() {
+    const { data: collections, isLoading: isLoadingCollections } = useQuery({
+        queryKey: ['collection-list'],
+        queryFn: () => listCollections(),
+    })
 
-function HomePage({ collections }: HomePageProps) {
     const { data: newArrivals, isLoading: isLoadingNewArrivals } = useQuery({
         queryKey: ['new-arrivals'],
         queryFn: async () => {
@@ -23,12 +25,20 @@ function HomePage({ collections }: HomePageProps) {
         },
     })
 
+    if (isLoadingCollections) {
+        return (
+            <div className="flex items-center justify-center">
+                <Spinner color="secondary" />
+            </div>
+        )
+    }
+
     return (
         <>
             <Title>Collections</Title>
             <div className="mb-3" />
             <div className="container mx-auto flex flex-wrap gap-5 relative justify-center">
-                {collections.map((collection) => (
+                {(collections ?? [])?.map((collection) => (
                     <div
                         className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
                         key={collection.id}

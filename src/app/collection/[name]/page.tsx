@@ -7,7 +7,7 @@ type Props = {
     }
 }
 
-async function Page({ params }: Props) {
+function Page({ params }: Props) {
     const { name } = params
     return (
         <>
