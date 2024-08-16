@@ -1,9 +1,12 @@
+import { Suspense } from 'react'
 import LoginContainer from '../../components/auth/LoginContainer/LoginContainer'
 
 function Page() {
     return (
         <>
-            <LoginContainer />
+            <Suspense>
+                <LoginContainer />
+            </Suspense>
         </>
     )
 }

@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import SignupContainer from '../../components/auth/SignupContainer/SignupContainer'
 
 function Page() {
     return (
         <>
-            <SignupContainer />
+            <Suspense>
+                <SignupContainer />
+            </Suspense>
         </>
     )
 }
