@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, Suspense } from 'react'
 import ClientAuthProvider from './ClientAuthProvider'
 import { isAuthenticated } from '../../actions/auth/auth'
 import AuthUser from '../../actions/auth/models/auth.user'
@@ -16,9 +16,11 @@ async function AuthProvider({ children }: AuthProviderProps) {
         })
 
     return (
-        <ClientAuthProvider key={user?.email} user={user}>
-            {children}
-        </ClientAuthProvider>
+        <Suspense>
+            <ClientAuthProvider key={user?.email} user={user}>
+                {children}
+            </ClientAuthProvider>
+        </Suspense>
     )
 }
 
